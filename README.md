@@ -1,4 +1,3 @@
-
 ## Quickstart guide
 After cloning this repository, from the command line perform the following commands:
 
