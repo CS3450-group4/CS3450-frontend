@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import TestApi from './components/test-api';
 
 function App() {
+
+  const [apiData, setApiData] = useState()
+  useEffect(() => {
+      fetch('http://localhost:8000/api/')
+        .then((res) => res.json())
+        .then((data) => setApiData(data))
+  }, [])
+  
+  // form with two input fields, one for name, one for price
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {
+        apiData && (
+          <TestApi apiData={apiData} />
+        )
+      }
     </div>
   );
 }
