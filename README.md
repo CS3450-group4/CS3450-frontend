@@ -1,5 +1,4 @@
 
-
 ## Frappy Time
 
 This online app is designed to be a frappuccino store to compete with the glorious StarBuck.
@@ -38,8 +37,13 @@ The backend should now be ready to go.
 
 ## System Testing / "Unit Testing" Instructions
 
+Once the backend is setup run the command
+
+`python manage.py runserver`
+
 We can use the api/additem/ endpoint to post data to the database. Try 
 pasting the Json snippet below into the input box at the bottom of the page, then click the post button.
+
 ```
 {
     "name": "frapoccino",
@@ -47,8 +51,5 @@ pasting the Json snippet below into the input box at the bottom of the page, the
   }
 ```
 Now visit the endpoint /api/ to send a get request for all menuitems in the database.
-
-Run `python manage.py runserver` then open localhost:8000/api/additem/ in your browser.
-
 
 ## Other Development Notes (As Needed)
