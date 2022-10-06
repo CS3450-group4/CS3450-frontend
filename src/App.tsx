@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import TestApi from './components/test-api';
+import Login from './components/login-signup';
 
 function App() {
 
@@ -11,14 +12,9 @@ function App() {
         .then((data) => setApiData(data))
   }, [])
   
-  // form with two input fields, one for name, one for price
   return (
     <div className="App">
-      {
-        apiData && (
-          <TestApi apiData={apiData} />
-        )
-      }
+      <Login />
     </div>
   );
 }
