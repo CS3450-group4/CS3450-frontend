@@ -13,7 +13,7 @@ export type MenuItem = {
   price: number
   created: string
   size: number
-  ingredientsList: [string]
+  ingredientList: ingredientList
 }
 
 export type Ingredient = {
@@ -26,11 +26,17 @@ export type Ingredient = {
 }
 
 export type Order = {
+  readonly id: number
   price: number
   created: string
   user: number
   orderStatus: "unfullfiled" | "fullfilled" | "canceled"
-  ingredientsList: [string]
+  ingredientList: ingredientList
+}
+
+type ingredientList = {
+  baseItem: string
+  ingredients: [string]
 }
 /*  example usage
 const exampleOrder: Order = {
@@ -38,7 +44,10 @@ created: 2022-09-12T04:37:28.004073Z,
 price: 200,
 user: someUserInstance.id,
 orderStatus: "unfullfiled",
-ingredientsList: ["coffee", "milk", "someotherspice"]
+ingredientsList: {
+  baseItem: "some item from the menu",
+  ingredients: ["ingred1", "ingred2"]
+}
 }
 
 sidenote: dont worry too much about the date format
