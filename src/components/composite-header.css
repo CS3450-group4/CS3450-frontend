@@ -1,0 +1,25 @@
+.Title {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: bisque;
+}
+
+.TitleContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: bisque;
+    border-radius: 10px;
+    width: 95vw;
+    margin-top: 10px;
+}
+
+.BalanceAdder {
+    position: absolute;
+    right: 5%;
+    background-color: aliceblue;
+    padding: 8px;
+    border-radius: 10px;
+}

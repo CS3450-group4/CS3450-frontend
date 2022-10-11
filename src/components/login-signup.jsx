@@ -1,5 +1,7 @@
 import { useState } from "react";
-import "./login-signup.css"
+import { useNavigate } from "react-router-dom";
+import "./login-signup.css";
+import "./../App.css";
 import {
     Box,
     Button,
@@ -12,6 +14,8 @@ import TitleHeader from "./header";
 export default function Login() {
     const [userName, setUserName] = useState(null);
     const [password, setPassword] = useState(null);
+    let navigate = useNavigate();
+    const viewStrings = ["customer", "cashier", "barista", "manager"];
 
     function updatePassword(event) {
         setPassword(event.target.value);
@@ -22,16 +26,21 @@ export default function Login() {
     }
 
     function logIn() {
-        alert(userName)
+        // TODO: Verify user login
+        navigate(viewStrings[2]);
     }
 
     function signUp() {
-        alert(password)
+        // TODO: Verify user signup
+        navigate(viewStrings[1]);
     }
 
     return (
-        <div>
-            <TitleHeader />
+        <div className="App">
+            <Box className="TitleHeaderContainer">
+                <TitleHeader />
+            </Box>
+            
             <Box class="container">
                 <Card sx={{padding: '16px'}}>
                     <Stack direction="column" spacing={2}>

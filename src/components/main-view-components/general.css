@@ -1,0 +1,40 @@
+.HoursAdder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 60%;
+    background-color: aliceblue;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.PayEmployeesContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    height: 80%;
+    background-color: aliceblue;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.StickyFooterContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.CompositeTitleHeaderContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.WorkingViewContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
