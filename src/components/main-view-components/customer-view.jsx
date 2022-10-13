@@ -1,18 +1,21 @@
 import {
     Box,
+    Grid
   } from "@mui/material";
 import CompositeTitleHeader from "../composite-header";
 import StickyFooter from "../sticky-footer";
 import "./../../App.css";
 import "./general.css";
+import MenuGrid from  "../customer-components/menu-grid"
 export default function CustomerView() {
     return (
         <div className="App">
             <Box className="CompositeTitleHeaderContainer">
                 <CompositeTitleHeader />
             </Box>
-            <Box className="WorkingViewContainer">
-                Insert Custom Components Here. Can change styling of WorkingViewContainer if Needed
+            <Box className="WorkingViewContainer" >
+                {/* TODO: CREATE A COMPONENT & FUNCTION FOR THE GRID */}
+                <MenuGrid ></MenuGrid>
             </Box>
             <Box className="StickyFooterContainer">
                 <StickyFooter>
