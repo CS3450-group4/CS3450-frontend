@@ -1,11 +1,5 @@
-import {useState} from "react";
 import {
-    Stack,
-    Box,
-    TextField,
-    Button,
     Grid,
-    Typography,
   } from "@mui/material";
 import DrinkCard from  "./drink-card"
 import "./menu-grid.css"
@@ -17,7 +11,7 @@ const menuItem =  {
     ingredientList: ["Soy Milk", "Caramel", "Cinnamon", "Ice"]
 }
 
-export default function MenuGrid() {
+export default function MenuGrid({stateChanger, state}) {
 
     function getMenuDrinks(){
         const drinkList = [];
@@ -30,10 +24,9 @@ export default function MenuGrid() {
         // TODO: Fetch drinks on the menu from the database
     }
 
-
-    const gridItems = getMenuDrinks().map((drink) => 
-        <Grid item className="GridItem" >
-            <DrinkCard menuitem={drink}></DrinkCard>
+    const gridItems = getMenuDrinks().map((drink, index) => 
+        <Grid item className="GridItem" key={index}>
+            <DrinkCard menuitem={drink} stateChanger={stateChanger} state={state}></DrinkCard>
         </Grid>
     );
 

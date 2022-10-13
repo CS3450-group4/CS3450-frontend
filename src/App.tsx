@@ -11,12 +11,12 @@ import Login from './components/login-signup';
 
 function App() {
 
-  const [apiData, setApiData] = useState()
-  useEffect(() => {
-      fetch('http://localhost:8000/api/')
-        .then((res) => res.json())
-        .then((data) => setApiData(data))
-  }, [])
+  // const [apiData, setApiData] = useState()
+  // useEffect(() => {
+  //     fetch('http://localhost:8000/api/')
+  //       .then((res) => res.json())
+  //       .then((data) => setApiData(data))
+  // }, [])
   
   return (
     <BrowserRouter>

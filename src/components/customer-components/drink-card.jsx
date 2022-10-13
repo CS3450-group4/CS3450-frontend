@@ -29,7 +29,7 @@ const styles = muiBaseTheme => ({
 
   
 
-  export default function DrinkCard(props, classes) {
+  export default function DrinkCard({menuitem, state, stateChanger}, classes) {
 
     function DrinkIngredients(ingredientList) {
         var ingredientString = "This drink conatains "
@@ -46,10 +46,10 @@ const styles = muiBaseTheme => ({
     }
 
     return (
-        <Card className={classes.card} variant="outlined">
+        <Card className={"DrinkCard"} variant="outlined">
             <CardHeader
-                title={props.menuitem.name}
-                subheader={`Price: ${props.menuitem.price}`}
+                title={menuitem.name}
+                subheader={`Price: ${menuitem.price}`}
             />
             <CardMedia
             className="DrinkCardMedia"
@@ -60,11 +60,11 @@ const styles = muiBaseTheme => ({
             />
             <CardContent>
                 <Typography variant="caption">
-                    {DrinkIngredients(props.menuitem.ingredientList)}
+                    {DrinkIngredients(menuitem.ingredientList)}
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="medium" onClick={() => {console.log("ORDERED")}}>Order</Button>
+                <Button size="medium" onClick={() => stateChanger(!state)}>Order</Button>
             </CardActions>
             
         </Card>
