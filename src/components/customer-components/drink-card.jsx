@@ -29,15 +29,15 @@ const styles = muiBaseTheme => ({
 
   
 
-  export default function DrinkCard({menuitem, state, stateChanger}, classes) {
+  export default function DrinkCard({menuitem, state, stateChanger, setFrapOrder}, classes) {
 
     function DrinkIngredients(ingredientList) {
         var ingredientString = "This drink conatains "
         for (let x in ingredientList) {
             if (x == ingredientList.length-1) {
-                ingredientString += ` and ${ingredientList[x]}`
+                ingredientString += ` and ${ingredientList[x].name}`
             } else {
-                ingredientString += `${ingredientList[x]}, `
+                ingredientString += `${ingredientList[x].name}, `
             }
         }
         return (
@@ -64,7 +64,7 @@ const styles = muiBaseTheme => ({
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="medium" onClick={() => stateChanger(!state)}>Order</Button>
+                <Button size="medium" onClick={() => {stateChanger(!state); setFrapOrder(menuitem)}}>Order</Button>
             </CardActions>
             
         </Card>

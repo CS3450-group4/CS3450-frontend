@@ -8,16 +8,18 @@ import StickyFooter from "../sticky-footer";
 import "./../../App.css";
 import "./general.css";
 import MenuGrid from  "../customer-components/menu-grid"
-import OrderBox from "../customer-components/order-box";
+import OrderBox from "../customer-components/cust-order-box";
 
 export default function CustomerView() {
     const [isOrdering, setIsOrdering] = useState(true)
+    const [frapOrder, setFrapOrder] = useState(null)
+
 
     function CustomerAction() {
         if (isOrdering) {
-            return <MenuGrid stateChanger={setIsOrdering} state={isOrdering}/>; 
+            return <MenuGrid stateChanger={setIsOrdering} state={isOrdering} setFrapOrder={setFrapOrder}/>; 
         }  
-        return <OrderBox stateChanger={setIsOrdering} state={isOrdering}/>;
+        return <OrderBox stateChanger={setIsOrdering} state={isOrdering} frapOrder={frapOrder}/>;
     }
 
     return (

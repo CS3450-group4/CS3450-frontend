@@ -6,6 +6,8 @@ import StickyFooter from "../sticky-footer";
 import "./../../App.css";
 import "./general.css";
 import HoursAdder from "../hours-adder";
+import OrdersBox from "../cashier-components/cash-orders-box";
+
 export default function CashierView() {
     return (
         <div className="App">
@@ -13,7 +15,7 @@ export default function CashierView() {
                 <CompositeTitleHeader />
             </Box>
             <Box className="WorkingViewContainer">
-                Insert Custom Components Here. Can change styling of WorkingViewContainer if Needed
+                <OrdersBox></OrdersBox>
             </Box>
             <Box className="StickyFooterContainer">
                 <StickyFooter>
