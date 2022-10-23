@@ -32,7 +32,6 @@ export default function BalanceAdder(props) {
             const inputedData = Number(event.target.value);
             if (Number.isInteger(inputedData)) {
                 setBalance(event.target.value);
-
             } else {
                 setIsInvalidInput(true)
             }

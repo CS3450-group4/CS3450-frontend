@@ -35,6 +35,34 @@
 .WorkingViewContainer {
     display: flex;
     justify-content: center;
-    align-items: center;
+    height: 100%;
+}
+
+.ManagerMainViewAuthSelection {
+    margin-top: 20%;
+    background-color: aliceblue;
+    height: min-content;
+    padding: 16px;
+    border-radius: 10px;
+}
+
+.ManagerMainOptions {
+    display: flex;
+    margin-top: 20%;
+}
+
+.ManagerAddIngridentContainer {
+    margin-top: 20%;
+    background-color: aliceblue;
+    height: min-content;
+    padding: 16px;
+    border-radius: 10px;
+}
+
+.ManagerBuyIngredientsContainer {
+    margin-top: 10%;
+    background-color: aliceblue;
+    padding: 16px;
+    border-radius: 10px;
 }
 

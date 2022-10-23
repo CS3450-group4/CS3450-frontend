@@ -15,6 +15,7 @@ export default function PayEmployees(props) {
             setIsInvalidInput(false);
             const inputedData = Number(event.target.value);
             if (Number.isInteger(inputedData)) {
+                console.log("EO");
                 setPaymentPerHour(event.target.value);
             } else {
                 setIsInvalidInput(true)
@@ -25,7 +26,29 @@ export default function PayEmployees(props) {
     }
 
     function pay() {
-        // TODO: Implement
+        fetch(`http://localhost:8000/api/user/all`)
+        .then((res) => res.json())
+        .then(
+          (employees) => {
+            console.log(employees);
+            employees.forEach((employee) => {
+                employee.balance += employee.hoursWorked * paymentPerHour;
+                employee.hoursWorked = 0;
+                try {
+                    fetch(`http://localhost:8000/api/user/${employee.id}/`, {
+                        method: 'PUT',
+                        mode: 'cors',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        'body': JSON.stringify(employee),
+                      })
+                } catch (error) {
+                    console.log(error);
+                }
+            })
+          }
+        )
     }
     return (
         <Box className={props.className}>

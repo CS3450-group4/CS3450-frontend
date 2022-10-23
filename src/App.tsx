@@ -20,7 +20,7 @@ function App() {
         <Route path="customer" element={<CustomerView />} />
         <Route path="cashier" element={<CashierView />} />
         <Route path="barista" element={<BaristaView />} />
-        <Route path="manager" element={<ManagerView />} />
+        <Route path="manager/*" element={<ManagerView />} />
       </Routes>
     </BrowserRouter>
 

@@ -23,3 +23,12 @@
     padding: 8px;
     border-radius: 10px;
 }
+
+.AuthSelectorContainer {
+    width: 140px;
+    position: absolute;
+    left: 5%;
+    background-color: aliceblue;
+    padding: 8px;
+    border-radius: 10px;
+}
