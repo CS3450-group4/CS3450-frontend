@@ -97,6 +97,12 @@ export default function AddIngrident(props) {
               .then(
                 (data) => {
                     console.log(data)
+                    setIngridentName("");
+                    setIngridentRetailCost(0);
+                    setIngridentWholeSaleCost(0);
+                    setInitalStock(0);
+                    setIsIngridentMilk(false);
+                    setAmountOptions(null);
                 }
               )
         } catch (error) {
