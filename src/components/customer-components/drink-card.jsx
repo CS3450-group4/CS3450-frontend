@@ -46,10 +46,10 @@ const styles = muiBaseTheme => ({
     }
 
     return (
-        <Card className={"DrinkCard"} variant="outlined">
+        <Card className={"DrinkCard"} variant="outlined" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column', maxWidth: 250}}>
             <CardHeader
                 title={menuitem.name}
-                subheader={`Price: ${menuitem.price}`}
+                subheader={`Price: $${(menuitem.price/100).toFixed(2)}`}
             />
             <CardMedia
             className="DrinkCardMedia"
@@ -59,12 +59,12 @@ const styles = muiBaseTheme => ({
             
             />
             <CardContent>
-                <Typography variant="caption">
+                <Typography variant="caption" >
                     {DrinkIngredients(menuitem.ingredientList)}
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="medium" onClick={() => {stateChanger(!state); setFrapOrder(menuitem)}}>Order</Button>
+                <Button size="medium" onClick={() => {stateChanger("drink"); setFrapOrder(menuitem)}}>Order</Button>
             </CardActions>
             
         </Card>

@@ -1,6 +1,5 @@
 import {
-    Box,
-    Typography
+    Box, Button,
   } from "@mui/material";
 import { useState } from "react";
 import CompositeTitleHeader from "../composite-header";
@@ -9,17 +8,27 @@ import "./../../App.css";
 import "./general.css";
 import MenuGrid from  "../customer-components/menu-grid"
 import OrderBox from "../customer-components/cust-order-box";
+import CustomerCartBox from "../customer-components/customer-cart-box";
 
 export default function CustomerView() {
-    const [isOrdering, setIsOrdering] = useState(true)
+    const [customerState, setCustomerState] = useState("menu")
     const [frapOrder, setFrapOrder] = useState(null)
+    const [customerCart, setCart] = useState([])
 
 
     function CustomerAction() {
-        if (isOrdering) {
-            return <MenuGrid stateChanger={setIsOrdering} state={isOrdering} setFrapOrder={setFrapOrder}/>; 
-        }  
-        return <OrderBox stateChanger={setIsOrdering} state={isOrdering} frapOrder={frapOrder}/>;
+        if (customerState === "menu") {
+            return (
+                <Box>
+                    <MenuGrid stateChanger={setCustomerState} state={customerState} setFrapOrder={setFrapOrder}/>
+                    <Button onClick={() => {setCustomerState("cart")}}>Go To Cart</Button>
+                </Box>
+            )
+        }  else if (customerState === "drink") {
+            return <OrderBox stateChanger={setCustomerState} state={customerState} frapOrder={frapOrder} setCart={setCart} customerCart={customerCart}/>;
+        } else if (customerState === "cart") {
+            return <CustomerCartBox customerCart={customerCart} setCart={setCart} setCustomerState={setCustomerState}></CustomerCartBox>
+        }
     }
 
     return (
@@ -28,7 +37,7 @@ export default function CustomerView() {
                 <CompositeTitleHeader />
             </Box>
             <Box className="WorkingViewContainer" >
-                <CustomerAction/>
+                <CustomerAction/>  
             </Box>
             <Box className="StickyFooterContainer">
                 <StickyFooter>
