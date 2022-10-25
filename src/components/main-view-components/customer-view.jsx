@@ -25,9 +25,9 @@ export default function CustomerView() {
                 </Box>
             )
         }  else if (customerState === "drink") {
-            return <OrderBox stateChanger={setCustomerState} state={customerState} frapOrder={frapOrder} setCart={setCart} customerCart={customerCart}/>;
+            return <OrderBox setCustomerState={setCustomerState} frapOrder={frapOrder} setCart={setCart} customerCart={customerCart}/>;
         } else if (customerState === "cart") {
-            return <CustomerCartBox customerCart={customerCart} setCart={setCart} setCustomerState={setCustomerState}></CustomerCartBox>
+            return <CustomerCartBox customerCart={customerCart} setCart={setCart} setCustomerState={setCustomerState} setFrapOrder={setFrapOrder}></CustomerCartBox>
         }
     }
 

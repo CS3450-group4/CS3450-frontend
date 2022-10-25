@@ -3,7 +3,7 @@ import {
   } from "@mui/material";
 import { useEffect, useState } from "react";
 import DrinkCard from  "./drink-card"
-import "./menu-grid.css"
+import "../main-view-components/general.css"
 
 
 export default function MenuGrid({stateChanger, state, setFrapOrder}) {

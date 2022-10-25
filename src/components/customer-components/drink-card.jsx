@@ -10,7 +10,7 @@ import {
     CardActions,
     CardHeader,
   } from "@mui/material";
-import "./drink-card.css"
+import "../main-view-components/general.css"
 
 const styles = muiBaseTheme => ({ 
     card: {

@@ -38,3 +38,20 @@
     align-items: center;
 }
 
+.DrinkCardMedia {
+    /* padding: 5.25%;*/
+    border-radius: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.GridContainer {
+    height: 70vh;
+    border-style: solid;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+    justify-content: center;
+    align-items: center;
+}
+

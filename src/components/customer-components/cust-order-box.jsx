@@ -2,14 +2,13 @@ import { Button, Typography, Box} from "@mui/material"
 import { Stack } from "@mui/system"
 import { useEffect, useState } from "react"
 import AddOnForm from "./add-on-form"
+import IngredientForm from "./ingredient-form"
 import MilkForm from "./milk-form"
 import NonMilkForm from "./non-milk-form"
 import SizeForm from "./size-form"
 
-export default function OrderBox({stateChanger, state, frapOrder, setCart, customerCart}){
-
+export default function OrderBox({setCustomerState, frapOrder, setCart, customerCart}){
     const [milkList, setMilkList] = useState([])
-    const [nonMilkList, setNonMilkList] = useState([])
     const [price, setPrice] = useState(frapOrder.price)
     const [size, setSize] = useState(frapOrder.size)
     const [ingredients, setIngredients] = useState(frapOrder.ingredientList)
@@ -25,26 +24,24 @@ export default function OrderBox({stateChanger, state, frapOrder, setCart, custo
         .then(
           (data) => {
             var milks = []
-            var nonMilkIngredients = []
             data.forEach(ingredient => {
                 if(ingredient.isMilk) {
                     milks.push(ingredient) 
-                } else {
-                    nonMilkIngredients.push(ingredient)
                 }
             });
             setMilkList(milks)
-            setNonMilkList(nonMilkIngredients)
           }
         )
     }
 
     const changeSize = (event) => {
-        setPrice(price - (size * 100) + (event.target.value * 100))
         setSize(event.target.value)
+        // var newPrice = 0;
         // ingredients.forEach(ingredient => {
-        //     newPrice += (ing)
+        //     newPrice += ((ingredient.options * event.target.value) * ingredient.retailCost)
         // })
+        setPrice(price - (size * 100) + (event.target.value * 100))
+        // setPrice(newPrice)
         // var changedSizeList = []
         // frapOrder.ingredientList.forEach(ingredient => {
         //     var updatedIng = {
@@ -101,21 +98,6 @@ export default function OrderBox({stateChanger, state, frapOrder, setCart, custo
         var index = ingredients.findIndex(element => element.name === name)
         ingredients[index].options = value
         updateIngredients(ingredients)
-        // TODO: MAKE SURE THIS WORKS AND IS UPDATING ON CHANGE
-        
-        // const updatedIng = {
-        //     name: ing.name,
-        //     stock: ing.stock,
-        //     retailCost: ing.retailCost,
-        //     wholeSaleCost: ing.wholeSaleCost,
-        //     isMilk: ing.isMilk,
-        //     options: value
-        // }
-        // var filtered = ingredients.filter(element => element.name !== name)
-        // filtered.push(updatedIng)
-        // updateIngredients(filtered)
-        // updateIngredients(ingredients)
-        
     }
     
     function sumbitDrink() {
@@ -164,16 +146,17 @@ export default function OrderBox({stateChanger, state, frapOrder, setCart, custo
                 <SizeForm size={size} changeSize={changeSize}></SizeForm>
             </Stack>
             <Stack>
-                {/* <MilkForm ingredient={ingredients.find(element => element.isMilk == true)} changeMilk={changeMilk}></MilkForm> */}
-                {/* <IngredientForm ingredients={ingredients} changeMilk={changeMilk} changeIngredientAmount={changeIngredientAmount}></IngredientForm> */}
-                {ingredientForm}
+                <IngredientForm ingredients={ingredients} 
+                changeIngredientAmount={changeIngredientAmount} 
+                changeMilk={changeMilk}
+                removeIngredient={removeIngredient}></IngredientForm>
             </Stack>
                 <AddOnForm ingredients={ingredients} addIngredient={addIngredient}></AddOnForm>
             
-            <Button onClick={() => stateChanger("menu")} variant="contained"> Cancel Order </Button>
+            <Button onClick={() => setCustomerState("menu")} variant="contained"> Cancel Order </Button>
             <Button onClick={() => {
                 sumbitDrink()
-                stateChanger("menu")}} variant="contained"> Order Drink</Button>
+                setCustomerState("menu")}} variant="contained"> Order Drink</Button>
         </Box> 
     )
 }
