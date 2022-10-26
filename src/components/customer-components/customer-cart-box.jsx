@@ -1,6 +1,9 @@
 import { Button, Typography, Box, Stack} from "@mui/material"
+import { useNavigate } from "react-router-dom"
 
-export default function CustomerCartBox({customerCart, setCart, setCustomerState, setFrapOrder}) {
+export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
+    let navigation = useNavigate()
+
     function removeDrink(drink) {
         const newCart = customerCart.filter(element => element !== drink)
         setCart(newCart)
@@ -27,7 +30,7 @@ export default function CustomerCartBox({customerCart, setCart, setCustomerState
             alignItems="center">
                 <Typography>{sizeConv(drink.size)} {drink.name}: ${(drink.price/100).toFixed(2)}</Typography>
                 {/* <Button
-                    onClick={() => {setFrapOrder(drink); setCustomerState("drink");}}
+                    onClick={() => {setFrapOrder(drink); navigation("../drink", {replace: true});}}
                 >Edit</Button> */}
                 <Button onClick={() => {
                     removeDrink(drink)
@@ -43,7 +46,7 @@ export default function CustomerCartBox({customerCart, setCart, setCustomerState
             )}
             <Stack direction={"row"}>
                 <Button variant="contained" onClick={() => {sendToCashier()}}>SUMBIT ORDER</Button>
-                <Button variant="contained" onClick={() => {setCustomerState("menu")}}>RETURN TO MENU</Button>
+                <Button variant="contained" onClick={() => {navigation("../menu", {replace: true})}}>RETURN TO MENU</Button>
             </Stack>
             
         </Box>

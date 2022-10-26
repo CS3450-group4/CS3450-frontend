@@ -11,25 +11,10 @@ import {
     CardHeader,
   } from "@mui/material";
 import "../main-view-components/general.css"
+import { useNavigate } from "react-router-dom";
 
-const styles = muiBaseTheme => ({ 
-    card: {
-        maxWidth: 300,
-        margin: "auto",
-        transition: "0.3s",
-        boxShadow: "0 8px 40px -12px rgba(0,0,0,0.)",
-        "&:hover": {
-            boxShadow: "0 16px 70px -12.125px rgba(0,0,0,0.3)"
-          }
-    },
-    media: {
-      paddingTop: "56.25%"
-    },
-})
-
-  
-
-  export default function DrinkCard({menuitem, state, stateChanger, setFrapOrder}, classes) {
+  export default function DrinkCard({menuitem, setFrapOrder}) {
+    let navigation = useNavigate()
 
     function DrinkIngredients(ingredientList) {
         var ingredientString = "This drink conatains "
@@ -56,7 +41,6 @@ const styles = muiBaseTheme => ({
             component="img"
             image={require('./frap1.jpg')}
             alt="Frappichino"
-            
             />
             <CardContent>
                 <Typography variant="caption" >
@@ -64,7 +48,9 @@ const styles = muiBaseTheme => ({
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="medium" onClick={() => {stateChanger("drink"); setFrapOrder(menuitem)}}>Order</Button>
+                <Button size="medium" onClick={() => {setFrapOrder(menuitem);
+                    navigation("../drink", {replace: true})}
+                }>Order</Button>
             </CardActions>
             
         </Card>

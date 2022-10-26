@@ -1,6 +1,7 @@
 import { Button, Typography, Box} from "@mui/material"
 import { Stack } from "@mui/system"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import AddOnForm from "./add-on-form"
 import IngredientForm from "./ingredient-form"
 import MilkForm from "./milk-form"
@@ -13,6 +14,7 @@ export default function OrderBox({setCustomerState, frapOrder, setCart, customer
     const [size, setSize] = useState(frapOrder.size)
     const [ingredients, setIngredients] = useState(frapOrder.ingredientList)
     const [update, forceUpdate] = useState(true)
+    let navigation = useNavigate()
 
     useEffect(() => {
         fetchData();
@@ -153,10 +155,10 @@ export default function OrderBox({setCustomerState, frapOrder, setCart, customer
             </Stack>
                 <AddOnForm ingredients={ingredients} addIngredient={addIngredient}></AddOnForm>
             
-            <Button onClick={() => setCustomerState("menu")} variant="contained"> Cancel Order </Button>
+            <Button onClick={() => navigation("../menu", {replace: true})} variant="contained"> Cancel Order </Button>
             <Button onClick={() => {
                 sumbitDrink()
-                setCustomerState("menu")}} variant="contained"> Order Drink</Button>
+                navigation("../menu", {replace: true})}} variant="contained"> Order Drink</Button>
         </Box> 
     )
 }
