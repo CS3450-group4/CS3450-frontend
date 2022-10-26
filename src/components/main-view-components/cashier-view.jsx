@@ -1,12 +1,11 @@
 import {
-    Box,
+    Box, Typography,
   } from "@mui/material";
 import CompositeTitleHeader from "../composite-header";
 import StickyFooter from "../sticky-footer";
 import "./../../App.css";
 import "./general.css";
 import HoursAdder from "../hours-adder";
-import OrdersBox from "../cashier-components/cash-orders-box";
 
 export default function CashierView() {
     return (
@@ -15,7 +14,7 @@ export default function CashierView() {
                 <CompositeTitleHeader />
             </Box>
             <Box className="WorkingViewContainer">
-                <OrdersBox></OrdersBox>
+                <Typography> Show Orders</Typography>
             </Box>
             <Box className="StickyFooterContainer">
                 <StickyFooter>

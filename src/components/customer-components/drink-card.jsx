@@ -49,6 +49,7 @@ import { useNavigate } from "react-router-dom";
             </CardContent>
             <CardActions>
                 <Button size="medium" onClick={() => {setFrapOrder(menuitem);
+                    console.log(menuitem)
                     navigation("../drink", {replace: true})}
                 }>Order</Button>
             </CardActions>

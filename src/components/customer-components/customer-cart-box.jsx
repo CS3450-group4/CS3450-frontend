@@ -10,8 +10,9 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
     }
 
     function sendToCashier() {
-        console.log("sent cart to cashier", console.log(customerCart))
-        //
+        console.log("sent cart to cashier", customerCart)
+        // check users balance
+        // add order to the ORDERS model
     }
 
     function sizeConv(size) {
@@ -30,7 +31,9 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
             alignItems="center">
                 <Typography>{sizeConv(drink.size)} {drink.name}: ${(drink.price/100).toFixed(2)}</Typography>
                 {/* <Button
-                    onClick={() => {setFrapOrder(drink); navigation("../drink", {replace: true});}}
+                    onClick={() => {
+                        setFrapOrder(drink)
+                        navigation("../drink", {replace: true});}}
                 >Edit</Button> */}
                 <Button onClick={() => {
                     removeDrink(drink)

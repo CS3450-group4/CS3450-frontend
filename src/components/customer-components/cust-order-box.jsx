@@ -8,7 +8,7 @@ import MilkForm from "./milk-form"
 import NonMilkForm from "./non-milk-form"
 import SizeForm from "./size-form"
 
-export default function OrderBox({setCustomerState, frapOrder, setCart, customerCart}){
+export default function OrderBox({frapOrder, setCart, customerCart}){
     const [milkList, setMilkList] = useState([])
     const [price, setPrice] = useState(frapOrder.price)
     const [size, setSize] = useState(frapOrder.size)

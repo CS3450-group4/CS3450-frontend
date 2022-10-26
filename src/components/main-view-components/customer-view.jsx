@@ -12,24 +12,12 @@ import CustomerCartBox from "../customer-components/customer-cart-box";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
 export default function CustomerView() {
-    const [customerState, setCustomerState] = useState("menu")
-    const [frapOrder, setFrapOrder] = useState(null)
+    const [frapOrder, setFrapOrder] = useState({})
     const [customerCart, setCart] = useState([])
-    
     let navigation = useNavigate()
     useEffect(() => {
         navigation("menu")
     }, [])
-
-    function CustomerAction() {
-        if (customerState === "menu") {
-            return <MenuGrid setCustomerState={setCustomerState} setFrapOrder={setFrapOrder}/>
-        }  else if (customerState === "drink") {
-            return <OrderBox setCustomerState={setCustomerState} frapOrder={frapOrder} setCart={setCart} customerCart={customerCart}/>;
-        } else if (customerState === "cart") {
-            return <CustomerCartBox customerCart={customerCart} setCart={setCart} setCustomerState={setCustomerState} setFrapOrder={setFrapOrder}/>
-        }
-    }
 
     return (
         <div className="App">
@@ -38,9 +26,9 @@ export default function CustomerView() {
             </Box>
             <Box className="WorkingViewContainer" >
                 <Routes>
-                    <Route path="menu" element={<MenuGrid setCustomerState={setCustomerState} setFrapOrder={setFrapOrder}/>} />
-                    <Route path="drink" element={<OrderBox setCustomerState={setCustomerState} frapOrder={frapOrder} setCart={setCart} customerCart={customerCart}/>} />
-                    <Route path="cart" element={<CustomerCartBox customerCart={customerCart} setCart={setCart} setCustomerState={setCustomerState} setFrapOrder={setFrapOrder}/>} />
+                    <Route path="menu" element={<MenuGrid setFrapOrder={setFrapOrder}/>} />
+                    <Route path="drink" element={<OrderBox frapOrder={frapOrder} setCart={setCart} customerCart={customerCart}/>} />
+                    <Route path="cart" element={<CustomerCartBox customerCart={customerCart} setCart={setCart} setFrapOrder={setFrapOrder}/>} />
                 </Routes>
                 {/* <CustomerAction/>   */}
             </Box>
