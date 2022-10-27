@@ -14,6 +14,7 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
     const [size, setSize] = useState(frapOrder.size)
     const [ingredients, setIngredients] = useState(frapOrder.ingredientList)
     const [update, forceUpdate] = useState(true)
+
     let navigation = useNavigate()
 
     useEffect(() => {
@@ -76,14 +77,21 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
     }
     
     function removeIngredient(unwantedIng) {
-        const newIngs = ingredients.filter(element => element.name !== unwantedIng.name)
-        updateIngredients(newIngs)
+        console.log(ingredients)
+        var ingredientsCopy = ingredients
+        delete ingredientsCopy[`${unwantedIng.name}`]
+        setIngredients(ingredientsCopy)
+        console.log(ingredients)
+        rerender()
+        
+        // updateIngredients(newIngs)
     }
 
     function addIngredient(newIngredient) {
-        var newIng = ingredients
-        newIng.push(newIngredient)
-        updateIngredients(newIng)
+        var ingredientsCopy = ingredients
+        setIngredients(ingredientsCopy[`${newIngredient.name}`] = newIngredient)
+        // rerender()
+        // updateIngredients(newIng)
     }
 
     const changeMilk = (event) => {
@@ -113,27 +121,6 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
         cart.push(newDrink)
         setCart(cart)
     }
-
-    const ingredientForm = (ingredients.length !== 0)  ? (
-        ingredients.map((ingredient, index) => {
-        if (ingredient.isMilk) {
-            return (
-                <Stack direction="row" key={index}>
-                    <Typography>Milk</Typography>
-                    <MilkForm ingredient={ingredient} changeMilk={changeMilk}></MilkForm>
-                </Stack>
-            )
-        } else {
-            return (
-                <Stack direction="row" key={index}>
-                    <Typography>{ingredient['name']}</Typography>
-                    <NonMilkForm ingredient={ingredient} changeIngredientAmount={changeIngredientAmount}></NonMilkForm>
-                    <Button onClick={() => {removeIngredient(ingredient)}}>X</Button>
-                </Stack>
-            )
-        }
-    })
-    ) : <Typography>EMPTY DRINK</Typography> 
 
     return(
         <Box width="75%">

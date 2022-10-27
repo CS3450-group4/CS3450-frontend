@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 
 export default function AddOnForm({ingredients, addIngredient}){
-    const [newIngs, setNewIngs] = useState([])
+    const [newIngs, setNewIngs] = useState({})
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -11,26 +11,27 @@ export default function AddOnForm({ingredients, addIngredient}){
     };
     const handleClose = () => {
         setAnchorEl(null);
-        // addIngredient(event.target)
     };
     useEffect(() => {
         fetchData();
     }, [anchorEl])
+
+    console.log(ingredients)
 
     function fetchData() {
         fetch(`http://localhost:8000/api/ingredient/`)
         .then((res) => res.json())
         .then(
           (data) => {
-            var ings = []
+            var ings = {}
             var oldIngNames = []
-            ingredients.forEach(ing => {
-                oldIngNames.push(ing.name)
-            })
+            for(let keyVal in ingredients) {
+                oldIngNames.push(ingredients[keyVal].name)
+            }
             data.forEach(ingredient => {
                 if(!ingredient.isMilk) {
                     if(oldIngNames.findIndex(element => element === ingredient.name) === -1) {
-                        ings.push(ingredient)
+                        ings[ingredient.name] = ingredient
                     }
                 }
             });
@@ -57,24 +58,11 @@ export default function AddOnForm({ingredients, addIngredient}){
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}>
-                {newIngs.map((ing, index) => <MenuItem onClick={() => {handleClose(); addIngredient(ing)}}
-                key={index}>{ing.name}</MenuItem>)}
+                {Object.keys(newIngs).map((keyVal, index) => <MenuItem onClick={() => {
+                    handleClose()
+                    addIngredient(newIngs[keyVal])}}
+                key={index}> {newIngs[keyVal].name} </MenuItem>)}
             </Menu>
         </Box>
-        // <FormControl fullWidth>
-        //     <InputLabel id="label">Add On</InputLabel>
-        //     <Select
-        //         labelId="label"
-        //         id="select"
-        //         value={newIngs[0]}
-        //         label="select"
-        //         name="Add On"
-        //         onChange={addIngredient}
-        //     >
-        //         {newIngs.map((ing, index) => 
-        //             <MenuItem value={ing.name} key={index}>{ing.name}</MenuItem>
-        //         )}
-        //     </Select>
-        //  </FormControl>
     )
 }
