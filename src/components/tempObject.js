@@ -1,7 +1,7 @@
 
 
 const user = {
-    id: 3,
+    id: 1,
 }
 
 export default user;

@@ -1,7 +1,7 @@
 import {
     Box,
   } from "@mui/material";
-import CompositeTitleHeader from "../composite-header";
+import CompositeTitleHeader from "../shared-components/composite-header";
 import StickyFooter from "../sticky-footer";
 import "./../../App.css";
 import "./general.css";

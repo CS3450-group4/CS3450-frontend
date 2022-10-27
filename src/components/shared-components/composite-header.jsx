@@ -3,7 +3,7 @@ import {
     Box,
   } from "@mui/material";
 import BalanceAdder from "./balance-adder";
-import AuthSelector from "./auth-selector";
+import AuthSelector from "../auth-selector";
 import "./composite-header.css"
 
 export default function CompositeTitleHeader() {

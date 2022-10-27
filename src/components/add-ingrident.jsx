@@ -14,13 +14,15 @@ import {
     Select,
     FormControlLabel
   } from "@mui/material";
+import user from "./tempObject"
 export default function AddIngrident(props) {
     const [ingridentName, setIngridentName] = useState("");
     const [ingridentWholeSaleCost, setIngridentWholeSaleCost] = useState(0);
     const [ingridentRetailCost, setIngridentRetailCost] = useState(0);
     const [initalStock, setInitalStock] = useState(0);
     const [amountOptions, setAmountOptions] = useState(null);
-    const [isIngridentMilk, setIsIngridentMilk] = useState(false)
+    const [isIngridentMilk, setIsIngridentMilk] = useState(false);
+    const [managerData, setManagerData] = useState(null);
 
     const optionObj = {
         yesNo: 1,
@@ -72,7 +74,40 @@ export default function AddIngrident(props) {
         }
     }
 
+    function updateManagerBalance(newBalance) {
+        managerData.balance = newBalance;
+        try {
+            fetch(`http://localhost:8000/api/user/${user.id}/`, {
+                method: 'PUT',
+                mode: 'cors',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                'body': JSON.stringify(managerData),
+              })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
+    function getManagerData() {
+        fetch(`http://localhost:8000/api/user/${user.id}/`)
+        .then((res) => res.json())
+        .then(
+          (data) => {
+              setManagerData(data);
+              if (data.balance < +ingridentWholeSaleCost * +initalStock) alert("Balance Too Low for Inital Stock!");
+              else if (ingridentName == "" || amountOptions == null) alert("Missing Fields!");
+              else {
+                updateManagerBalance(data.balance - (+ingridentWholeSaleCost * +initalStock));
+                processIngrident();
+              }
+          }
+        )
+    }
+
     function processIngrident() {
+        getManagerData()
         const newIngrident = {
             name: ingridentName,
             stock: initalStock,
@@ -123,7 +158,7 @@ export default function AddIngrident(props) {
                     <FormControlLabel control={<Checkbox checked={isIngridentMilk} onChange={(newVal) => handleMilkChange(newVal)} />} label="Is Milk" />
                 </FormGroup>
                 {showOptions()}
-                <Button onClick={() => processIngrident()}>Add</Button>
+                <Button onClick={() => getManagerData()}>Add</Button>
             </Stack>
         </Box>
     )

@@ -2,7 +2,7 @@ import {
     Box, Button,
   } from "@mui/material";
 import { useEffect, useState } from "react";
-import CompositeTitleHeader from "../composite-header";
+import CompositeTitleHeader from "../shared-components/composite-header";
 import StickyFooter from "../sticky-footer";
 import "./../../App.css";
 import "./general.css";
