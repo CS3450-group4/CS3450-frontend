@@ -34,7 +34,6 @@ export default function MilkForm({ingredient, changeMilk}){
                 name={ingredient.name}
                 onChange={changeMilk}
             >
-                {/* {milkMenuItem} */}
                 {milkList.map((milk, index) => 
                     <MenuItem value={milk.name} key={index}>{milk.name}</MenuItem>
                 )}

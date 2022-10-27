@@ -16,8 +16,6 @@ export default function AddOnForm({ingredients, addIngredient}){
         fetchData();
     }, [anchorEl])
 
-    console.log(ingredients)
-
     function fetchData() {
         fetch(`http://localhost:8000/api/ingredient/`)
         .then((res) => res.json())

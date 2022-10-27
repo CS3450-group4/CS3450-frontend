@@ -9,7 +9,7 @@ import NonMilkForm from "./non-milk-form"
 import SizeForm from "./size-form"
 
 export default function OrderBox({frapOrder, setCart, customerCart}){
-    const [milkList, setMilkList] = useState([])
+    const [milkList, setMilkList] = useState(null)
     const [price, setPrice] = useState(frapOrder.price)
     const [size, setSize] = useState(frapOrder.size)
     const [ingredients, setIngredients] = useState(frapOrder.ingredientList)
@@ -20,6 +20,10 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
     useEffect(() => {
         fetchData();
     }, [])
+
+    // useEffect(() => {
+    //     console.log(ingredients)
+    // }, [ingredients])
 
     function fetchData() {
         fetch(`http://localhost:8000/api/ingredient/`)
@@ -66,48 +70,48 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
         forceUpdate(!update)
     }
 
-    function updateIngredients(updatedIngredients) {
+    function updateIngredients(updatedIngs) {
         var tempPrice = 0
-        updatedIngredients.forEach(ingredient => {
-            tempPrice += (ingredient.retailCost * ingredient.options)
+        Object.keys(updatedIngs).forEach(key => {
+            tempPrice += (updatedIngs[key].retailCost * updatedIngs[key].options)
         });
         setPrice(tempPrice)
-        setIngredients(updatedIngredients)
+        setIngredients(updatedIngs)
         rerender()
     }
     
     function removeIngredient(unwantedIng) {
-        console.log(ingredients)
         var ingredientsCopy = ingredients
         delete ingredientsCopy[`${unwantedIng.name}`]
-        setIngredients(ingredientsCopy)
-        console.log(ingredients)
-        rerender()
-        
-        // updateIngredients(newIngs)
+        updateIngredients(ingredientsCopy)
     }
 
     function addIngredient(newIngredient) {
         var ingredientsCopy = ingredients
-        setIngredients(ingredientsCopy[`${newIngredient.name}`] = newIngredient)
-        // rerender()
-        // updateIngredients(newIng)
+        ingredientsCopy[newIngredient.name] = newIngredient
+        updateIngredients(ingredientsCopy)
     }
 
     const changeMilk = (event) => {
         const {value, name} = event.target
+        var ingsCopy = {}
         const newMilk = milkList.find(element => element.name === value)
-        const index = ingredients.findIndex(element => element.name === name)
-        var newIngs = ingredients
-        newIngs[index] = newMilk
-        updateIngredients(newIngs)
+        for(let key in ingredients) {
+            if (ingredients[key].name == name) {
+                ingsCopy[newMilk.name] = newMilk
+            } else {
+                ingsCopy[key] = ingredients[key]
+            }
+        }
+        console.log(ingsCopy)
+        updateIngredients(ingsCopy)
     }
 
     const changeIngredientAmount = (event) => {
         const {value, name} = event.target
-        var index = ingredients.findIndex(element => element.name === name)
-        ingredients[index].options = value
-        updateIngredients(ingredients)
+        var ingsCopy = ingredients
+        ingsCopy[name].options = value
+        updateIngredients(ingsCopy)
     }
     
     function sumbitDrink() {
