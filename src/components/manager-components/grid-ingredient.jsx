@@ -9,7 +9,7 @@ import {
     Grid,
     CardActionArea,
   } from "@mui/material";
-import user from "./tempObject"
+import user from "../tempObject"
 export default function GridIngredient(props) {
     const ingredient = props.ingredient;
     const index = props.index;

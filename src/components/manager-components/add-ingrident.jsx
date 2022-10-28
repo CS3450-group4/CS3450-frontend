@@ -14,7 +14,7 @@ import {
     Select,
     FormControlLabel
   } from "@mui/material";
-import user from "./tempObject"
+import user from "../tempObject"
 export default function AddIngrident(props) {
     const [ingridentName, setIngridentName] = useState("");
     const [ingridentWholeSaleCost, setIngridentWholeSaleCost] = useState(0);

@@ -2,10 +2,10 @@ import {
     Box, Typography,
   } from "@mui/material";
 import CompositeTitleHeader from "../shared-components/composite-header";
-import StickyFooter from "../sticky-footer";
+import StickyFooter from "../shared-components/sticky-footer";
 import "./../../App.css";
 import "./general.css";
-import HoursAdder from "../hours-adder";
+import HoursAdder from "../shared-components/hours-adder";
 
 export default function CashierView() {
     return (
