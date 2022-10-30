@@ -1,31 +1,55 @@
 import {useState, useEffect } from "react";
 import {
     Stack,
-    Box,
     TextField,
     Button,
-    FormGroup,
-    FormControl,
-    Checkbox,
     Typography,
-    Paper,
-    InputLabel,
-    MenuItem,
-    Select,
-    FormControlLabel,
     Card,
     CardContent,
     Grid,
-    CardActionArea
+    CardActionArea,
   } from "@mui/material";
+import user from "../tempObject"
 export default function GridIngredient(props) {
     const ingredient = props.ingredient;
     const index = props.index;
     const [addingAmount, setAddingAmount] = useState(0);
     const [itemStock, setItemStock] = useState(ingredient.stock);
+    const [managerData, setManagerData] = useState(null);
 
     function handleInputChange(event) {
         setAddingAmount(event.target.value)
+    }
+
+    function updateManagerBalance(newBalance) {
+        managerData.balance = newBalance;
+        try {
+            fetch(`http://localhost:8000/api/user/${user.id}/`, {
+                method: 'PUT',
+                mode: 'cors',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                'body': JSON.stringify(managerData),
+              })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    function getManagerData() {
+        fetch(`http://localhost:8000/api/user/${user.id}/`)
+        .then((res) => res.json())
+        .then(
+          (data) => {
+              setManagerData(data);
+              if (data.balance < addingAmount * ingredient.wholeSaleCost) alert("Balance Too Low for Inital Stock!")
+              else {
+                updateManagerBalance(data.balance - (addingAmount * ingredient.wholeSaleCost));
+                purchaseStock();
+              }
+          }
+        )
     }
 
     function purchaseStock() {
@@ -62,7 +86,7 @@ export default function GridIngredient(props) {
             <CardActionArea>
                 <Stack direction="row">
                     <TextField id={index} value={addingAmount} type="number" InputProps={{inputProps: {min: ingredient.stock}}} size="small" label="# Units" onChange={(newVal) => handleInputChange(newVal)}></TextField>
-                    <Button onClick={purchaseStock}>Buy</Button>
+                    <Button onClick={() => getManagerData()}>Buy</Button>
                 </Stack>
             </CardActionArea>
         </Card>

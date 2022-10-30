@@ -5,7 +5,7 @@ import {
     TextField,
     Button,
   } from "@mui/material";
-import user from "./tempObject"
+import user from "../tempObject"
 export default function BalanceAdder(props) {
     const [balance, setBalance] = useState(0);
     const [isInvalidInput, setIsInvalidInput] = useState(false);

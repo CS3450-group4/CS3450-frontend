@@ -9,7 +9,7 @@ import {
     Select,
     InputLabel
   } from "@mui/material";
-import user from "./tempObject"
+import user from "../tempObject"
 import { useNavigate } from "react-router-dom";
 export default function AuthSelector(props) {
     const [authLevels, setAuthLevels] = useState([]);
