@@ -25,9 +25,10 @@ export default function Login() {
     setUserName(event.target.value);
   }
 
+
   async function logIn() {
 
-    await fetch('http://localhost:8000/api/api-token-auth/', {
+    const userData = await fetch('http://localhost:8000/api/login/', {
 
       method: 'POST',
       mode: 'cors',
@@ -38,9 +39,15 @@ export default function Login() {
         username: userName,
         password: password
       }),
-    }).then((res) => { if (res.ok) navigate(viewStrings[2]) })
+      credentials: 'include'
+    }).then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        return data
+      })
       .catch((err) => console.log(err))
-
+    console.log(userData)
+    return userData
   }
 
   function signUp() {
@@ -73,6 +80,7 @@ export default function Login() {
           <Stack direction="row" spacing={2}>
             <Button variant="Contained" onClick={() => logIn()}>Login</Button>
             <Button variant="Outlined" onClick={() => signUp()}>Sign Up</Button>
+
           </Stack>
         </Card>
       </Box>
