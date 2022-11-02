@@ -61,7 +61,7 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
     }
 
     function sendToCashier() {
-        if (customerData.balance < totalPrice) alert("Balance Too Low for Order!");
+        if (customerData.balance < 0) alert("Balance Too Low for Order!");
             //   else if (ingridentName == "" || amountOptions == null) alert("Missing Fields!");
         else {
             updateCustomerBalance(customerData.balance - totalPrice)
