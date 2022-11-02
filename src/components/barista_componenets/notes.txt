@@ -1,0 +1,7 @@
+    function createIngredientList(data) {
+        setAvailableIngredients(
+            data.map((ingredient, index) => (
+                <FormControlLabel key={index} control={<Checkbox checked={selectedIngredients[index]} onChange={(newVal) => handleIngredientChecked(newVal, ingredient.name)} />} label={ingredient.name} />
+            ))
+        );
+    }
