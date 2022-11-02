@@ -5,7 +5,7 @@ import CompositeTitleHeader from "../shared-components/composite-header";
 import StickyFooter from "../sticky-footer";
 import "./../../App.css";
 import "./general.css";
-import HoursAdder from "../hours-adder";
+import HoursAdder from "../shared-components/hours-adder";g
 import RegisterBox from "../cashier-components/register-box";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
