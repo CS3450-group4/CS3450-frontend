@@ -10,6 +10,7 @@ import RegisterBox from "../cashier-components/register-box";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
+
 export default function CashierView() {
     let navigation = useNavigate()
     useEffect(() => {
