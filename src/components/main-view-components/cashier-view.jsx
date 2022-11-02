@@ -2,14 +2,13 @@ import {
     Box, Typography,
   } from "@mui/material";
 import CompositeTitleHeader from "../shared-components/composite-header";
-import StickyFooter from "../sticky-footer";
+import StickyFooter from "../shared-components/sticky-footer";
 import "./../../App.css";
 import "./general.css";
 import HoursAdder from "../shared-components/hours-adder";
 import RegisterBox from "../cashier-components/register-box";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-
 
 export default function CashierView() {
     let navigation = useNavigate()

@@ -6,7 +6,7 @@ import {
     Button,
     Typography,
   } from "@mui/material";
-import user from "./tempObject"
+import user from "../tempObject"
 export default function PayEmployees(props) {
     const [paymentPerHour, setPaymentPerHour] = useState(15);
     const [isInvalidInput, setIsInvalidInput] = useState(false);

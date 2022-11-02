@@ -3,7 +3,7 @@ import {
   } from "@mui/material";
 import { useEffect, useState } from "react";
 import CompositeTitleHeader from "../shared-components/composite-header";
-import StickyFooter from "../sticky-footer";
+import StickyFooter from "../shared-components/sticky-footer";
 import "./../../App.css";
 import "./general.css";
 import MenuGrid from  "../customer-components/menu-grid"

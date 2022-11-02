@@ -4,16 +4,16 @@ import {
 import { useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import CompositeTitleHeader from "../shared-components/composite-header";
-import ManagerOptions from "../manager-options";
-import PayEmployees from "../pay-employees";
-import StickyFooter from "../sticky-footer";
+import ManagerOptions from "../manager-components/manager-options";
+import PayEmployees from "../manager-components/pay-employees";
+import StickyFooter from "../shared-components/sticky-footer";
 import "./../../App.css";
-import AddDrink from "../add-drink";
-import AddIngrident from "../add-ingrident";
-import BuyIngredients from "../buy-ingridents";
-import ChangeAuth from "../change-auth-op";
+import AddDrink from "../manager-components/add-drink";
+import AddIngrident from "../manager-components/add-ingrident";
+import BuyIngredients from "../manager-components/buy-ingridents";
+import ChangeAuth from "../manager-components/change-auth-op";
 import "./general.css";
-import RemoveDrink from "../remove-drink";
+import RemoveDrink from "../manager-components/remove-drink";
 export default function ManagerView() {
     let navigation = useNavigate()
     useEffect(() => {

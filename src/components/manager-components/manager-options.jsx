@@ -10,7 +10,7 @@ import {
     InputLabel,
     Paper
   } from "@mui/material";
-import user from "./tempObject"
+import user from "../tempObject"
 import "./manager-main.css"
 import { Route, useNavigate } from "react-router-dom";
 export default function ManagerOptions(props) {
