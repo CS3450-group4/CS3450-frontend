@@ -7,16 +7,25 @@ import {
   Button,
   Card,
   TextField,
-  Stack
+  Stack,
+  Modal
 } from "@mui/material";
 import TitleHeader from "./header";
+import SignupForm from "./signup-form";
 
 export default function Login() {
   const [userName, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
+  const [isModalOpen, setModalState] = useState(false);
   let navigate = useNavigate();
   const viewStrings = ["customer", "cashier", "barista", "manager"];
 
+  const handleOpenModal = () => {
+    setModalState(true)
+  }
+  const handleCloseModal = () => {
+    setModalState(false)
+  }
   function updatePassword(event) {
     setPassword(event.target.value);
   }
@@ -51,8 +60,7 @@ export default function Login() {
   }
 
   function signUp() {
-    // TODO: Verify user signup
-    navigate(viewStrings[1]);
+    setModalState(true);
   }
 
   return (
@@ -84,6 +92,13 @@ export default function Login() {
           </Stack>
         </Card>
       </Box>
+      <Modal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+      >
+        <SignupForm onClose={handleCloseModal} />
+      </Modal>
+
     </div>
   )
 }
