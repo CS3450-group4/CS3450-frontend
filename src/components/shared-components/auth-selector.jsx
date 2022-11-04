@@ -27,12 +27,10 @@ export default function AuthSelector(props) {
     }
 
     function fetchData() {
-        console.log("fetched")
         fetch(`http://localhost:8000/api/user/${user.id}/`)
         .then((res) => res.json())
         .then(
           (data) => {
-            console.log(data)
               setAuthLevels(data.userinfo.authLevel);
               setSelectedAuth(data.userinfo.actingLevel);
               setUserData(data);

@@ -1,12 +1,18 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { resolveTypeReferenceDirective } from "typescript";
 
 export default function RegisterBox(){
     const [orders, setOrders] = useState([])
+    const [update, forceUpdate] = useState(true)
 
     useEffect(() => {
         fetchData();
     }, [])
+
+    function rerender() {
+        forceUpdate(!update)
+    }
 
     function fetchData() {
         fetch(`http://localhost:8000/api/orders/`)
@@ -14,37 +20,34 @@ export default function RegisterBox(){
         .then(
           (data) => {
             var tempList = []
-            var baristadrink = []
-            data.forEach(drinkIngs => {
-                if(drinkIngs.orderStatus === "unfullfilled") {
-                    tempList.push(drinkIngs)
-                } else {
-                    baristadrink.push(drinkIngs)
+            var alldrink = []
+            data.forEach(drinks => {
+                alldrink.push(drinks)
+                if(drinks.orderStatus === "unfullfilled") {
+                    tempList.push(drinks)
                 }
             })
             setOrders(tempList)
-            console.log(baristadrink)
-            // console.log(tempList)
+            console.log(alldrink)
           }
         )
     }
-    function updateOrderStatus(changedOrder) {
+    function updateOrderStatus(changedOrder, id) {
         console.log(changedOrder)
-        // try {
-            //     fetch(`http://localhost:8000/api/orders/${order.id}/`, {
-            //         method: 'PUT',
-            //         mode: 'cors',
-            //         headers: {
-            //           'Content-Type': 'application/json',
-            //         },
-            //         'body': JSON.stringify(changedOrder),
-            //       })
-            // } catch (error) {
-            //     console.log(error);
-            // }
+        try {
+            fetch(`http://localhost:8000/api/orders/${id}/`, {
+                method: 'PUT',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                'body': JSON.stringify(changedOrder),
+                })
+        } catch (error) {
+            console.log(error);
+        }
     }
     function sendToBarista(order) {
-        // console.log(order)
         var outOfStock = false
         for (const [drink, ings] of Object.entries(order.ingredientList)) {
             for(const ing of ings) {
@@ -57,8 +60,15 @@ export default function RegisterBox(){
             alert("DON'T Have Enough INGS")
             // TODO: Send Back To Customer
         } else {
-            order.orderStatus = "readyToFullfill"
-            updateOrderStatus(order)
+            var changedOrder = {
+                price: order.price,
+                // price: 123,
+                user: order.user,
+                // orderStatus: "r",
+                // orderStatus: "unfullfilled",
+                ingredientList: order.ingredientList
+            }
+            updateOrderStatus(changedOrder, order.id)
         }
     }
 
