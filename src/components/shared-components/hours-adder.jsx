@@ -22,9 +22,8 @@ export default function HoursAdder(props) {
         .then((res) => res.json())
         .then(
           (data) => {
-              setTotalHours(data.hoursWorked);
+              setTotalHours(data.userinfo.hoursWorked);
               setCurrentUser(data);
-              console.log(data);
           }
         )
     }
@@ -47,7 +46,8 @@ export default function HoursAdder(props) {
 
     function submitHours() {
         try {
-            currentUser.hoursWorked = +totalHours + +hours
+            currentUser.userinfo.hoursWorked = +totalHours + +hours
+            setHours(0);
             fetch(`http://localhost:8000/api/user/${user.id}/`, {
                 method: 'PUT',
                 mode: 'cors',
@@ -55,11 +55,10 @@ export default function HoursAdder(props) {
                   'Content-Type': 'application/json',
                 },
                 'body': JSON.stringify(currentUser),
-              })
+              }).then(() => fetchHours())
         } catch (error) {
             console.log(error);
         }
-        fetchHours();
     }
 
     return (

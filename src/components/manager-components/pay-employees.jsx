@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {
     Stack,
     Box,
@@ -12,6 +12,10 @@ export default function PayEmployees(props) {
     const [isInvalidInput, setIsInvalidInput] = useState(false);
     const [managerBalance, setManagerBalance] = useState(0);
     const [managerData, setManagerData] = useState(null);
+    const [employees, setEmployees] = useState(null);
+    useEffect(() => {
+        getManagerBalance();
+    }, [])
     function updatePaymentPerHour(event) {
         try {
             setIsInvalidInput(false);
@@ -32,15 +36,15 @@ export default function PayEmployees(props) {
         .then((res) => res.json())
         .then(
           (data) => {
-              setManagerBalance(data.balance);
+              setManagerBalance(data.userinfo.balance);
               setManagerData(data);
-              pay();
           }
         )
+        
     }
 
     function updateManagerBalance() {
-        managerData.balance = +managerBalance;
+        managerData.userinfo.balance = managerBalance;
         try {
             fetch(`http://localhost:8000/api/user/${user.id}/`, {
                 method: 'PUT',
@@ -55,26 +59,32 @@ export default function PayEmployees(props) {
         }
     }
 
-    function handlePayment() {
-        getManagerBalance();
-    }
-
     function pay() {
         fetch(`http://localhost:8000/api/user/all`)
         .then((res) => res.json())
         .then(
-          (employees) => {
-            employees.forEach((employee) => {
-                if (managerBalance -= employee.hoursWorked * +paymentPerHour > 0) {
-                    employee.balance += employee.hoursWorked * +paymentPerHour;
-                    setManagerBalance(managerBalance - (employee.hoursWorked * +paymentPerHour))
-                    employee.hoursWorked = 0;
-                    updateEmployee(employee);
-                } else alert("Out of Money! Not all employees paid!!!");
-            })
+          (data) => {
+            setEmployees(data);
+            console.log(employees);
+            console.log(managerBalance);
+            handlePay();
           }
         )
-        // updateManagerBalance();
+    }
+
+    function handlePay() {
+        employees.forEach((employee) => {
+            console.log(employee.userinfo.hoursWorked);
+            if (managerBalance - (employee.userinfo.hoursWorked * +paymentPerHour) > 0) {
+                employee.userinfo.balance += employee.userinfo.hoursWorked * +paymentPerHour;
+                employee.userinfo.hoursWorked = 1;
+                setManagerBalance(managerBalance - (employee.userinfo.hoursWorked * +paymentPerHour));
+                updateManagerBalance();
+            } else console.log("no")
+        })
+        employees.forEach((employee) => {
+            updateEmployee(employee)
+        })
     }
 
     function updateEmployee(employee) {
@@ -85,8 +95,14 @@ export default function PayEmployees(props) {
                 headers: {
                   'Content-Type': 'application/json',
                 },
-                'body': JSON.stringify(employee),
-              })
+                'body': JSON.stringify(employee.userinfo),
+              }).then((res) => res.json())
+              .then(
+                (data) => {
+                    console.log("finished updating hours/balance")
+                    console.log(data)
+                }
+              )
         } catch (error) {
             console.log(error);
         }
@@ -97,7 +113,7 @@ export default function PayEmployees(props) {
                 <Typography variant="h5">Pay Employees</Typography>
                 <Stack direction="row" spacing={1} alignItems="center" >
                     <TextField label="Hourly Rate" error={isInvalidInput} value={paymentPerHour} onChange={(newVal) => updatePaymentPerHour(newVal)}></TextField>
-                    <Button onClick={() => handlePayment()}>Pay</Button>
+                    <Button onClick={() => pay()}>Pay</Button>
                 </Stack>
             </Stack>
         </Box>
