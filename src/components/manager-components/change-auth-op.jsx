@@ -31,9 +31,9 @@ export default function ChangeAuth(props) {
 
     function updateAuthLevels() {
         if (user == null) return;
-        user.authLevel = [0]
-        if (isCashier) user.authLevel.push(1)
-        if (isBarista) user.authLevel.push(2)
+        user.userinfo.authLevel = [0]
+        if (isCashier) user.userinfo.authLevel.push(1)
+        if (isBarista) user.userinfo.authLevel.push(2)
         try {
             fetch(`http://localhost:8000/api/user/${user.id}/`, {
                 method: 'PUT',
@@ -79,22 +79,24 @@ export default function ChangeAuth(props) {
         .then((res) => res.json())
         .then(
             (data) => {
-                if (data.authLevel.includes(3)){
+                if (data.userinfo.authLevel.includes(3)){
                     setIsInvalidInput(true);
                     return;
                 } 
                 console.log(data);
                 setUser(data);
-                if (data.authLevel.includes(2)) {
+                if (data.userinfo.authLevel.includes(2)) {
                     setIsBarista(true);
                 }
-                if (data.authLevel.includes(1)) {
+                if (data.userinfo.authLevel.includes(1)) {
                     setIsCashier(true);
                 }
         })
         .catch(
-            () =>
-            setIsInvalidInput(true)
+            (e) => {
+                console.log(e);
+                setIsInvalidInput(true);
+            }
         )
 
     }

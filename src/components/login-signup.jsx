@@ -10,8 +10,8 @@ import {
   Stack,
   Modal
 } from "@mui/material";
-import TitleHeader from "./header";
 import SignupForm from "./signup-form";
+import TitleHeader from "./shared-components/header";
 
 export default function Login() {
   const [userName, setUserName] = useState(null);

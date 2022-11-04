@@ -83,3 +83,24 @@
     align-items: center;
 }
 
+.DrinkRemovalContainer {
+    margin-top: 20%;
+    background-color: aliceblue;
+    height: min-content;
+    padding: 16px;
+    border-radius: 10px;
+}
+
+.NewDrinkIngridentScroller {
+    max-height: 150px;
+    overflow-y: scroll;
+}
+
+.DrinkAdderContainer {
+    margin-top: 20%;
+    background-color: aliceblue;
+    height: min-content;
+    padding: 16px;
+    border-radius: 10px;
+}
+

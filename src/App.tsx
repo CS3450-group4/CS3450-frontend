@@ -5,14 +5,10 @@ import BaristaView from './components/main-view-components/barista-view';
 import CashierView from './components/main-view-components/cashier-view';
 import ManagerView from './components/main-view-components/manager-view';
 import CustomerView from './components/main-view-components/customer-view';
-import TestApi from './components/test-api';
 import Login from './components/login-signup';
 
 
 function App() {
-
-  const [apiData, setApiData] = useState()
-  
   return (
     <BrowserRouter>
       <Routes>
@@ -24,12 +20,6 @@ function App() {
       </Routes>
     </BrowserRouter>
 
-
-
-
-    // <div className="App">
-    //   <Login />
-    // </div>
   );
 }
 
