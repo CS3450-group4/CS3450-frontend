@@ -74,7 +74,7 @@ export default function PayEmployees(props) {
             })
           }
         )
-        updateManagerBalance();
+        // updateManagerBalance();
     }
 
     function updateEmployee(employee) {
