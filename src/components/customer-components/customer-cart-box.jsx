@@ -6,63 +6,14 @@ import user from "../tempObject"
 export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
     const [totalPrice, setTotalPrice] = useState(0)
     const [update, forceUpdate] = useState(true)
-    const [customerData, setCustomerData] = useState(null)
 
     let navigation = useNavigate()
     useEffect(() => {
         changeTotalPrice()
-        getCustomerData()
     }, [update])
 
     function rerender() {
         forceUpdate(!update)
-    }
-
-    // function getCustomerData() {
-    //     fetch(`http://localhost:8000/api/user/${user.id}/`)
-    //     .then((res) => res.json())
-    //     .then(
-    //       (data) => {
-    //           if (data.userinfo.balance < +ingridentWholeSaleCost * +initalStock) alert("Balance Too Low for Inital Stock!");
-    //           else if (ingridentName == "" || (amountOptions == null && !isIngridentMilk)) alert("Missing Fields!");
-    //           else {
-    //             data.userinfo.balance = data.userinfo.balance - (+ingridentWholeSaleCost * +initalStock)
-    //             updateCustomerBalance(data);
-    //             processIngrident();
-    //           }
-    //       }
-    //     )
-    // }
-    // function updateCustomerBalance(data) {
-    //     try {
-    //         fetch(`http://localhost:8000/api/user/${user.id}/`, {
-    //             method: 'PUT',
-    //             mode: 'cors',
-    //             headers: {
-    //               'Content-Type': 'application/json',
-    //             },
-    //             'body': JSON.stringify(data),
-    //           })
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
-    function updateCustomerBalance(newBalance) {
-        customerData.balance = newBalance;
-        console.log(newBalance)
-        try {
-            fetch(`http://localhost:8000/api/user/${user.id}/`, {
-                method: 'PUT',
-                mode: 'cors',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                'body': JSON.stringify(customerData),
-              })
-        } catch (error) {
-            console.log(error);
-        }
     }
 
     function getCustomerData() {
@@ -70,10 +21,28 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
         .then((res) => res.json())
         .then(
           (data) => {
-              setCustomerData(data);
-              rerender()
+              if (0 > data.userinfo.balance ) alert("Balance Too Low for Order!");
+              else {
+                data.userinfo.balance = data.userinfo.balance - (+totalPrice)
+                updateCustomerBalance(data);
+                sendToCashier()
+              }
           }
         )
+    }
+    function updateCustomerBalance(data) {
+        try {
+            fetch(`http://localhost:8000/api/user/${user.id}/`, {
+                method: 'PUT',
+                mode: 'cors',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                'body': JSON.stringify(data),
+              })
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     function changeTotalPrice() {
@@ -91,36 +60,32 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
     }
 
     function sendToCashier() {
-        if (customerData.balance < 0) alert("Balance Too Low for Order!");
-            //   else if (ingridentName == "" || amountOptions == null) alert("Missing Fields!");
-        else {
-            updateCustomerBalance(customerData.balance - totalPrice)
-            var orderDrinks = {}
-            customerCart.forEach(drink => {
-                orderDrinks[drink.name] = drink.ingredients
-            })
-            const customerOrder = {
-                price: totalPrice,
-                user: 1,
-                orderStatus: "unfullfilled",
-                ingredientList: orderDrinks,
-            }
-            if (customerCart.length !== 0) {
-                try {
-                    fetch(`http://localhost:8000/api/orders/`, {
-                        method: 'POST',
-                        mode: 'cors',
-                        headers: {
-                          'Content-Type': 'application/json',
-                        },
-                        'body': JSON.stringify(customerOrder),
-                      })
-                } catch (error) {
-                    console.log(error);
-                }
+        var orderDrinks = {}
+        customerCart.forEach(drink => {
+            orderDrinks[drink.name] = drink.ingredients
+        })
+        const customerOrder = {
+            price: totalPrice,
+            user: 1,
+            orderStatus: "unfullfilled",
+            ingredientList: orderDrinks,
+        }
+        if (customerCart.length !== 0) {
+            try {
+                fetch(`http://localhost:8000/api/orders/`, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    'body': JSON.stringify(customerOrder),
+                  })
+            } catch (error) {
+                console.log(error);
             }
             setCart([])
-    }
+            rerender()
+        }
     }
 
     function sizeConv(size) {
@@ -157,7 +122,7 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
                 <OrderItem drink={drink} key={index}></OrderItem>
             )}
             <Stack direction={"row"}>
-                <Button variant="contained" onClick={() => {sendToCashier()}}>SUMBIT ORDER</Button>
+                <Button variant="contained" onClick={() => {getCustomerData()}}>SUMBIT ORDER</Button>
                 <Button variant="contained" onClick={() => {navigation("../menu", {replace: true})}}>RETURN TO MENU</Button>
             </Stack>
             

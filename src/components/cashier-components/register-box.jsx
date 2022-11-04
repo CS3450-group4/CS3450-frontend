@@ -14,19 +14,37 @@ export default function RegisterBox(){
         .then(
           (data) => {
             var tempList = []
+            var baristadrink = []
             data.forEach(drinkIngs => {
                 if(drinkIngs.orderStatus === "unfullfilled") {
                     tempList.push(drinkIngs)
+                } else {
+                    baristadrink.push(drinkIngs)
                 }
             })
             setOrders(tempList)
+            console.log(baristadrink)
             // console.log(tempList)
           }
         )
     }
-
+    function updateOrderStatus(changedOrder) {
+        console.log(changedOrder)
+        // try {
+            //     fetch(`http://localhost:8000/api/orders/${order.id}/`, {
+            //         method: 'PUT',
+            //         mode: 'cors',
+            //         headers: {
+            //           'Content-Type': 'application/json',
+            //         },
+            //         'body': JSON.stringify(changedOrder),
+            //       })
+            // } catch (error) {
+            //     console.log(error);
+            // }
+    }
     function sendToBarista(order) {
-        console.log(order)
+        // console.log(order)
         var outOfStock = false
         for (const [drink, ings] of Object.entries(order.ingredientList)) {
             for(const ing of ings) {
@@ -40,26 +58,14 @@ export default function RegisterBox(){
             // TODO: Send Back To Customer
         } else {
             order.orderStatus = "readyToFullfill"
-            console.log(order)
-            // try {
-            //     fetch(`http://localhost:8000/api/orders/`, {
-            //         method: 'POST',
-            //         mode: 'cors',
-            //         headers: {
-            //           'Content-Type': 'application/json',
-            //         },
-            //         'body': JSON.stringify(order),
-            //       })
-            // } catch (error) {
-            //     console.log(error);
-            // }
+            updateOrderStatus(order)
         }
     }
 
     function OrderItem() {
-        return orders.map((order) => {
+        return orders.map((order, index) => {
             return(
-                <Paper elevation={3} variant="outlined">
+                <Paper elevation={3} variant="outlined" key={index} >
                     <Typography>Customer {order.user}</Typography>
                     <Typography>Price ${(order.price/100).toFixed(2)}</Typography>
                     <Button onClick={() => {sendToBarista(order)}} variant={"contained"}> Send to Barista</Button>
