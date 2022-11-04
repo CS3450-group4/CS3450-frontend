@@ -34,7 +34,32 @@ const SignupForm = ({ onClose }) => {
   }
   const submit = () => {
 
-    // make api request
+    fetch('http://localhost:8000/api/create_user/', {
+
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      'body': JSON.stringify({
+        "username": username,
+        "first_name": firstName,
+        "last_name": lastName,
+        "password": password,
+        "userinfo": {
+          "authLevel": [
+            0
+          ],
+          "balance": 0,
+          "actingLevel": 0,
+          "hoursWorked": 0
+        }
+      }),
+    }).then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+      })
+      .catch((err) => console.log(err))
     onClose()
   }
   return (

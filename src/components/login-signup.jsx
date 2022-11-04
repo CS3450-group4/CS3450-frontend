@@ -59,10 +59,6 @@ export default function Login() {
     return userData
   }
 
-  function signUp() {
-    setModalState(true);
-  }
-
   return (
     <div className="App">
       <Box className="TitleHeaderContainer">
@@ -87,7 +83,7 @@ export default function Login() {
           </Stack>
           <Stack direction="row" spacing={2}>
             <Button variant="Contained" onClick={() => logIn()}>Login</Button>
-            <Button variant="Outlined" onClick={() => signUp()}>Sign Up</Button>
+            <Button variant="Outlined" onClick={handleOpenModal}>Sign Up</Button>
 
           </Stack>
         </Card>
