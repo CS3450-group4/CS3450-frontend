@@ -18,6 +18,36 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
         forceUpdate(!update)
     }
 
+    // function getCustomerData() {
+    //     fetch(`http://localhost:8000/api/user/${user.id}/`)
+    //     .then((res) => res.json())
+    //     .then(
+    //       (data) => {
+    //           if (data.userinfo.balance < +ingridentWholeSaleCost * +initalStock) alert("Balance Too Low for Inital Stock!");
+    //           else if (ingridentName == "" || (amountOptions == null && !isIngridentMilk)) alert("Missing Fields!");
+    //           else {
+    //             data.userinfo.balance = data.userinfo.balance - (+ingridentWholeSaleCost * +initalStock)
+    //             updateCustomerBalance(data);
+    //             processIngrident();
+    //           }
+    //       }
+    //     )
+    // }
+    // function updateCustomerBalance(data) {
+    //     try {
+    //         fetch(`http://localhost:8000/api/user/${user.id}/`, {
+    //             method: 'PUT',
+    //             mode: 'cors',
+    //             headers: {
+    //               'Content-Type': 'application/json',
+    //             },
+    //             'body': JSON.stringify(data),
+    //           })
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
+
     function updateCustomerBalance(newBalance) {
         customerData.balance = newBalance;
         console.log(newBalance)
