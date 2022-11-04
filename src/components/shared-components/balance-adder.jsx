@@ -20,7 +20,7 @@ export default function BalanceAdder(props) {
         .then((res) => res.json())
         .then(
           (data) => {
-              setBalance(data.balance);
+              setBalance(data.userinfo.balance);
               setCurrentUser(data)
           }
         )
@@ -42,7 +42,8 @@ export default function BalanceAdder(props) {
 
     function submitBalance() {
         try {
-            currentUser.balance = balance;
+            currentUser.userinfo.balance = balance;
+            setBalance(0);
             fetch(`http://localhost:8000/api/user/${user.id}/`, {
                 method: 'PUT',
                 mode: 'cors',
@@ -50,11 +51,10 @@ export default function BalanceAdder(props) {
                   'Content-Type': 'application/json',
                 },
                 'body': JSON.stringify(currentUser),
-              })
+              }).then(() => fetchData())
         } catch (error) {
             console.log(error);
         }
-        fetchData();
     }
 
     return (
