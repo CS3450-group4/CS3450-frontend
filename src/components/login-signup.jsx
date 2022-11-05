@@ -11,6 +11,7 @@ import {
   Modal
 } from "@mui/material";
 import SignupForm from "./signup-form";
+import user from './tempObject';
 import TitleHeader from "./shared-components/header";
 
 export default function Login() {
@@ -52,6 +53,7 @@ export default function Login() {
     }).then((res) => res.json())
       .then((data) => {
         console.log(data);
+        user.id = data.id
         navigate(viewStrings[data.userinfo.actingLevel]);
         return data
       })
