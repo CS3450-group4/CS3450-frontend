@@ -51,7 +51,8 @@ export default function Login() {
       credentials: 'include'
     }).then((res) => res.json())
       .then((data) => {
-        console.log(data)
+        console.log(data);
+        navigate(viewStrings[data.userinfo.actingLevel]);
         return data
       })
       .catch((err) => console.log(err))

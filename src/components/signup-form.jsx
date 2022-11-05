@@ -11,11 +11,16 @@ import {
 const SignupForm = ({ onClose }) => {
   //set state 
 
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [email, setEmail] = useState("")
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [isEmailError, setIsEmailError] = useState(false);
+  const [isFirstNameError, setIsFirstNameError] = useState(false);
+  const [isLastNameError, setIsLastNameError] = useState(false);
+  const [isUserNameError, setIsUserNameError] = useState(false);
+  const [isPasswordError, setIsPasswordError] = useState(false);
 
   const style = {
     position: 'absolute',
@@ -29,11 +34,33 @@ const SignupForm = ({ onClose }) => {
     p: 4,
   };
 
-  const updateInputValue = (event, setter) => {
-    setter(event.target.value)
+  const updateInputValue = (event, setter, errorSetter) => {
+    setter(event.target.value);
+    errorSetter(false);
   }
   const submit = () => {
-
+    var missingInfo = false;
+    if (username == "") {
+      setIsUserNameError(true);
+      missingInfo = true;
+    }
+    if (password == "") {
+      setIsPasswordError(true);
+      missingInfo = true;
+    }
+    if (firstName == "") {
+      setIsFirstNameError(true);
+      missingInfo = true;
+    }
+    if (lastName == "") {
+      setIsLastNameError(true);
+      missingInfo = true;
+    }
+    if (email == "") {
+      setIsEmailError(true)
+      missingInfo = true;
+    }
+    if (missingInfo) return;
     fetch('http://localhost:8000/api/create_user/', {
 
       method: 'POST',
@@ -73,7 +100,8 @@ const SignupForm = ({ onClose }) => {
               variant='outlined'
               label='username'
               value={username}
-              onChange={(event) => updateInputValue(event, setUsername)}
+              error={isUserNameError}
+              onChange={(event) => updateInputValue(event, setUsername, setIsUserNameError)}
             ></TextField>
           </Grid>
           <Grid item xs={12}>
@@ -81,7 +109,8 @@ const SignupForm = ({ onClose }) => {
               variant='outlined'
               label='password'
               value={password}
-              onChange={(event) => updateInputValue(event, setPassword)}
+              error={isPasswordError}
+              onChange={(event) => updateInputValue(event, setPassword, setIsPasswordError)}
             ></TextField>
           </Grid>
           <Grid item xs={12}>
@@ -89,7 +118,8 @@ const SignupForm = ({ onClose }) => {
               variant='outlined'
               label='first name'
               value={firstName}
-              onChange={(event) => updateInputValue(event, setFirstName)}
+              error={isFirstNameError}
+              onChange={(event) => updateInputValue(event, setFirstName, setIsFirstNameError)}
             ></TextField>
           </Grid>
           <Grid item xs={12}>
@@ -97,7 +127,8 @@ const SignupForm = ({ onClose }) => {
               variant='outlined'
               label='last name'
               value={lastName}
-              onChange={(event) => updateInputValue(event, setLastName)}
+              error={isLastNameError}
+              onChange={(event) => updateInputValue(event, setLastName, setIsLastNameError)}
             ></TextField>
           </Grid>
           <Grid item xs={12}>
@@ -105,7 +136,8 @@ const SignupForm = ({ onClose }) => {
               variant='outlined'
               label='email'
               value={email}
-              onChange={(event) => updateInputValue(event, setEmail)}
+              error={isEmailError}
+              onChange={(event) => updateInputValue(event, setEmail, setIsEmailError)}
             ></TextField>
           </Grid>
           <Grid item xs={12}>
