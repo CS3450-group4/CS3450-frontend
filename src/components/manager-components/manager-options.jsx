@@ -2,16 +2,9 @@ import {useState, useEffect } from "react";
 import {
     Stack,
     Box,
-    TextField,
     Button,
-    MenuItem,
-    FormControl,
-    Select,
-    InputLabel,
     Paper
   } from "@mui/material";
-import user from "../tempObject"
-import "./manager-main.css"
 import { Route, useNavigate } from "react-router-dom";
 export default function ManagerOptions(props) {
     let navigation = useNavigate()
