@@ -6,7 +6,6 @@ import {
     Button,
     Typography,
   } from "@mui/material";
-import user from "../tempObject"
 export default function HoursAdder(props) {
     const [hours, setHours] = useState(0);
     const [isInvalidInput, setIsInvalidInput] = useState(false);
@@ -18,7 +17,7 @@ export default function HoursAdder(props) {
     }, [])
 
     function fetchHours() {
-        fetch(`http://localhost:8000/api/user/${user.id}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
         .then((res) => res.json())
         .then(
           (data) => {
@@ -48,7 +47,7 @@ export default function HoursAdder(props) {
         try {
             currentUser.userinfo.hoursWorked = +totalHours + +hours
             setHours(0);
-            fetch(`http://localhost:8000/api/user/${user.id}/`, {
+            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {

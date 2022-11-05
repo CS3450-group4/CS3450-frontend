@@ -1,6 +1,5 @@
 import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import user from "../tempObject";
 
 export default function DrinkMoniter() {
     const [custOrders, setCustOrders] = useState([])
@@ -16,7 +15,7 @@ export default function DrinkMoniter() {
           (data) => {
             var custOrders = []
             data.forEach(order => {
-                if(order.user == user.id) {
+                if(order.user == window.localStorage.getItem('curUserID')) {
                     custOrders.push(order)
                 }
             });

@@ -14,7 +14,6 @@ import {
     Select,
     FormControlLabel
   } from "@mui/material";
-import user from "../tempObject"
 export default function AddIngrident(props) {
     const [ingridentName, setIngridentName] = useState("");
     const [ingridentWholeSaleCost, setIngridentWholeSaleCost] = useState(0);
@@ -79,7 +78,7 @@ export default function AddIngrident(props) {
     }
     function updateManagerBalance(data) {
         try {
-            fetch(`http://localhost:8000/api/user/${user.id}/`, {
+            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {
@@ -93,7 +92,7 @@ export default function AddIngrident(props) {
     }
 
     function getManagerData() {
-        fetch(`http://localhost:8000/api/user/${user.id}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
         .then((res) => res.json())
         .then(
           (data) => {

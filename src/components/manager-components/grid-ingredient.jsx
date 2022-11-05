@@ -9,7 +9,6 @@ import {
     Grid,
     CardActionArea,
   } from "@mui/material";
-import user from "../tempObject"
 export default function GridIngredient(props) {
     const ingredient = props.ingredient;
     const index = props.index;
@@ -23,7 +22,7 @@ export default function GridIngredient(props) {
 
     function updateManagerBalance(data) {
         try {
-            fetch(`http://localhost:8000/api/user/${user.id}/`, {
+            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {
@@ -37,7 +36,7 @@ export default function GridIngredient(props) {
     }
 
     function getManagerData() {
-        fetch(`http://localhost:8000/api/user/${user.id}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
         .then((res) => res.json())
         .then(
           (data) => {

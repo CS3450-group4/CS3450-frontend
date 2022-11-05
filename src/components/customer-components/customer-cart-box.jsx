@@ -2,7 +2,6 @@ import { Button, Typography, Box, Stack} from "@mui/material"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-import user from "../tempObject"
 export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
     const [totalPrice, setTotalPrice] = useState(0)
     const [update, forceUpdate] = useState(true)
@@ -17,7 +16,7 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
     }
 
     function getCustomerData() {
-        fetch(`http://localhost:8000/api/user/${user.id}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
         .then((res) => res.json())
         .then(
           (data) => {
@@ -32,7 +31,7 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
     }
     function updateCustomerBalance(data) {
         try {
-            fetch(`http://localhost:8000/api/user/${user.id}/`, {
+            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {
