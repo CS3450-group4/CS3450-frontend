@@ -4,8 +4,6 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import AddOnForm from "./add-on-form"
 import IngredientForm from "./ingredient-form"
-import MilkForm from "./milk-form"
-import NonMilkForm from "./non-milk-form"
 import SizeForm from "./size-form"
 
 export default function OrderBox({frapOrder, setCart, customerCart}){
@@ -89,6 +87,7 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
     const changeMilk = (event) => {
         const {value, name} = event.target
         const newMilk = milkList.find(element => element.name === value)
+        newMilk.options = 1
         const index = ingredients.findIndex(element => element.name === name)
         var newIngs = ingredients
         newIngs[index] = newMilk
@@ -113,27 +112,6 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
         cart.push(newDrink)
         setCart(cart)
     }
-
-    const ingredientForm = (ingredients.length !== 0)  ? (
-        ingredients.map((ingredient, index) => {
-        if (ingredient.isMilk) {
-            return (
-                <Stack direction="row" key={index}>
-                    <Typography>Milk</Typography>
-                    <MilkForm ingredient={ingredient} changeMilk={changeMilk}></MilkForm>
-                </Stack>
-            )
-        } else {
-            return (
-                <Stack direction="row" key={index}>
-                    <Typography>{ingredient['name']}</Typography>
-                    <NonMilkForm ingredient={ingredient} changeIngredientAmount={changeIngredientAmount}></NonMilkForm>
-                    <Button onClick={() => {removeIngredient(ingredient)}}>X</Button>
-                </Stack>
-            )
-        }
-    })
-    ) : <Typography>EMPTY DRINK</Typography> 
 
     return(
         <Box width="75%">

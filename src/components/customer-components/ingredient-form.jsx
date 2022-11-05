@@ -8,24 +8,30 @@ export default function IngredientForm({ingredients, changeMilk, changeIngredien
         <Box>
         {
             (ingredients.length != 0)  ? (
+                // TODO: PUT MILKS ON TOP, THEN THE REST try .filter() method
                 ingredients.map((ingredient, index) => {
-                if (ingredient.isMilk) {
-                    return(
-                        <Stack direction="row" key={index}>
-                            <Typography>Milk</Typography>
-                            <MilkForm ingredient={ingredient} changeMilk={changeMilk}></MilkForm>
-                        </Stack>
-                    )  
-                } else {
-                    return(
-                        <Stack direction="row" key={index}>
-                            <Typography>{ingredient['name']}</Typography>
-                            <NonMilkForm ingredient={ingredient} changeIngredientAmount={changeIngredientAmount}></NonMilkForm>
-                            <Button onClick={() => {removeIngredient(ingredient)}}>X</Button>
-                        </Stack>
-                    )
-                }
-            })
+                    if(ingredient.options == 0) {
+                        var event = {}
+                        event["target"] = { value: 1, name: ingredient.name }
+                        changeIngredientAmount(event)
+                    }
+                    if (ingredient.isMilk) {
+                        return(
+                            <Stack direction="row" key={index}>
+                                <Typography>Milk</Typography>
+                                <MilkForm ingredient={ingredient} changeMilk={changeMilk}></MilkForm>
+                            </Stack>
+                        )  
+                    } else {
+                        return(
+                            <Stack direction="row" key={index}>
+                                <Typography>{ingredient['name']}</Typography>
+                                <NonMilkForm ingredient={ingredient} changeIngredientAmount={changeIngredientAmount}></NonMilkForm>
+                                <Button onClick={() => {removeIngredient(ingredient)}}>X</Button>
+                            </Stack>
+                        )
+                    }
+                })
             ) : <Typography>EMPTY DRINK</Typography> 
         }
         </Box>
