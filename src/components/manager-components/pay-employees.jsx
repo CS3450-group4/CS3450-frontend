@@ -6,16 +6,13 @@ import {
     Button,
     Typography,
   } from "@mui/material";
-import user from "../tempObject"
 export default function PayEmployees(props) {
     const [paymentPerHour, setPaymentPerHour] = useState(15);
     const [isInvalidInput, setIsInvalidInput] = useState(false);
-    const [managerBalance, setManagerBalance] = useState(0);
+    let managerBalance = 0;
     const [managerData, setManagerData] = useState(null);
     const [employees, setEmployees] = useState(null);
-    useEffect(() => {
-        getManagerBalance();
-    }, [])
+
     function updatePaymentPerHour(event) {
         try {
             setIsInvalidInput(false);
@@ -32,12 +29,13 @@ export default function PayEmployees(props) {
     }
 
     function getManagerBalance() {
-        fetch(`http://localhost:8000/api/user/${user.id}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
         .then((res) => res.json())
         .then(
           (data) => {
-              setManagerBalance(data.userinfo.balance);
+              managerBalance = data.userinfo.balance;
               setManagerData(data);
+              pay();
           }
         )
         
@@ -46,7 +44,7 @@ export default function PayEmployees(props) {
     function updateManagerBalance() {
         managerData.userinfo.balance = managerBalance;
         try {
-            fetch(`http://localhost:8000/api/user/${user.id}/`, {
+            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {
@@ -59,32 +57,36 @@ export default function PayEmployees(props) {
         }
     }
 
-    function pay() {
+    async function pay() {
         fetch(`http://localhost:8000/api/user/all`)
         .then((res) => res.json())
         .then(
           (data) => {
             setEmployees(data);
             console.log(employees);
-            console.log(managerBalance);
             handlePay();
           }
         )
     }
 
     function handlePay() {
+        let allPaid = true
         employees.forEach((employee) => {
-            console.log(employee.userinfo.hoursWorked);
+            //console.log(employee.userinfo.hoursWorked);
             if (managerBalance - (employee.userinfo.hoursWorked * +paymentPerHour) > 0) {
                 employee.userinfo.balance += employee.userinfo.hoursWorked * +paymentPerHour;
-                employee.userinfo.hoursWorked = 1;
-                setManagerBalance(managerBalance - (employee.userinfo.hoursWorked * +paymentPerHour));
-                updateManagerBalance();
-            } else console.log("no")
+                employee.userinfo.hoursWorked = 0;
+                managerBalance -= (employee.userinfo.hoursWorked * +paymentPerHour);
+            } else{
+                console.log("oh")
+                allPaid = false
+            } 
         })
         employees.forEach((employee) => {
-            updateEmployee(employee)
+            updateEmployee(employee);
         })
+        updateManagerBalance();
+        if (!allPaid) alert("Not All Employees Paid! Out of Money!")
     }
 
     function updateEmployee(employee) {
@@ -113,7 +115,7 @@ export default function PayEmployees(props) {
                 <Typography variant="h5">Pay Employees</Typography>
                 <Stack direction="row" spacing={1} alignItems="center" >
                     <TextField label="Hourly Rate" error={isInvalidInput} value={paymentPerHour} onChange={(newVal) => updatePaymentPerHour(newVal)}></TextField>
-                    <Button onClick={() => pay()}>Pay</Button>
+                    <Button onClick={() => getManagerBalance()}>Pay</Button>
                 </Stack>
             </Stack>
         </Box>

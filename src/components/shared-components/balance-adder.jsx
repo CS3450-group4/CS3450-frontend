@@ -5,7 +5,6 @@ import {
     TextField,
     Button,
   } from "@mui/material";
-import user from "../tempObject"
 export default function BalanceAdder(props) {
     const [balance, setBalance] = useState(0);
     const [isInvalidInput, setIsInvalidInput] = useState(false);
@@ -16,7 +15,7 @@ export default function BalanceAdder(props) {
     }, [])
 
     function fetchData() {
-        fetch(`http://localhost:8000/api/user/${user.id}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
         .then((res) => res.json())
         .then(
           (data) => {
@@ -44,7 +43,7 @@ export default function BalanceAdder(props) {
         try {
             currentUser.userinfo.balance = balance;
             setBalance(0);
-            fetch(`http://localhost:8000/api/user/${user.id}/`, {
+            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {

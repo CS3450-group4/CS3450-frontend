@@ -6,7 +6,6 @@ import {
     Select,
     InputLabel
   } from "@mui/material";
-import user from "../tempObject"
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function AuthSelector(props) {
@@ -28,7 +27,7 @@ export default function AuthSelector(props) {
 
     function fetchData() {
         console.log("fetched")
-        fetch(`http://localhost:8000/api/user/${user.id}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
         .then((res) => res.json())
         .then(
           (data) => {
@@ -47,7 +46,7 @@ export default function AuthSelector(props) {
         setSelectedAuth(event.target.value);
         userData.userinfo.actingLevel = event.target.value;
         try {
-            fetch(`http://localhost:8000/api/user/${user.id}/`, {
+            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {
