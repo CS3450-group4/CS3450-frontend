@@ -48,28 +48,13 @@ export default function RegisterBox(){
         }
     }
     function sendToBarista(order) {
-        var outOfStock = false
-        for (const [drink, ings] of Object.entries(order.ingredientList)) {
-            for(const ing of ings) {
-                if (ing.stock < ing.options) {
-                    outOfStock = true;
-                }
-            }
+        var changedOrder = {
+            price: order.price,
+            user: order.user,
+            orderStatus: "readyToFullfill",
+            ingredientList: order.ingredientList
         }
-        if (outOfStock) {
-            alert("DON'T Have Enough INGS")
-            // TODO: Send Back To Customer
-        } else {
-            var changedOrder = {
-                price: order.price,
-                // price: 123,
-                user: order.user,
-                // orderStatus: "r",
-                // orderStatus: "unfullfilled",
-                ingredientList: order.ingredientList
-            }
-            updateOrderStatus(changedOrder, order.id)
-        }
+        updateOrderStatus(changedOrder, order.id)
     }
 
     function OrderItem() {

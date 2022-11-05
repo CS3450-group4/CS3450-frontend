@@ -10,6 +10,7 @@ import MenuGrid from  "../customer-components/menu-grid"
 import OrderBox from "../customer-components/cust-order-box";
 import CustomerCartBox from "../customer-components/customer-cart-box";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import DrinkMoniter from "../customer-components/drink-moniter";
 
 export default function CustomerView() {
     const [frapOrder, setFrapOrder] = useState({})
@@ -34,7 +35,7 @@ export default function CustomerView() {
             </Box>
             <Box className="StickyFooterContainer">
                 <StickyFooter>
-                    Replace With Drink Monitor
+                    <DrinkMoniter></DrinkMoniter>
                 </StickyFooter>
             </Box>
         </div>

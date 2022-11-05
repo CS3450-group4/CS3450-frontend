@@ -27,10 +27,24 @@ export default function MenuGrid({setFrapOrder}) {
         )
     }
 
-    const gridItems = drinkList.map((drink, index) => 
-        <Grid item className="GridItem" key={index} style={{display: 'flex'}}>
-            <DrinkCard menuitem={drink} setFrapOrder={setFrapOrder}></DrinkCard>
-        </Grid>
+    function GridItem({drink}) {
+        var inStock = true;
+        drink.ingredientList.forEach(ingredient => {
+            if (ingredient.stock <= 0) {
+                inStock = false
+            }
+        })
+        if(inStock) {
+            return(
+                <Grid item className="GridItem" style={{display: 'flex'}}>
+                    <DrinkCard menuitem={drink} setFrapOrder={setFrapOrder}></DrinkCard>
+                </Grid>
+            )
+        }
+    }
+
+    const gridItems = drinkList.map((drink, index) =>
+        <GridItem drink={drink} key={index}></GridItem>
     );
 
     return( 

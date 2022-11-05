@@ -8,8 +8,9 @@ import SizeForm from "./size-form"
 
 export default function OrderBox({frapOrder, setCart, customerCart}){
     const [milkList, setMilkList] = useState([])
-    const [price, setPrice] = useState(frapOrder.price)
-    const [size, setSize] = useState(frapOrder.size)
+    const [price, setPrice] = useState(+frapOrder.price)
+    const startPrice = +frapOrder.price
+    const [size, setSize] = useState(+frapOrder.size)
     const [ingredients, setIngredients] = useState(frapOrder.ingredientList)
     const [update, forceUpdate] = useState(true)
     let navigation = useNavigate()
@@ -36,10 +37,7 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
 
     const changeSize = (event) => {
         setSize(event.target.value)
-        // var newPrice = 0;
-        // ingredients.forEach(ingredient => {
-        //     newPrice += ((ingredient.options * event.target.value) * ingredient.retailCost)
-        // })
+        let oldPrice = price;
         setPrice(price - (size * 100) + (event.target.value * 100))
         // setPrice(newPrice)
         // var changedSizeList = []
@@ -64,11 +62,16 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
     }
 
     function updateIngredients(updatedIngredients) {
-        var tempPrice = 0
+        var newIngVal = 0
+        // var oldIngVal = 0
+        // frapOrder.ingredientList.forEach(ingredient => {
+        //     oldIngVal += (ingredient.retailCost * ingredient.options)
+        // })
         updatedIngredients.forEach(ingredient => {
-            tempPrice += (ingredient.retailCost * ingredient.options)
+            newIngVal += (ingredient.retailCost * ingredient.options)
         });
-        setPrice(tempPrice)
+        let newPrice = +price - newIngVal;
+        setPrice(startPrice - (newPrice))
         setIngredients(updatedIngredients)
         rerender()
     }
@@ -108,9 +111,20 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
             ingredients: ingredients,
             size: size
         }
-        var cart = customerCart
-        cart.push(newDrink)
-        setCart(cart)
+        var inStock = true;
+        newDrink.ingredients.forEach(ingredient => {
+            if(ingredient.options > ingredient.stock) {
+                inStock = false
+            }
+        })
+        if(inStock) {
+            var cart = customerCart
+            cart.push(newDrink)
+            setCart(cart)
+        } else {
+            alert("Sorry, we don't have enough ingredients in stock to complete your order :(")
+        }
+
     }
 
     return(
