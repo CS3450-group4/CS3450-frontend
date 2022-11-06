@@ -4,6 +4,7 @@ import {
   } from "@mui/material";
 import BalanceAdder from "./balance-adder";
 import AuthSelector from "./auth-selector";
+import SignOutBtn from './sign-out';
 import "./composite-header.css"
 
 export default function CompositeTitleHeader() {
@@ -16,6 +17,7 @@ export default function CompositeTitleHeader() {
                 </Typography>
             </Box>
             <BalanceAdder className="BalanceAdder" />
+            <SignOutBtn className="SignOutBtn"/>
         </Box>
 
     )
