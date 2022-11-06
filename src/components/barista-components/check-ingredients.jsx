@@ -11,6 +11,8 @@ import {
     MenuItem,
     InputLabel,
     Select,
+    GridItem,
+    List
   } from "@mui/material";
 export default function AddDrink(props) {
     const [drinkName, setDrinkName] = useState("");
@@ -23,8 +25,7 @@ export default function AddDrink(props) {
     const [selectedMilk, setSelectedMilk] = useState(null);
     const [availableMilks, setAvailableMilks] = useState(null);
     const [isMilkSelectionError, setIsMilkSelectionError] = useState(false);
-    const [orders, setOrders] = useState([])
-
+    const [orders, setOrders] = useState([]);
     useEffect(() => {
         fetchData();
     }, [])
@@ -93,10 +94,10 @@ export default function AddDrink(props) {
         );
     }
 
-    function createIngredients(data) {
+    function createIngredient(data) {
         setAvailableIngredients(
-            data.map((drinkIngs, index) => {
-                <FormControlLabel key={index} control={<Checkbox checked={selectedIngredients[index]} onChange{(newVal => handleIngredientChecked(newVal, ingredient.name0} />} label={ingredient.name} />
+            data.map((ingredient, index) => (
+                <FormControlLabel key={index} control={<Checkbox checked={selectedIngredients[index]} onChange={(newVal) => handleIngredientChecked(newVal, ingredient.name)} />} label={ingredient.name} />
             ))
         );
     }
@@ -148,6 +149,22 @@ export default function AddDrink(props) {
         setIsMilkSelectionError(false);
         setSelectedMilk(event.target.value);
     }
+
+    function makeButtons(data) {
+        <buttons></buttons>
+    }
+    
+    const buttons = orders.map((ingredient, index) =>
+        <FormControl ingredient={ingredient} key={index}></FormControl>
+    );
+
+    return( 
+        <Box>
+            <List container className="GridContainer" alignItems="stretch" >
+                {buttons}
+            </List>
+        </Box> 
+    )
 
     return (
         <Box className={props.className}>
