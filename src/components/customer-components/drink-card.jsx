@@ -10,7 +10,7 @@ import {
 import "../main-view-components/general.css"
 import { useNavigate } from "react-router-dom";
 
-  export default function DrinkCard({menuitem, setFrapOrder}) {
+  export default function DrinkCard({menuitem}) {
     let navigation = useNavigate()
     var newIngList = []
     menuitem.ingredientList.forEach(ingredient => {

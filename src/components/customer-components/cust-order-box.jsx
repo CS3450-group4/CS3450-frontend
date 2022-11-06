@@ -6,7 +6,7 @@ import AddOnForm from "./add-on-form"
 import IngredientForm from "./ingredient-form"
 import SizeForm from "./size-form"
 
-export default function OrderBox({frapOrder, setCart, customerCart}){
+export default function OrderBox(){
     const drinkObj = JSON.parse(window.localStorage.getItem('selectedDrink'))
     var oldIngVal = 0
     drinkObj.ingredientList.forEach(ingredient => {
@@ -114,7 +114,6 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
             } else {
                 cart = JSON.parse(window.localStorage.getItem('customerCart'))
             }
-            console.log(cart)
             cart.push(newDrink)
             window.localStorage.setItem('customerCart', JSON.stringify(cart))
         } else {
@@ -126,7 +125,7 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
     return(
         <Box width="75%">
             <Typography> ORDER SCREEN</Typography>
-            <Typography>{frapOrder.name}</Typography>
+            <Typography>{drinkObj.name}</Typography>
             <Typography>${(price/100).toFixed(2)}</Typography>
             <Stack 
                 direction="row"

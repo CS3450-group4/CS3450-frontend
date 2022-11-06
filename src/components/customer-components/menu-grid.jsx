@@ -9,7 +9,7 @@ import "../main-view-components/general.css"
 import { useNavigate } from "react-router-dom";
 
 
-export default function MenuGrid({setFrapOrder}) {
+export default function MenuGrid() {
     let navigation = useNavigate()
     const[drinkList, setDrinkList] = useState([])
 
@@ -37,7 +37,7 @@ export default function MenuGrid({setFrapOrder}) {
         if(inStock) {
             return(
                 <Grid item className="GridItem" style={{display: 'flex'}}>
-                    <DrinkCard menuitem={drink} setFrapOrder={setFrapOrder}></DrinkCard>
+                    <DrinkCard menuitem={drink}></DrinkCard>
                 </Grid>
             )
         }

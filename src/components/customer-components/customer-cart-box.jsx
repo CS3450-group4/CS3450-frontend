@@ -2,7 +2,7 @@ import { Button, Typography, Box, Stack} from "@mui/material"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-export default function CustomerCartBox({setCart, setFrapOrder}) {
+export default function CustomerCartBox() {
     const [totalPrice, setTotalPrice] = useState(0)
     var customerCart;
     if (window.localStorage.getItem('customerCart') == null || window.localStorage.getItem('customerCart') == []) {

@@ -8,10 +8,6 @@ export default function RegisterBox(){
         fetchData();
     }, [])
 
-    function refresh() {
-        window.location.reload()
-    }
-
     function fetchData() {
         fetch(`http://localhost:8000/api/orders/`)
         .then((res) => res.json())
