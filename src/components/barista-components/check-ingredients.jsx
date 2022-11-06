@@ -23,6 +23,7 @@ export default function AddDrink(props) {
     const [selectedMilk, setSelectedMilk] = useState(null);
     const [availableMilks, setAvailableMilks] = useState(null);
     const [isMilkSelectionError, setIsMilkSelectionError] = useState(false);
+    const [orders, setOrders] = useState([])
 
     useEffect(() => {
         fetchData();
@@ -52,6 +53,22 @@ export default function AddDrink(props) {
                 setAllIngredients(allIngredients);
                 createIngredientList(ingredientsNoMilks);
             })
+    }
+
+    function fetchOrderData() {
+        fetch('https://localhost:8000/api/orders/')
+        .then((res) => res.json())
+        .then(
+            (data) => {
+                var tempList = []
+                data.forEach(drinkIngs => {
+                    if (drinkIngs.orderStatus === "unfulfilled") {
+                        tempList.push(drinkIngs)
+                    }
+                })
+                setOrders(tempList)
+            }
+        )
     }
 
     function createAvailableMilks(milks) {
@@ -126,6 +143,9 @@ export default function AddDrink(props) {
 
     return (
         <Box className={props.className}>
+            <button onClick={() => this.handleClick()}>
+                Click me
+            </button>
             <Stack direction="column" spacing={3}>
                 <Typography variant="h4">Add New Drink</Typography>
                 <TextField error={isNameError} label="Name" inputProps={{ maxLength: 100 }} value={drinkName} onChange={((newVal) => {handleNameChange(newVal)})} />

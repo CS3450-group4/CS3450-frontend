@@ -9,7 +9,7 @@ import "./../../App.css";
 import "./general.css";
 import HoursAdder from "../shared-components/hours-adder";
 import AddDrink from "../barista-components/check-ingredients";
-export default function BaristaView() {barista
+export default function BaristaView() {
     let navigation = useNavigate()
     useEffect(() => {
         navigation("check-ingredients")
