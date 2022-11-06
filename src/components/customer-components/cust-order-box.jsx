@@ -7,11 +7,16 @@ import IngredientForm from "./ingredient-form"
 import SizeForm from "./size-form"
 
 export default function OrderBox({frapOrder, setCart, customerCart}){
+    const drinkObj = JSON.parse(window.localStorage.getItem('selectedDrink'))
+    var oldIngVal = 0
+    drinkObj.ingredientList.forEach(ingredient => {
+        oldIngVal += (ingredient.retailCost * ingredient.options * drinkObj.size)
+    })
+    const drinkMarkup = drinkObj.price - oldIngVal
     const [milkList, setMilkList] = useState([])
-    const [price, setPrice] = useState(+frapOrder.price)
-    const startPrice = +frapOrder.price
-    const [size, setSize] = useState(+frapOrder.size)
-    const [ingredients, setIngredients] = useState(frapOrder.ingredientList)
+    const [price, setPrice] = useState(+drinkObj.price)
+    const [size, setSize] = useState(drinkObj.size)
+    const [ingredients, setIngredients] = useState(drinkObj.ingredientList)
     const [update, forceUpdate] = useState(true)
     let navigation = useNavigate()
 
@@ -37,24 +42,11 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
 
     const changeSize = (event) => {
         setSize(event.target.value)
-        let oldPrice = price;
-        setPrice(price - (size * 100) + (event.target.value * 100))
-        // setPrice(newPrice)
-        // var changedSizeList = []
-        // frapOrder.ingredientList.forEach(ingredient => {
-        //     var updatedIng = {
-        //         name: ingredient.name,
-        //         stock: ingredient.stock,
-        //         retailCost: ingredient.retailCost,
-        //         wholeSaleCost: ingredient.wholeSaleCost,
-        //         isMilk: ingredient.isMilk,
-        //         options: ingredient.options * event.target.value
-        //     }
-        //     newPrice += (updatedIng.retailCost * updatedIng.options)
-        //     changedSizeList.push(updatedIng)
-        // })
-        // setPrice(newPrice)
-        // updateIngredients(changedSizeList)
+        var newIngVal = 0; 
+        ingredients.forEach(ingredient => {
+            newIngVal += (ingredient.retailCost * ingredient.options * event.target.value)
+        });
+        setPrice(drinkMarkup + newIngVal)
     }
     
     function rerender() {
@@ -63,15 +55,10 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
 
     function updateIngredients(updatedIngredients) {
         var newIngVal = 0
-        // var oldIngVal = 0
-        // frapOrder.ingredientList.forEach(ingredient => {
-        //     oldIngVal += (ingredient.retailCost * ingredient.options)
-        // })
         updatedIngredients.forEach(ingredient => {
-            newIngVal += (ingredient.retailCost * ingredient.options)
+            newIngVal += (ingredient.retailCost * ingredient.options * size)
         });
-        let newPrice = +price - newIngVal;
-        setPrice(startPrice - (newPrice))
+        setPrice(drinkMarkup + newIngVal)
         setIngredients(updatedIngredients)
         rerender()
     }
@@ -90,7 +77,7 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
     const changeMilk = (event) => {
         const {value, name} = event.target
         const newMilk = milkList.find(element => element.name === value)
-        newMilk.options = 1
+        newMilk.options = 2
         const index = ingredients.findIndex(element => element.name === name)
         var newIngs = ingredients
         newIngs[index] = newMilk
@@ -106,21 +93,30 @@ export default function OrderBox({frapOrder, setCart, customerCart}){
     
     function sumbitDrink() {
         var newDrink ={
-            name: frapOrder.name,
+            name: drinkObj.name,
             price: price,
             ingredients: ingredients,
             size: size
         }
         var inStock = true;
         newDrink.ingredients.forEach(ingredient => {
-            if(ingredient.options > ingredient.stock) {
+            if((ingredient.options * newDrink.size) > ingredient.stock) {
                 inStock = false
             }
         })
         if(inStock) {
-            var cart = customerCart
+            newDrink.ingredients.forEach(ingredient => {
+                ingredient.options = (ingredient.options * newDrink.size)
+            })
+            var cart;
+            if(window.localStorage.getItem('customerCart') == null) {
+                cart = [];
+            } else {
+                cart = JSON.parse(window.localStorage.getItem('customerCart'))
+            }
+            console.log(cart)
             cart.push(newDrink)
-            setCart(cart)
+            window.localStorage.setItem('customerCart', JSON.stringify(cart))
         } else {
             alert("Sorry, we don't have enough ingredients in stock to complete your order :(")
         }

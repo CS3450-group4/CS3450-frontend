@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function DrinkMoniter() {
@@ -16,16 +16,25 @@ export default function DrinkMoniter() {
             var custOrders = []
             data.forEach(order => {
                 if(order.user == window.localStorage.getItem('curUserID')) {
-                    custOrders.push(order)
+                    if(order.orderStatus === "forPickup") {
+                        custOrders.push(order)
+                    }
                 }
             });
             setCustOrders(custOrders)
+            console.log(custOrders)
           }
         )
     }
 
-    return(
-        console.log(custOrders)
-        // <Typography>Drink Moniter</Typography>
-    )
+    if(custOrders.length !== 0) {
+        return(
+            <Stack direction="row">
+                <Typography> ORDER READY FOR PICKUP</Typography>
+            </Stack>
+        )
+    } else {
+        <Typography>NO ORDERS READY</Typography>
+    }
+    
 }

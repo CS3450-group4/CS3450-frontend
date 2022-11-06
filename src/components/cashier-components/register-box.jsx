@@ -1,17 +1,15 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { resolveTypeReferenceDirective } from "typescript";
 
 export default function RegisterBox(){
     const [orders, setOrders] = useState([])
-    const [update, forceUpdate] = useState(true)
 
     useEffect(() => {
         fetchData();
     }, [])
 
-    function rerender() {
-        forceUpdate(!update)
+    function refresh() {
+        window.location.reload()
     }
 
     function fetchData() {
@@ -28,12 +26,12 @@ export default function RegisterBox(){
                 }
             })
             setOrders(tempList)
-            console.log(alldrink)
           }
         )
     }
     function updateOrderStatus(changedOrder, id) {
-        console.log(changedOrder)
+        const newOrders = orders.filter(order => order.id !== id)
+        setOrders(newOrders)
         try {
             fetch(`http://localhost:8000/api/orders/${id}/`, {
                 method: 'PUT',

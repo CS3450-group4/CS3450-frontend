@@ -2,8 +2,14 @@ import { Button, Typography, Box, Stack} from "@mui/material"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
+export default function CustomerCartBox({setCart, setFrapOrder}) {
     const [totalPrice, setTotalPrice] = useState(0)
+    var customerCart;
+    if (window.localStorage.getItem('customerCart') == null || window.localStorage.getItem('customerCart') == []) {
+        customerCart = [];
+    } else {
+        customerCart = JSON.parse(window.localStorage.getItem('customerCart'));
+    }
     const [update, forceUpdate] = useState(true)
 
     let navigation = useNavigate()
@@ -54,7 +60,7 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
 
     function removeDrink(drink) {
         const newCart = customerCart.filter(element => element !== drink)
-        setCart(newCart)
+        window.localStorage.setItem('customerCart', JSON.stringify(newCart))
         rerender(!update)
     }
 
@@ -65,7 +71,7 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
         })
         const customerOrder = {
             price: totalPrice,
-            user: 1,
+            user: window.localStorage.getItem('curUserID'),
             orderStatus: "unfullfilled",
             ingredientList: orderDrinks,
         }
@@ -82,7 +88,7 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
             } catch (error) {
                 console.log(error);
             }
-            setCart([])
+            window.localStorage.setItem('customerCart', JSON.stringify([]))
             rerender()
         }
     }

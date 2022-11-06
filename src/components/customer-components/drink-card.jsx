@@ -1,8 +1,5 @@
-import {useState} from "react";
 import {
-    Stack,
     Card,
-    TextField,
     Button,
     Typography,
     CardMedia,
@@ -15,9 +12,23 @@ import { useNavigate } from "react-router-dom";
 
   export default function DrinkCard({menuitem, setFrapOrder}) {
     let navigation = useNavigate()
+    var newIngList = []
+    menuitem.ingredientList.forEach(ingredient => {
+        if(ingredient.options === 0) {
+            ingredient.options = 2;
+        }
+        newIngList.push(ingredient)
+    })
+    const selectedDrink = {
+        id: menuitem.id,
+        ingredientList: newIngList,
+        name: menuitem.name,
+        price: menuitem.price,
+        size: menuitem.size,
+    }
 
     function DrinkIngredients(ingredientList) {
-        var ingredientString = "This drink conatains "
+        var ingredientString = "This drink contains "
         for (let x in ingredientList) {
             if (x == ingredientList.length-1) {
                 ingredientString += ` and ${ingredientList[x].name}`
@@ -48,7 +59,8 @@ import { useNavigate } from "react-router-dom";
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="medium" onClick={() => {setFrapOrder(menuitem);
+                <Button size="medium" onClick={() => {
+                    window.localStorage.setItem('selectedDrink', JSON.stringify(selectedDrink));
                     navigation("../drink", {replace: true})}
                 }>Order</Button>
             </CardActions>
