@@ -93,6 +93,14 @@ export default function AddDrink(props) {
         );
     }
 
+    function createIngredients(data) {
+        setAvailableIngredients(
+            data.map((drinkIngs, index) => {
+                <FormControlLabel key={index} control={<Checkbox checked={selectedIngredients[index]} onChange{(newVal => handleIngredientChecked(newVal, ingredient.name0} />} label={ingredient.name} />
+            ))
+        );
+    }
+
     function handleNameChange(event) {
         setIsNameError(false);
         setDrinkName(event.target.value);
