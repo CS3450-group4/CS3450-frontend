@@ -9,7 +9,6 @@ import {
     Grid,
     CardActionArea,
   } from "@mui/material";
-import user from "../tempObject"
 export default function GridIngredient(props) {
     const ingredient = props.ingredient;
     const index = props.index;
@@ -21,16 +20,15 @@ export default function GridIngredient(props) {
         setAddingAmount(event.target.value)
     }
 
-    function updateManagerBalance(newBalance) {
-        managerData.balance = newBalance;
+    function updateManagerBalance(data) {
         try {
-            fetch(`http://localhost:8000/api/user/${user.id}/`, {
+            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {
                   'Content-Type': 'application/json',
                 },
-                'body': JSON.stringify(managerData),
+                'body': JSON.stringify(data),
               })
         } catch (error) {
             console.log(error);
@@ -38,14 +36,14 @@ export default function GridIngredient(props) {
     }
 
     function getManagerData() {
-        fetch(`http://localhost:8000/api/user/${user.id}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
         .then((res) => res.json())
         .then(
           (data) => {
-              setManagerData(data);
-              if (data.balance < addingAmount * ingredient.wholeSaleCost) alert("Balance Too Low for Inital Stock!")
+              if (data.userinfo.balance < addingAmount * ingredient.wholeSaleCost) alert("Balance Too Low for Inital Stock!")
               else {
-                updateManagerBalance(data.balance - (addingAmount * ingredient.wholeSaleCost));
+                data.userinfo.balance = data.userinfo.balance - (addingAmount * ingredient.wholeSaleCost)
+                updateManagerBalance(data);
                 purchaseStock();
               }
           }

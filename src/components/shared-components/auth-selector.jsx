@@ -1,36 +1,39 @@
-import {useState, useEffect } from "react";
+import {useState, useEffect, isFocused } from "react";
 import {
-    Stack,
     Box,
-    TextField,
-    Button,
     MenuItem,
     FormControl,
     Select,
     InputLabel
   } from "@mui/material";
-import user from "../tempObject"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
 export default function AuthSelector(props) {
     const [authLevels, setAuthLevels] = useState([]);
     const [selectedAuth, setSelectedAuth] = useState(null);
     const [userData, setUserData] = useState(null);
     const [optionArray, setOptionArray] = useState([]);
-    const [updated, setUpdated] = useState(false);
-    let navigate = useNavigate();
-    const viewStrings = ["../customer", "../cashier", "../barista", "manager"];
 
+    let navigate = useNavigate();
+    const location = useLocation();
+    const viewStrings = ["../customer", "../cashier", "../barista", "../manager/options"];
     useEffect(() => {
         fetchData();
-    }, [selectedAuth])
+    }, [selectedAuth, location])
+
+    function refreshPage() {
+        window.location.reload(false);
+    }
 
     function fetchData() {
-        fetch(`http://localhost:8000/api/user/${user.id}/`)
+        console.log("fetched")
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
         .then((res) => res.json())
         .then(
           (data) => {
-              setAuthLevels(data.authLevel);
-              setSelectedAuth(data.actingLevel);
+            console.log(data)
+              setAuthLevels(data.userinfo.authLevel);
+              setSelectedAuth(data.userinfo.actingLevel);
               setUserData(data);
               setOptionArray(authLevels.map(level => (
                 <MenuItem value={level} key={level}>{level}</MenuItem>
@@ -41,20 +44,21 @@ export default function AuthSelector(props) {
 
     function handleNewAuth (event) {
         setSelectedAuth(event.target.value);
-        userData.actingLevel = event.target.value;
+        userData.userinfo.actingLevel = event.target.value;
         try {
-            fetch(`http://localhost:8000/api/user/${user.id}/`, {
+            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {
                   'Content-Type': 'application/json',
                 },
                 'body': JSON.stringify(userData),
-              })
+              }).then(navigate(viewStrings[+event.target.value], {replace: true}))
+              .then(() => fetchData(), refreshPage())
         } catch (error) {
             console.log(error);
         }
-        navigate(viewStrings[+event.target.value], {replace: true}).then(() => fetchData)
+        fetchData();
     }
 
     return (

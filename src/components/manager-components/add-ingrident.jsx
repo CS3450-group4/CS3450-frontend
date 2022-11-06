@@ -14,7 +14,6 @@ import {
     Select,
     FormControlLabel
   } from "@mui/material";
-import user from "../tempObject"
 export default function AddIngrident(props) {
     const [ingridentName, setIngridentName] = useState("");
     const [ingridentWholeSaleCost, setIngridentWholeSaleCost] = useState(0);
@@ -22,7 +21,10 @@ export default function AddIngrident(props) {
     const [initalStock, setInitalStock] = useState(0);
     const [amountOptions, setAmountOptions] = useState(null);
     const [isIngridentMilk, setIsIngridentMilk] = useState(false);
-    const [managerData, setManagerData] = useState(null);
+
+    function refreshPage() {
+        window.location.reload(false);
+    }
 
     const optionObj = {
         yesNo: 1,
@@ -44,6 +46,7 @@ export default function AddIngrident(props) {
         else if (event.target.id == "InitalStock") setInitalStock(event.target.value);
         else console.log("sad")
     }
+
 
     function handleMilkChange(event) {
         setIsIngridentMilk(event.target.checked);
@@ -73,33 +76,31 @@ export default function AddIngrident(props) {
             )
         }
     }
-
-    function updateManagerBalance(newBalance) {
-        managerData.balance = newBalance;
+    function updateManagerBalance(data) {
         try {
-            fetch(`http://localhost:8000/api/user/${user.id}/`, {
+            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {
                   'Content-Type': 'application/json',
                 },
-                'body': JSON.stringify(managerData),
+                'body': JSON.stringify(data),
               })
         } catch (error) {
             console.log(error);
         }
     }
-    
+
     function getManagerData() {
-        fetch(`http://localhost:8000/api/user/${user.id}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
         .then((res) => res.json())
         .then(
           (data) => {
-              setManagerData(data);
-              if (data.balance < +ingridentWholeSaleCost * +initalStock) alert("Balance Too Low for Inital Stock!");
-              else if (ingridentName == "" || amountOptions == null) alert("Missing Fields!");
+              if (data.userinfo.balance < +ingridentWholeSaleCost * +initalStock) alert("Balance Too Low for Inital Stock!");
+              else if (ingridentName == "" || (amountOptions == null && !isIngridentMilk)) alert("Missing Fields!");
               else {
-                updateManagerBalance(data.balance - (+ingridentWholeSaleCost * +initalStock));
+                data.userinfo.balance = data.userinfo.balance - (+ingridentWholeSaleCost * +initalStock)
+                updateManagerBalance(data);
                 processIngrident();
               }
           }
@@ -107,7 +108,6 @@ export default function AddIngrident(props) {
     }
 
     function processIngrident() {
-        getManagerData()
         const newIngrident = {
             name: ingridentName,
             stock: initalStock,
@@ -138,8 +138,10 @@ export default function AddIngrident(props) {
                     setInitalStock(0);
                     setIsIngridentMilk(false);
                     setAmountOptions(null);
+                    // refreshPage()
                 }
               )
+            //   .then(refreshPage())
         } catch (error) {
             console.log(error);
         }

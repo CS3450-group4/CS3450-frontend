@@ -7,16 +7,25 @@ import {
   Button,
   Card,
   TextField,
-  Stack
+  Stack,
+  Modal
 } from "@mui/material";
+import SignupForm from "./signup-form";
 import TitleHeader from "./shared-components/header";
 
 export default function Login() {
   const [userName, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
+  const [isModalOpen, setModalState] = useState(false);
   let navigate = useNavigate();
   const viewStrings = ["customer", "cashier", "barista", "manager"];
 
+  const handleOpenModal = () => {
+    setModalState(true)
+  }
+  const handleCloseModal = () => {
+    setModalState(false)
+  }
   function updatePassword(event) {
     setPassword(event.target.value);
   }
@@ -42,17 +51,14 @@ export default function Login() {
       credentials: 'include'
     }).then((res) => res.json())
       .then((data) => {
-        console.log(data)
+        console.log(data);
+        window.localStorage.setItem('curUserID', data.id)
+        navigate(viewStrings[data.userinfo.actingLevel]);
         return data
       })
       .catch((err) => console.log(err))
     console.log(userData)
     return userData
-  }
-
-  function signUp() {
-    // TODO: Verify user signup
-    navigate(viewStrings[1]);
   }
 
   return (
@@ -79,11 +85,18 @@ export default function Login() {
           </Stack>
           <Stack direction="row" spacing={2}>
             <Button variant="Contained" onClick={() => logIn()}>Login</Button>
-            <Button variant="Outlined" onClick={() => signUp()}>Sign Up</Button>
+            <Button variant="Outlined" onClick={handleOpenModal}>Sign Up</Button>
 
           </Stack>
         </Card>
       </Box>
+      <Modal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+      >
+        <SignupForm onClose={handleCloseModal} />
+      </Modal>
+
     </div>
   )
 }
