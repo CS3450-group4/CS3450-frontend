@@ -35,7 +35,7 @@ export default function ChangeAuth(props) {
         if (isCashier) user.userinfo.authLevel.push(1)
         if (isBarista) user.userinfo.authLevel.push(2)
         try {
-            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
+            fetch(`http://localhost:8000/api/user/${user.id}/`, {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {
@@ -56,7 +56,7 @@ export default function ChangeAuth(props) {
 
     function removeUser() {
         try {
-            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
+            fetch(`http://localhost:8000/api/user/${user.id}/`, {
                 method: 'DELETE',
                 mode: 'cors',
                 headers: {
