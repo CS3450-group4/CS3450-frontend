@@ -28,7 +28,6 @@ export default function DrinkMoniter({setToOrderManage}) {
     }
     return(
         <Stack direction="row" spacing={2}>
-            <Button onClick={() => {console.log("Change To Cart")}} variant={"contained"}>Go To Cart</Button>
             <Button onClick={() => {setToOrderManage(true)}} variant={"contained"}>Order Manage</Button>
         </Stack>
         

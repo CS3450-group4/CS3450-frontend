@@ -52,7 +52,6 @@ export default function MenuGrid() {
             <Grid container className="GridContainer" alignItems="stretch" >
                 {gridItems}
             </Grid>
-            <Button onClick={() => {navigation("../cart", {replace: true})}}>Go To Cart</Button>
         </Box> 
     )
 }

@@ -16,19 +16,21 @@ export default function OrderBox(){
     const [milkList, setMilkList] = useState([])
     const [price, setPrice] = useState(+drinkObj.price)
     const [size, setSize] = useState(drinkObj.size)
+    const [allIngs, setAllIngs] = useState([])
     const [ingredients, setIngredients] = useState(drinkObj.ingredientList)
     const [update, forceUpdate] = useState(true)
     let navigation = useNavigate()
 
     useEffect(() => {
         fetchData();
-    }, [])
+    }, [update])
 
     function fetchData() {
         fetch(`http://localhost:8000/api/ingredient/`)
         .then((res) => res.json())
         .then(
           (data) => {
+            setAllIngs(data);
             var milks = []
             data.forEach(ingredient => {
                 if(ingredient.isMilk) {
@@ -40,6 +42,11 @@ export default function OrderBox(){
         )
     }
 
+    function rerender() {
+        forceUpdate(!update)
+    }
+
+    //--------------------- INGRDIENT MODIFING FUNCTIONS -----------------------//
     const changeSize = (event) => {
         setSize(event.target.value)
         var newIngVal = 0; 
@@ -47,10 +54,6 @@ export default function OrderBox(){
             newIngVal += (ingredient.retailCost * ingredient.options * event.target.value)
         });
         setPrice(drinkMarkup + newIngVal)
-    }
-    
-    function rerender() {
-        forceUpdate(!update)
     }
 
     function updateIngredients(updatedIngredients) {
@@ -62,16 +65,16 @@ export default function OrderBox(){
         setIngredients(updatedIngredients)
         rerender()
     }
-    
-    function removeIngredient(unwantedIng) {
-        const newIngs = ingredients.filter(element => element.name !== unwantedIng.name)
-        updateIngredients(newIngs)
-    }
 
     function addIngredient(newIngredient) {
         var newIng = ingredients
         newIng.push(newIngredient)
         updateIngredients(newIng)
+    }
+
+    function removeIngredient(unwantedIng) {
+        const newIngs = ingredients.filter(element => element.name !== unwantedIng.name)
+        updateIngredients(newIngs)
     }
 
     const changeMilk = (event) => {
@@ -90,36 +93,98 @@ export default function OrderBox(){
         ingredients[index].options = value
         updateIngredients(ingredients)
     }
+
+
+    //--------------------- DATABASE MODIFING FUNCTIONS -----------------------//
+
+    function getCustomerData() {
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
+        .then((res) => res.json())
+        .then(
+          (data) => {
+              if (0 > data.userinfo.balance ) alert("Balance Too Low for Order!");
+              else {
+                if(checkStock(ingredients)) {
+                    data.userinfo.balance = data.userinfo.balance - (+price)
+                    updateCustomerBalance(data);
+                    sumbitDrink()
+                    navigation("../menu", {replace: true})
+                }else {
+                    alert("Sorry, we don't have enough ingredients in stock to complete your order :(")
+                }
+              }
+          }
+        )
+    }
+    function updateCustomerBalance(data) {
+        try {
+            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
+                method: 'PUT',
+                mode: 'cors',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                'body': JSON.stringify(data),
+              })
+        } catch (error) {
+            console.log(error);
+        }
+    }
     
+    function sendToCashier(drink) {
+        var orderDrinks = {}
+        orderDrinks[drink.name] = drink.ingredients
+        const customerOrder = {
+            price: drink.price,
+            user: window.localStorage.getItem('curUserID'),
+            orderStatus: "unfullfilled",
+            ingredientList: orderDrinks,
+        }
+        try {
+            fetch(`http://localhost:8000/api/orders/`, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                'body': JSON.stringify(customerOrder),
+                })
+        } catch (error) {
+            console.log(error);
+        }
+        rerender()
+    }
+
+    function checkStock(ingredientList) {
+        var inStock = true;
+        var drinkIngNames = [];
+        var drinkIngAmounts = [];
+        ingredientList.forEach(ingredient => {
+            drinkIngNames.push(ingredient.name)
+            drinkIngAmounts.push(ingredient.options)
+        })
+        allIngs.forEach(ingredient => {
+            var index = drinkIngNames.indexOf(ingredient.name)
+            if (index != -1) {
+                if((drinkIngAmounts[index] * size) > ingredient.stock) {
+                    inStock = false;
+                }
+            }
+        });
+        return inStock;
+    }
+
     function sumbitDrink() {
-        var newDrink ={
+        var drink ={
             name: drinkObj.name,
             price: price,
             ingredients: ingredients,
             size: size
         }
-        var inStock = true;
-        newDrink.ingredients.forEach(ingredient => {
-            if((ingredient.options * newDrink.size) > ingredient.stock) {
-                inStock = false
-            }
+        drink.ingredients.forEach(ingredient => {
+            ingredient.options = (ingredient.options * drink.size)
         })
-        if(inStock) {
-            newDrink.ingredients.forEach(ingredient => {
-                ingredient.options = (ingredient.options * newDrink.size)
-            })
-            var cart;
-            if(window.localStorage.getItem('customerCart') == null) {
-                cart = [];
-            } else {
-                cart = JSON.parse(window.localStorage.getItem('customerCart'))
-            }
-            cart.push(newDrink)
-            window.localStorage.setItem('customerCart', JSON.stringify(cart))
-        } else {
-            alert("Sorry, we don't have enough ingredients in stock to complete your order :(")
-        }
-
+        sendToCashier(drink)
     }
 
     return(
@@ -144,8 +209,8 @@ export default function OrderBox(){
             
             <Button onClick={() => navigation("../menu", {replace: true})} variant="contained"> Cancel Order </Button>
             <Button onClick={() => {
-                sumbitDrink()
-                navigation("../menu", {replace: true})}} variant="contained"> Order Drink</Button>
+                getCustomerData()
+                }} variant="contained"> Order Drink</Button>
         </Box> 
     )
 }
