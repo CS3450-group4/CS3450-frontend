@@ -52,7 +52,6 @@ export default function OrderManageBox() {
             orderStatus: "pickuped",
             ingredientList: order.ingredientList,
         }
-        console.log(pickupOrder)
         const changedPickups = pickups.filter(pickups => pickups.id !== order.id)
         setPickups(changedPickups)
         setUpdate(!update)
