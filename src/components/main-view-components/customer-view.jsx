@@ -15,14 +15,14 @@ import OrderManageBox from "../customer-components/order-manage-box";
 
 export default function CustomerView() {
     let navigation = useNavigate()
-    const [toOrderManage, setToOrderManage] = useState(false)
+    const [screen, setScreen] = useState("menu")
     useEffect(() => {
-        if(toOrderManage) {
+        if(screen === "order-manage") {
             navigation("order-manage")
         } else {
             navigation("menu")
         }
-    }, [toOrderManage])
+    }, [screen])
 
     return (
         <div className="App">
@@ -39,7 +39,7 @@ export default function CustomerView() {
             </Box>
             <Box className="StickyFooterContainer">
                 <StickyFooter>
-                    <DrinkMoniter setToOrderManage={setToOrderManage}></DrinkMoniter>
+                    <DrinkMoniter setScreen={setScreen} screen={screen}></DrinkMoniter>
                 </StickyFooter>
             </Box>
         </div>

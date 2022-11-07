@@ -173,7 +173,6 @@ export default function OrderBox(){
         });
         return inStock;
     }
-
     function sumbitDrink() {
         var drink ={
             name: drinkObj.name,

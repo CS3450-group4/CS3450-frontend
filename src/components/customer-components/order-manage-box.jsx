@@ -1,13 +1,26 @@
-import { Box, Button, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function OrderManageBox() {
     const [pickups, setPickups] = useState([])
     const [drinkHistory, setDrinkHistory] = useState([])
+    const [allIngs, setAllIngs] = useState([])
 
     useEffect(() => {
         fetchData();
+        fetchIngs();
     }, [])
+
+    function fetchIngs() {
+        fetch(`http://localhost:8000/api/ingredient/`)
+        .then((res) => res.json())
+        .then(
+          (data) => {
+            setAllIngs(data);
+          }
+        )
+    }
+
     function fetchData() {
         fetch(`http://localhost:8000/api/orders/`)
         .then((res) => res.json())
@@ -30,18 +43,37 @@ export default function OrderManageBox() {
           }
         )
     }
+
+    function pickUpOrder(order) {
+        const pickupOrder = {
+            price: order.price,
+            user: order.user,
+            orderStatus: "pickuped",
+            ingredientList: order.ingredientList,
+        }
+        console.log(pickupOrder)
+        const changedPickups = pickups.filter(pickups => pickups.id !== order.id)
+        setPickups(changedPickups)
+        try {
+            fetch(`http://localhost:8000/api/orders/${order.id}/`, {
+                method: 'PUT',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                'body': JSON.stringify(pickupOrder),
+                })
+        } catch (error) {
+            console.log(error);
+        }
+    }
     function PickUpItems({order}) {
         return(
             <Stack direction="row">
                 {
                     (order.length !== 0) ? (
-                        Object.keys(order.ingredientList).map((drink, index) => {
-                            return(
-                                <Typography>{drink}</Typography>
-                            )
-                        })
+                        <Typography>{Object.keys(order.ingredientList)[0]}</Typography>
                     ) : <Typography>No Pickups</Typography>
-                    
                 }
             </Stack>
         )
@@ -57,7 +89,7 @@ export default function OrderManageBox() {
                                 <Paper key={index}>
                                     <Typography>Price ${(order.price/100).toFixed(2)}</Typography>
                                     <PickUpItems order={order}></PickUpItems>
-                                    <Button onClick={() => {console.log(order)}} variant={"contained"}> Pick Up Order</Button>
+                                    <Button onClick={() => {pickUpOrder(order)}} variant={"contained"}> Pick Up Order</Button>
                                 </Paper>
                             )
                         })
@@ -67,17 +99,127 @@ export default function OrderManageBox() {
             </Box>
         )
     }
+    function HistoryItem({order}) {
+        return(
+            <Stack direction="row">
+                {
+                    (order.length !== 0) ? (
+                        <Typography>{Object.keys(order.ingredientList)[0]}</Typography>
+                    ) : <Typography>No Pickups</Typography>
+                }
+            </Stack>
+        )
+    }
 
     function DrinkHistory() {
         return(
-            <Typography> DRINK HISTORY</Typography>
+            <Box>
+                {
+                    (drinkHistory.length !== 0) ? (
+                        drinkHistory.map((order, index) => {
+                            return(
+                                <Paper key={index}>
+                                    <Typography>Price ${(order.price/100).toFixed(2)}</Typography>
+                                    <HistoryItem order={order}></HistoryItem>
+                                    <Button onClick={() => {
+                                        getCustomerData(order)}
+                                        } variant={"contained"}> Re Order</Button>
+                                </Paper>
+                            )
+                        })
+                    ) : <Typography>No Drink History</Typography>
+                    
+                }
+            </Box>
         )
     }
+
+
+
+    // ----------- STUFF NEEDED TO REORDER DRINKS ------------------- //
+    function getCustomerData(order) {
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
+        .then((res) => res.json())
+        .then(
+          (data) => {
+              if (0 > data.userinfo.balance ) alert("Balance Too Low for Order!");
+              else {
+                var ingredients = [];
+                Object.values(order.ingredientList)[0].forEach(ingredient => {
+                    ingredients.push(ingredient)
+                })
+                if(checkStock(ingredients)) {
+                    data.userinfo.balance = data.userinfo.balance - (order.price)
+                    updateCustomerBalance(data);
+                    resumbitDrink(order)
+                }else {
+                    alert("Sorry, we don't have enough ingredients in stock to resumbit your order :(")
+                }
+              }
+          }
+        )
+    }
+    function updateCustomerBalance(data) {
+        try {
+            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
+                method: 'PUT',
+                mode: 'cors',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                'body': JSON.stringify(data),
+              })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    function checkStock(ingredientList) {
+        var inStock = true;
+        var drinkIngNames = [];
+        var drinkIngAmounts = [];
+        ingredientList.forEach(ingredient => {
+            drinkIngNames.push(ingredient.name)
+            drinkIngAmounts.push(ingredient.options)
+        })
+        allIngs.forEach(ingredient => {
+            var index = drinkIngNames.indexOf(ingredient.name)
+            if (index != -1) {
+                if((drinkIngAmounts[index]) > ingredient.stock) {
+                    inStock = false;
+                }
+            }
+        });
+        return inStock;
+    }
+    function resumbitDrink(order) {
+        const reOrdered = {
+            price: order.price,
+            user: order.user,
+            orderStatus: "unfullfilled",
+            ingredientList: order.ingredientList
+        }
+        try {
+            fetch(`http://localhost:8000/api/orders/${order.id}/`, {
+                method: 'PUT',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                'body': JSON.stringify(reOrdered),
+                })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    
     return(
-        <Box>
+        <Stack spacing={2}>
             <PickUps />
+            <Divider/>
             <DrinkHistory />
-        </Box>
+        </Stack>
         
     )
 }

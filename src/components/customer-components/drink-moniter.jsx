@@ -1,34 +1,22 @@
-import { Button, Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Button, Stack} from "@mui/material";
 
-export default function DrinkMoniter({setToOrderManage}) {
-    const [custOrders, setCustOrders] = useState([])
+export default function DrinkMoniter({setScreen, screen}) {
 
-    useEffect(() => {
-        fetchData();
-    }, [])
-
-    function fetchData() {
-        fetch(`http://localhost:8000/api/orders/`)
-        .then((res) => res.json())
-        .then(
-          (data) => {
-            var custOrders = []
-            data.forEach(order => {
-                if(order.user == window.localStorage.getItem('curUserID')) {
-                    if(order.orderStatus === "forPickup") {
-                        custOrders.push(order)
-                    }
-                }
-            });
-            setCustOrders(custOrders)
-          }
-        )
+    function NavButton() {
+        if(screen === "order-manage") {
+            return (
+                <Button onClick={() => {setScreen("menu")}} variant={"contained"}>Menu</Button>
+            )
+        } else {
+            return(
+                <Button onClick={() => {setScreen("order-manage")}} variant={"contained"}>Order Manage</Button>
+            )
+        }
     }
+
     return(
         <Stack direction="row" spacing={2}>
-            <Button onClick={() => {setToOrderManage(true)}} variant={"contained"}>Order Manage</Button>
+            <NavButton></NavButton>
         </Stack>
         
     )
