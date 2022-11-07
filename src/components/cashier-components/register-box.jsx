@@ -56,6 +56,7 @@ export default function RegisterBox(){
             return(
                 <Paper elevation={3} variant="outlined" key={index} >
                     <Typography>Customer {order.user}</Typography>
+                    <Typography>{order.size} {Object.keys(order.ingredientList)[0]}</Typography>
                     <Typography>Price ${(order.price/100).toFixed(2)}</Typography>
                     <Button onClick={() => {sendToBarista(order)}} variant={"contained"}> Send to Barista</Button>
                 </Paper>

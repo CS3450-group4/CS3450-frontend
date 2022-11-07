@@ -5,11 +5,12 @@ export default function OrderManageBox() {
     const [pickups, setPickups] = useState([])
     const [drinkHistory, setDrinkHistory] = useState([])
     const [allIngs, setAllIngs] = useState([])
+    const [update, setUpdate] = useState(false)
 
     useEffect(() => {
         fetchData();
         fetchIngs();
-    }, [])
+    }, [update])
 
     function fetchIngs() {
         fetch(`http://localhost:8000/api/ingredient/`)
@@ -54,6 +55,7 @@ export default function OrderManageBox() {
         console.log(pickupOrder)
         const changedPickups = pickups.filter(pickups => pickups.id !== order.id)
         setPickups(changedPickups)
+        setUpdate(!update)
         try {
             fetch(`http://localhost:8000/api/orders/${order.id}/`, {
                 method: 'PUT',
@@ -67,6 +69,7 @@ export default function OrderManageBox() {
             console.log(error);
         }
     }
+
     function PickUpItems({order}) {
         return(
             <Stack direction="row">
@@ -78,25 +81,19 @@ export default function OrderManageBox() {
             </Stack>
         )
     }
-
     function PickUps() {
         return(
-            <Box>
-                {
-                    (pickups.length !== 0) ? (
-                        pickups.map((order, index) => {
-                            return(
-                                <Paper key={index}>
-                                    <Typography>Price ${(order.price/100).toFixed(2)}</Typography>
-                                    <PickUpItems order={order}></PickUpItems>
-                                    <Button onClick={() => {pickUpOrder(order)}} variant={"contained"}> Pick Up Order</Button>
-                                </Paper>
-                            )
-                        })
-                    ) : <Typography>No Pickups</Typography>
-                    
-                }
-            </Box>
+            (pickups.length !== 0) ? (
+                pickups.map((order, index) => {
+                    return(
+                        <Paper key={index}>
+                            <Typography>Price ${(order.price/100).toFixed(2)}</Typography>
+                            <PickUpItems order={order}></PickUpItems>
+                            <Button onClick={() => {pickUpOrder(order)}} variant={"contained"}> Pick Up Order</Button>
+                        </Paper>
+                    )
+                })
+            ) : <Typography>No Pickups</Typography>
         )
     }
     function HistoryItem({order}) {
@@ -113,24 +110,19 @@ export default function OrderManageBox() {
 
     function DrinkHistory() {
         return(
-            <Box>
-                {
-                    (drinkHistory.length !== 0) ? (
-                        drinkHistory.map((order, index) => {
-                            return(
-                                <Paper key={index}>
-                                    <Typography>Price ${(order.price/100).toFixed(2)}</Typography>
-                                    <HistoryItem order={order}></HistoryItem>
-                                    <Button onClick={() => {
-                                        getCustomerData(order)}
-                                        } variant={"contained"}> Re Order</Button>
-                                </Paper>
-                            )
-                        })
-                    ) : <Typography>No Drink History</Typography>
-                    
-                }
-            </Box>
+            (drinkHistory.length !== 0) ? (
+                drinkHistory.map((order, index) => {
+                    return(
+                        <Paper key={index}>
+                            <Typography>Price ${(order.price/100).toFixed(2)}</Typography>
+                            <HistoryItem order={order}></HistoryItem>
+                            <Button onClick={() => {
+                                getCustomerData(order)}
+                                } variant={"contained"}> Re Order</Button>
+                        </Paper>
+                    )
+                })
+            ) : <Typography>No Drink History</Typography>
         )
     }
 
@@ -199,6 +191,9 @@ export default function OrderManageBox() {
             orderStatus: "unfullfilled",
             ingredientList: order.ingredientList
         }
+        const changedHistory = drinkHistory.filter(histOrder => histOrder.id !== order.id)
+        setDrinkHistory(changedHistory)
+        setUpdate(!update)
         try {
             fetch(`http://localhost:8000/api/orders/${order.id}/`, {
                 method: 'PUT',
@@ -216,9 +211,16 @@ export default function OrderManageBox() {
     
     return(
         <Stack spacing={2}>
-            <PickUps />
+            <Typography> Drinks Ready For Pickup </Typography>
+            <Stack direction="row" spacing={2}>
+                < PickUps />
+            </Stack>
             <Divider/>
-            <DrinkHistory />
+            <Typography> Drinks You've Ordered In the Past </Typography>
+            <Stack direction="row" spacing={2}>
+                < DrinkHistory />
+            </Stack>
+            
         </Stack>
         
     )
