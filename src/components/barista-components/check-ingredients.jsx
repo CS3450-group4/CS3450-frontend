@@ -104,6 +104,7 @@ export default function AddDrink(props) {
         setIsGrabbed([]);
         setDisableMakeDrink(true);
         setIngredients([]);
+        buildButtons(true);
     }
     
     return ( 
