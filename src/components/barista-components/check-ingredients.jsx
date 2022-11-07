@@ -15,185 +15,105 @@ import {
     List
   } from "@mui/material";
 export default function AddDrink(props) {
-    const [drinkName, setDrinkName] = useState("");
-    const [drinkPrice, setDrinkPrice] = useState(0);
-    const [availableIngredients, setAvailableIngredients] = useState(null);
-    const [selectedIngredients, setSelectedIngredients] = useState([]);
-    const [isNameError, setIsNameError] = useState(false);
-    const [isPriceError, setIsPriceError] = useState(false);
-    const [allIngredients, setAllIngredients] = useState(null);
-    const [selectedMilk, setSelectedMilk] = useState(null);
-    const [availableMilks, setAvailableMilks] = useState(null);
-    const [isMilkSelectionError, setIsMilkSelectionError] = useState(false);
-    const [orders, setOrders] = useState([]);
+    const [ingredients, setIngredients] = useState([]);
+    const [currentDrink, setCurrentDrink] = useState(null);
+    const [isGrabbed, setIsGrabbed] = useState([]);
+    const [disableMakeDrink, setDisableMakeDrink] = useState(true);
+    let itemsGrabbedCount = 0;
     useEffect(() => {
-        fetchData();
+        fetchOrderData();
     }, [])
 
-    function fetchData() {
-        fetch(`http://localhost:8000/api/ingredient/`, {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-          .then((res) => res.json())
-          .then(
-            (data) => {
-                const milks = data.filter(ingredient => ingredient.isMilk);
-                createAvailableMilks(milks)
-                const ingredientsNoMilks = data.filter(ingredient => !ingredient.isMilk);
-                const ingredientArray = {};
-                const allIngredients = {};
-                data.forEach((ingredient) => {
-                    ingredientArray[ingredient.name] = false;
-                    allIngredients[ingredient.name] = ingredient;
-                })
-                setSelectedIngredients(ingredientArray);
-                setAllIngredients(allIngredients);
-                createIngredientList(ingredientsNoMilks);
-            })
-    }
 
     function fetchOrderData() {
-        fetch('https://localhost:8000/api/orders/')
+        fetch('http://localhost:8000/api/orders/')
         .then((res) => res.json())
         .then(
             (data) => {
                 var tempList = []
-                data.forEach(drinkIngs => {
-                    if (drinkIngs.orderStatus === "unfulfilled") {
-                        tempList.push(drinkIngs)
+                data.forEach(order => {
+                    if (order.orderStatus === "readyToFullfill") {
+                        tempList.push(order)
                     }
                 })
-                setOrders(tempList)
+                console.log(tempList);
+                if (tempList.length == 0) return;
+                setCurrentDrink(tempList[0]);
+                buildButtons(tempList[0]);
             }
         )
     }
 
-    function createAvailableMilks(milks) {
-        setAvailableMilks(
-            milks.map((milk, index) => (
-                <MenuItem value={milk.name} key={index}>{milk.name}</MenuItem>
-            ))
-        )
-    }
-
-    function handleIngredientChecked(event, name) {
-        selectedIngredients[name] = event.target.checked;
-        setSelectedIngredients(selectedIngredients);
-        console.log(selectedIngredients);
-    }
-
-    function createIngredientList(data) {
-        setAvailableIngredients(
-            data.map((ingredient, index) => (
-                <FormControlLabel key={index} control={<Checkbox checked={selectedIngredients[index]} onChange={(newVal) => handleIngredientChecked(newVal, ingredient.name)} />} label={ingredient.name} />
-            ))
-        );
-    }
-
-    function createIngredient(data) {
-        setAvailableIngredients(
-            data.map((ingredient, index) => (
-                <FormControlLabel key={index} control={<Checkbox checked={selectedIngredients[index]} onChange={(newVal) => handleIngredientChecked(newVal, ingredient.name)} />} label={ingredient.name} />
-            ))
-        );
-    }
-
-    function handleNameChange(event) {
-        setIsNameError(false);
-        setDrinkName(event.target.value);
-    }
-
-    function handlePriceChange(event) {
-        setIsPriceError(false);
-        setDrinkPrice(event.target.value);
-    }
-
-    function addDrink() {
-        if (drinkName == "") setIsNameError(true);
-        if (drinkPrice == 0) setIsPriceError(true);
-        if (selectedMilk == null) setIsMilkSelectionError(true);
-        if (drinkPrice == 0 || drinkName == "") return;
-        const newDrink = {
-            name: drinkName,
-            price: drinkPrice,
-            ingredientList: [],
+    function checkIngrident(event, index, drink) {
+        isGrabbed[index] = event.target.checked;
+        event.target.disabled=true;
+        setIsGrabbed(isGrabbed);
+        console.log(isGrabbed);
+        itemsGrabbedCount++;
+        console.log("BELOW")
+        console.log(Object.entries(drink.ingredientList)[0])
+        if (itemsGrabbedCount == Object.entries(drink.ingredientList)[0][1].length) {
+            setDisableMakeDrink(false);
         }
-        for (const ingredientName in selectedIngredients) {
-            if (selectedIngredients[ingredientName]) newDrink.ingredientList.push(allIngredients[ingredientName]);
-        }
-        newDrink.ingredientList.push(allIngredients[selectedMilk]);
+    }
 
-        fetch(`http://localhost:8000/api/menu/`, {
-            method: 'POST',
+    function buildButtons(drink) {
+        setIsGrabbed([]);
+        setIngredients(Object.entries(drink.ingredientList)[0][1].map((ingrident, index) =>
+            <FormControlLabel key={index} control={<Checkbox  checked={isGrabbed[index]} onChange={(newVal) => checkIngrident(newVal, index, drink)} /> } label={ingrident["name"]} />
+        ))
+    }
+
+    async function buildDrink() {
+        // Get all the ingridents of the current drink
+        // Remove ingridents from inventory+
+        // Change status of order
+        // Reset isGrabbed, currentDrink, disableMakeDrink, ingridents
+        console.log("HERE")
+        console.log(currentDrink)
+        await Object.entries(currentDrink.ingredientList)[0][1].forEach(ingredient => {
+            ingredient.stock -= 1
+            fetch(`http://localhost:8000/api/ingredient/${ingredient.id}/`, {
+                method: 'PUT',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                'body': JSON.stringify(ingredient),
+                }).then((res) => res.json())
+                .then((data) => {
+                    currentDrink.orderStatus = "forPickup"
+                })
+        })
+        console.log("DONE WITH INGRED")
+        await fetch(`http://localhost:8000/api/orders/${currentDrink.id}/`, {
+            method: 'PUT',
             mode: 'cors',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
-            'body': JSON.stringify(newDrink),
-          }).then((res) => res.json())
-          .then(
-            (data) => {
-                console.log(data)
-                setDrinkName("");
-                setDrinkPrice("");
-                fetchData();
-            }
-          )
+            'body': JSON.stringify(currentDrink),
+            }).then((res) => res.json())
+            .then((data) => console.log(data))
+        await resetDynamicData()
+        fetchOrderData();
     }
 
-    function handleNewMilkSelection(event) {
-        setIsMilkSelectionError(false);
-        setSelectedMilk(event.target.value);
-    }
-
-    function makeButtons(data) {
-        <buttons></buttons>
+    async function resetDynamicData() {
+        setCurrentDrink(null);
+        setIsGrabbed([]);
+        setDisableMakeDrink(true);
+        setIngredients([]);
     }
     
-    const buttons = orders.map((ingredient, index) =>
-        <FormControl ingredient={ingredient} key={index}></FormControl>
-    );
-
-    return( 
+    return ( 
         <Box>
-            <List container className="GridContainer" alignItems="stretch" >
-                {buttons}
-            </List>
-        </Box> 
-    )
-
-    return (
-        <Box className={props.className}>
-            <button onClick={() => this.handleClick()}>
-                Click me
-            </button>
-            <Stack direction="column" spacing={3}>
-                <Typography variant="h4">Add New Drink</Typography>
-                <TextField error={isNameError} label="Name" inputProps={{ maxLength: 100 }} value={drinkName} onChange={((newVal) => {handleNameChange(newVal)})} />
-                <TextField error={isPriceError} type="number" InputProps={{inputProps: {min: 0}}} id="Price" label="Price" value={drinkPrice} onChange={((newVal) => {handlePriceChange(newVal)})} />
-                <FormControl fullWidth>
-                    <InputLabel id="select-auth-label">Default Milk</InputLabel>
-                    <Select
-                        error={isMilkSelectionError}
-                        labelId="default-milk-label"
-                        id="default-milk"
-                        value={selectedMilk}
-                        label="Default Milk"
-                        onChange={handleNewMilkSelection}
-
-                    >
-                        {availableMilks}
-                    </Select>
-                </FormControl>
+            <Stack>
                 <FormControl className={props.ingredientClassName}>
-                    {availableIngredients}
+                    {ingredients}
                 </FormControl>
-                <Button onClick={() => addDrink()}>Add</Button>
+                <Button disabled={disableMakeDrink} onClick={() => buildDrink()}>Make Drink</Button>
             </Stack>
-        </Box>
+        </Box> 
     )
 }
