@@ -53,7 +53,6 @@ export default function MenuGrid() {
                 {gridItems}
             </Grid>
             <Button onClick={() => {navigation("../cart", {replace: true})}}>Go To Cart</Button>
-        </Box>
-        
+        </Box> 
     )
 }

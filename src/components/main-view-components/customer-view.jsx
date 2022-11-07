@@ -1,7 +1,7 @@
 import {
     Box
   } from "@mui/material";
-import { useEffect} from "react";
+import { useEffect, useState} from "react";
 import CompositeTitleHeader from "../shared-components/composite-header";
 import StickyFooter from "../shared-components/sticky-footer";
 import "./../../App.css";
@@ -11,12 +11,18 @@ import OrderBox from "../customer-components/cust-order-box";
 import CustomerCartBox from "../customer-components/customer-cart-box";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import DrinkMoniter from "../customer-components/drink-moniter";
+import OrderManageBox from "../customer-components/order-manage-box";
 
 export default function CustomerView() {
     let navigation = useNavigate()
+    const [toOrderManage, setToOrderManage] = useState(false)
     useEffect(() => {
-        navigation("menu")
-    }, [])
+        if(toOrderManage) {
+            navigation("order-manage")
+        } else {
+            navigation("menu")
+        }
+    }, [toOrderManage])
 
     return (
         <div className="App">
@@ -28,11 +34,12 @@ export default function CustomerView() {
                     <Route path="menu" element={<MenuGrid />} />
                     <Route path="drink" element={<OrderBox />} />
                     <Route path="cart" element={<CustomerCartBox />} />
+                    <Route path="order-manage" element={<OrderManageBox />}/>
                 </Routes>
             </Box>
             <Box className="StickyFooterContainer">
                 <StickyFooter>
-                    <DrinkMoniter></DrinkMoniter>
+                    <DrinkMoniter setToOrderManage={setToOrderManage}></DrinkMoniter>
                 </StickyFooter>
             </Box>
         </div>

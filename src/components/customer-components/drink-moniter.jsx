@@ -1,7 +1,8 @@
-import { Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function DrinkMoniter() {
+export default function DrinkMoniter({setToOrderManage}) {
     const [custOrders, setCustOrders] = useState([])
 
     useEffect(() => {
@@ -22,19 +23,15 @@ export default function DrinkMoniter() {
                 }
             });
             setCustOrders(custOrders)
-            console.log(custOrders)
           }
         )
     }
-
-    if(custOrders.length !== 0) {
-        return(
-            <Stack direction="row">
-                <Typography> ORDER READY FOR PICKUP</Typography>
-            </Stack>
-        )
-    } else {
-        <Typography>NO ORDERS READY</Typography>
-    }
+    return(
+        <Stack direction="row" spacing={2}>
+            <Button onClick={() => {console.log("Change To Cart")}} variant={"contained"}>Go To Cart</Button>
+            <Button onClick={() => {setToOrderManage(true)}} variant={"contained"}>Order Manage</Button>
+        </Stack>
+        
+    )
     
 }
