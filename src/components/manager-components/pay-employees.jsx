@@ -26,7 +26,7 @@ export default function PayEmployees(props) {
   }
 
   const payemployees = () => {
-    const data = { "payrate": paymentPerHour }
+    const data = { "payrate": Number(paymentPerHour) }
     const managerInfo = fetch("http://localhost:8000/api/payemployees/",
       {
         method: 'PUT',
