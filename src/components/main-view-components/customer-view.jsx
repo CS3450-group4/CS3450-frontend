@@ -1,7 +1,7 @@
 import {
-    Box, Button,
+    Box
   } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
 import CompositeTitleHeader from "../shared-components/composite-header";
 import StickyFooter from "../shared-components/sticky-footer";
 import "./../../App.css";
@@ -10,14 +10,19 @@ import MenuGrid from  "../customer-components/menu-grid"
 import OrderBox from "../customer-components/cust-order-box";
 import CustomerCartBox from "../customer-components/customer-cart-box";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import DrinkMoniter from "../customer-components/drink-moniter";
+import OrderManageBox from "../customer-components/order-manage-box";
 
 export default function CustomerView() {
-    const [frapOrder, setFrapOrder] = useState({})
-    const [customerCart, setCart] = useState([])
     let navigation = useNavigate()
+    const [screen, setScreen] = useState("menu")
     useEffect(() => {
-        navigation("menu")
-    }, [])
+        if(screen === "order-manage") {
+            navigation("order-manage")
+        } else {
+            navigation("menu")
+        }
+    }, [screen])
 
     return (
         <div className="App">
@@ -26,15 +31,15 @@ export default function CustomerView() {
             </Box>
             <Box className="WorkingViewContainer" >
                 <Routes>
-                    <Route path="menu" element={<MenuGrid setFrapOrder={setFrapOrder}/>} />
-                    <Route path="drink" element={<OrderBox frapOrder={frapOrder} setCart={setCart} customerCart={customerCart}/>} />
-                    <Route path="cart" element={<CustomerCartBox customerCart={customerCart} setCart={setCart} setFrapOrder={setFrapOrder}/>} />
+                    <Route path="menu" element={<MenuGrid />} />
+                    <Route path="drink" element={<OrderBox />} />
+                    <Route path="cart" element={<CustomerCartBox />} />
+                    <Route path="order-manage" element={<OrderManageBox />}/>
                 </Routes>
-                {/* <CustomerAction/>   */}
             </Box>
             <Box className="StickyFooterContainer">
                 <StickyFooter>
-                    Replace With Drink Monitor
+                    <DrinkMoniter setScreen={setScreen} screen={screen}></DrinkMoniter>
                 </StickyFooter>
             </Box>
         </div>

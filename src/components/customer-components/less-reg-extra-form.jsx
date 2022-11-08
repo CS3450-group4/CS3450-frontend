@@ -1,6 +1,7 @@
 import { FormControl , Select, MenuItem, InputLabel } from "@mui/material";
 
-export default function NonMilkForm({ingredient, changeIngredientAmount}){
+
+export default function LessRegExtraForm({ingredient, changeIngredientAmount}){
     return(
         <FormControl fullWidth>
             <InputLabel id="label">{ingredient.name}</InputLabel>
@@ -12,9 +13,9 @@ export default function NonMilkForm({ingredient, changeIngredientAmount}){
                 name={ingredient.name}
                 onChange={changeIngredientAmount}
             >
-                <MenuItem value={1}> 1 unit </MenuItem>
-                <MenuItem value={2}> 2 unit </MenuItem>
-                <MenuItem value={3}> 3 unit </MenuItem>
+                <MenuItem value={1}> Less </MenuItem>
+                <MenuItem value={2}> Regular </MenuItem>
+                <MenuItem value={3}> Extra </MenuItem>
             </Select>
          </FormControl>
     )
