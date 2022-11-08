@@ -30,6 +30,7 @@ export default function AddDrink(props) {
         .then((res) => res.json())
         .then(
             (data) => {
+                console.log("GRABBING");
                 var tempList = []
                 data.forEach(order => {
                     if (order.orderStatus === "readyToFullfill") {
@@ -72,7 +73,9 @@ export default function AddDrink(props) {
         console.log("HERE")
         console.log(currentDrink)
         await Object.entries(currentDrink.ingredientList)[0][1].forEach(ingredient => {
-            ingredient.stock -= 1
+            console.log(Object.entries(currentDrink.ingredientList)[0][1])
+            // console.log(Object.entries(currentDrink.ingredientList)[1][1])
+            ingredient.stock -= 
             fetch(`http://localhost:8000/api/ingredient/${ingredient.id}/`, {
                 method: 'PUT',
                 mode: 'cors',
@@ -94,9 +97,16 @@ export default function AddDrink(props) {
             },
             'body': JSON.stringify(currentDrink),
             }).then((res) => res.json())
-            .then((data) => console.log(data))
+            .then((data) => {
+                setCurrentDrink(null);
+                setIsGrabbed([]);
+                setDisableMakeDrink(true);
+                setIngredients([]);
+                console.log("BEFORE END");
+            }) 
         await resetDynamicData()
-        fetchOrderData();
+        console.log("END");
+        setTimeout(fetchOrderData(), 1000);
     }
 
     async function resetDynamicData() {
@@ -104,7 +114,7 @@ export default function AddDrink(props) {
         setIsGrabbed([]);
         setDisableMakeDrink(true);
         setIngredients([]);
-        buildButtons(true);
+        // buildButtons(currentDrink);
     }
     
     return ( 
