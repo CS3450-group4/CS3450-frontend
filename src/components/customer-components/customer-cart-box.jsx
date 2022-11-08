@@ -2,66 +2,23 @@ import { Button, Typography, Box, Stack} from "@mui/material"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
+export default function CustomerCartBox() {
     const [totalPrice, setTotalPrice] = useState(0)
+    var customerCart;
+    if (window.localStorage.getItem('customerCart') == null || window.localStorage.getItem('customerCart') == []) {
+        customerCart = [];
+    } else {
+        customerCart = JSON.parse(window.localStorage.getItem('customerCart'));
+    }
     const [update, forceUpdate] = useState(true)
-    const [customerData, setCustomerData] = useState(null)
 
     let navigation = useNavigate()
     useEffect(() => {
         changeTotalPrice()
-        getCustomerData()
     }, [update])
 
     function rerender() {
         forceUpdate(!update)
-    }
-
-    // function getCustomerData() {
-    //     fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
-    //     .then((res) => res.json())
-    //     .then(
-    //       (data) => {
-    //           if (data.userinfo.balance < +ingridentWholeSaleCost * +initalStock) alert("Balance Too Low for Inital Stock!");
-    //           else if (ingridentName == "" || (amountOptions == null && !isIngridentMilk)) alert("Missing Fields!");
-    //           else {
-    //             data.userinfo.balance = data.userinfo.balance - (+ingridentWholeSaleCost * +initalStock)
-    //             updateCustomerBalance(data);
-    //             processIngrident();
-    //           }
-    //       }
-    //     )
-    // }
-    // function updateCustomerBalance(data) {
-    //     try {
-    //         fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
-    //             method: 'PUT',
-    //             mode: 'cors',
-    //             headers: {
-    //               'Content-Type': 'application/json',
-    //             },
-    //             'body': JSON.stringify(data),
-    //           })
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
-    function updateCustomerBalance(newBalance) {
-        customerData.balance = newBalance;
-        console.log(newBalance)
-        try {
-            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
-                method: 'PUT',
-                mode: 'cors',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                'body': JSON.stringify(customerData),
-              })
-        } catch (error) {
-            console.log(error);
-        }
     }
 
     function getCustomerData() {
@@ -69,10 +26,28 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
         .then((res) => res.json())
         .then(
           (data) => {
-              setCustomerData(data);
-              rerender()
+              if (0 > data.userinfo.balance ) alert("Balance Too Low for Order!");
+              else {
+                data.userinfo.balance = data.userinfo.balance - (+totalPrice)
+                updateCustomerBalance(data);
+                sendToCashier()
+              }
           }
         )
+    }
+    function updateCustomerBalance(data) {
+        try {
+            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
+                method: 'PUT',
+                mode: 'cors',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                'body': JSON.stringify(data),
+              })
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     function changeTotalPrice() {
@@ -85,41 +60,37 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
 
     function removeDrink(drink) {
         const newCart = customerCart.filter(element => element !== drink)
-        setCart(newCart)
+        window.localStorage.setItem('customerCart', JSON.stringify(newCart))
         rerender(!update)
     }
 
     function sendToCashier() {
-        if (customerData.balance < 0) alert("Balance Too Low for Order!");
-            //   else if (ingridentName == "" || amountOptions == null) alert("Missing Fields!");
-        else {
-            updateCustomerBalance(customerData.balance - totalPrice)
-            var orderDrinks = {}
-            customerCart.forEach(drink => {
-                orderDrinks[drink.name] = drink.ingredients
-            })
-            const customerOrder = {
-                price: totalPrice,
-                user: 1,
-                orderStatus: "unfullfilled",
-                ingredientList: orderDrinks,
+        var orderDrinks = {}
+        customerCart.forEach(drink => {
+            orderDrinks[drink.name] = drink.ingredients
+        })
+        const customerOrder = {
+            price: totalPrice,
+            user: window.localStorage.getItem('curUserID'),
+            orderStatus: "unfullfilled",
+            ingredientList: orderDrinks,
+        }
+        if (customerCart.length !== 0) {
+            try {
+                fetch(`http://localhost:8000/api/orders/`, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    'body': JSON.stringify(customerOrder),
+                  })
+            } catch (error) {
+                console.log(error);
             }
-            if (customerCart.length !== 0) {
-                try {
-                    fetch(`http://localhost:8000/api/orders/`, {
-                        method: 'POST',
-                        mode: 'cors',
-                        headers: {
-                          'Content-Type': 'application/json',
-                        },
-                        'body': JSON.stringify(customerOrder),
-                      })
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-            setCart([])
-    }
+            window.localStorage.setItem('customerCart', JSON.stringify([]))
+            rerender()
+        }
     }
 
     function sizeConv(size) {
@@ -156,7 +127,7 @@ export default function CustomerCartBox({customerCart, setCart, setFrapOrder}) {
                 <OrderItem drink={drink} key={index}></OrderItem>
             )}
             <Stack direction={"row"}>
-                <Button variant="contained" onClick={() => {sendToCashier()}}>SUMBIT ORDER</Button>
+                <Button variant="contained" onClick={() => {getCustomerData()}}>SUMBIT ORDER</Button>
                 <Button variant="contained" onClick={() => {navigation("../menu", {replace: true})}}>RETURN TO MENU</Button>
             </Stack>
             

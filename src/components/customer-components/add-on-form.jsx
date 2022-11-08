@@ -11,7 +11,6 @@ export default function AddOnForm({ingredients, addIngredient}){
     };
     const handleClose = () => {
         setAnchorEl(null);
-        // addIngredient(event.target)
     };
     useEffect(() => {
         fetchData();

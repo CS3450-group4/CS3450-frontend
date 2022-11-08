@@ -9,7 +9,7 @@ import "../main-view-components/general.css"
 import { useNavigate } from "react-router-dom";
 
 
-export default function MenuGrid({setFrapOrder}) {
+export default function MenuGrid() {
     let navigation = useNavigate()
     const[drinkList, setDrinkList] = useState([])
 
@@ -27,10 +27,24 @@ export default function MenuGrid({setFrapOrder}) {
         )
     }
 
-    const gridItems = drinkList.map((drink, index) => 
-        <Grid item className="GridItem" key={index} style={{display: 'flex'}}>
-            <DrinkCard menuitem={drink} setFrapOrder={setFrapOrder}></DrinkCard>
-        </Grid>
+    function GridItem({drink}) {
+        var inStock = true;
+        drink.ingredientList.forEach(ingredient => {
+            if (ingredient.stock <= 0) {
+                inStock = false
+            }
+        })
+        if(inStock) {
+            return(
+                <Grid item className="GridItem" style={{display: 'flex'}}>
+                    <DrinkCard menuitem={drink}></DrinkCard>
+                </Grid>
+            )
+        }
+    }
+
+    const gridItems = drinkList.map((drink, index) =>
+        <GridItem drink={drink} key={index}></GridItem>
     );
 
     return( 
@@ -38,8 +52,6 @@ export default function MenuGrid({setFrapOrder}) {
             <Grid container className="GridContainer" alignItems="stretch" >
                 {gridItems}
             </Grid>
-            <Button onClick={() => {navigation("../cart", {replace: true})}}>Go To Cart</Button>
-        </Box>
-        
+        </Box> 
     )
 }
