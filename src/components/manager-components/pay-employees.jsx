@@ -33,6 +33,7 @@ export default function PayEmployees(props) {
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": "Token " + window.localStorage.getItem('token')
         },
         'body': JSON.stringify(data)
       }).then((res) => res.json())

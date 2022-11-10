@@ -34,6 +34,14 @@ export default function Login() {
     setUserName(event.target.value);
   }
 
+  const getUser = () => {
+    fetch('http://localhost:8000/api/user/2', {
+      method: 'GET',
+      headers: {
+          "Authorization": "Token " + window.localStorage.getItem('token')
+      },
+    })
+  }
 
   async function logIn() {
 
@@ -48,15 +56,16 @@ export default function Login() {
         username: userName,
         password: password
       }),
-      credentials: 'include'
     }).then((res) => res.json())
       .then((data) => {
         console.log(data);
-        window.localStorage.setItem('curUserID', data.id)
-        navigate(viewStrings[data.userinfo.actingLevel]);
+        window.localStorage.setItem('curUserID', data.user.id)
+        // navigate(viewStrings[data.user.userinfo.actingLevel]);
         return data
       })
       .catch((err) => console.log(err))
+    getUser()
+    window.localStorage.setItem("token", userData?.token || "")
     console.log(userData)
     return userData
   }

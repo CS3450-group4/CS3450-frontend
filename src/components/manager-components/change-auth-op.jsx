@@ -40,6 +40,7 @@ export default function ChangeAuth(props) {
                 mode: 'cors',
                 headers: {
                   'Content-Type': 'application/json',
+                  "Authorization": "Token " + window.localStorage.getItem('token')
                 },
                 'body': JSON.stringify(user),
               })
@@ -61,6 +62,7 @@ export default function ChangeAuth(props) {
                 mode: 'cors',
                 headers: {
                   'Content-Type': 'application/json',
+                  "Authorization": "Token " + window.localStorage.getItem('token')
                 },
               })
             .then((res) => {
@@ -75,7 +77,13 @@ export default function ChangeAuth(props) {
     }
 
     function searchForUser() {
-        fetch(`http://localhost:8000/api/userName/${inputtedEmail}/`)
+        fetch(`http://localhost:8000/api/userName/${inputtedEmail}/`,{
+
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + window.localStorage.getItem('token')
+            },
+    })
         .then((res) => res.json())
         .then(
             (data) => {

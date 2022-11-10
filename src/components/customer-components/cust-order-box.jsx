@@ -26,7 +26,13 @@ export default function OrderBox(){
     }, [update])
 
     function fetchData() {
-        fetch(`http://localhost:8000/api/ingredient/`)
+        fetch(`http://localhost:8000/api/ingredient/`,{
+
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + window.localStorage.getItem('token')
+            },
+    })
         .then((res) => res.json())
         .then(
           (data) => {
@@ -98,7 +104,13 @@ export default function OrderBox(){
     //--------------------- DATABASE MODIFING FUNCTIONS -----------------------//
 
     function getCustomerData() {
-        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`,{
+
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + window.localStorage.getItem('token')
+            },
+    })
         .then((res) => res.json())
         .then(
           (data) => {
@@ -123,6 +135,7 @@ export default function OrderBox(){
                 mode: 'cors',
                 headers: {
                   'Content-Type': 'application/json',
+                  "Authorization": "Token " + window.localStorage.getItem('token')
                 },
                 'body': JSON.stringify(data),
               })
@@ -146,6 +159,7 @@ export default function OrderBox(){
                 mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
+                    "Authorization": "Token " + window.localStorage.getItem('token')
                 },
                 'body': JSON.stringify(customerOrder),
                 })

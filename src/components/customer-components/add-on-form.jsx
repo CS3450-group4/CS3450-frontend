@@ -17,7 +17,11 @@ export default function AddOnForm({ingredients, addIngredient}){
     }, [anchorEl])
 
     function fetchData() {
-        fetch(`http://localhost:8000/api/ingredient/`)
+        fetch(`http://localhost:8000/api/ingredient/`, {
+            headers: {
+                "Authorization": "Token " + window.localStorage.getItem('token')
+            },
+    })
         .then((res) => res.json())
         .then(
           (data) => {

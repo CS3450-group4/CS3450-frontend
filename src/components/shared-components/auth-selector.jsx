@@ -26,7 +26,13 @@ export default function AuthSelector(props) {
     }
 
     function fetchData() {
-        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`,{
+
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + window.localStorage.getItem('token')
+            },
+    })
         .then((res) => res.json())
         .then(
           (data) => {
@@ -49,6 +55,7 @@ export default function AuthSelector(props) {
                 mode: 'cors',
                 headers: {
                   'Content-Type': 'application/json',
+                  "Authorization": "Token " + window.localStorage.getItem('token')
                 },
                 'body': JSON.stringify(userData),
               }).then(navigate(viewStrings[+event.target.value], {replace: true}))

@@ -22,7 +22,13 @@ export default function CustomerCartBox() {
     }
 
     function getCustomerData() {
-        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`,{
+
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + window.localStorage.getItem('token')
+            },
+    })
         .then((res) => res.json())
         .then(
           (data) => {
@@ -41,7 +47,8 @@ export default function CustomerCartBox() {
                 method: 'PUT',
                 mode: 'cors',
                 headers: {
-                  'Content-Type': 'application/json',
+                   'Content-Type': 'application/json',
+                   "Authorization": "Token " + window.localStorage.getItem('token')
                 },
                 'body': JSON.stringify(data),
               })
@@ -82,6 +89,7 @@ export default function CustomerCartBox() {
                     mode: 'cors',
                     headers: {
                       'Content-Type': 'application/json',
+                      "Authorization": "Token " + window.localStorage.getItem('token')
                     },
                     'body': JSON.stringify(customerOrder),
                   })

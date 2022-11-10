@@ -18,10 +18,16 @@ export default function MenuGrid() {
     }, [])
 
     function fetchData() {
-        fetch(`http://localhost:8000/api/menu/`)
+        fetch(`http://localhost:8000/api/menu/`,{
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + window.localStorage.getItem('token')
+            },
+    })
         .then((res) => res.json())
         .then(
           (data) => {
+          console.log(data)
             setDrinkList(data)
           }
         )
