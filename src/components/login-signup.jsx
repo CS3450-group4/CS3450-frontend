@@ -34,15 +34,6 @@ export default function Login() {
     setUserName(event.target.value);
   }
 
-  const getUser = () => {
-    fetch('http://localhost:8000/api/user/2', {
-      method: 'GET',
-      headers: {
-          "Authorization": "Token " + window.localStorage.getItem('token')
-      },
-    })
-  }
-
   async function logIn() {
 
     const userData = await fetch('http://localhost:8000/api/login/', {
