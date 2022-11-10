@@ -51,7 +51,7 @@ export default function Login() {
       .then((data) => {
         console.log(data);
         window.localStorage.setItem('curUserID', data.user.id)
-        // navigate(viewStrings[data.user.userinfo.actingLevel]);
+        navigate(viewStrings[data.user.userinfo.actingLevel]);
         return data
       })
       .catch((err) => console.log(err))
