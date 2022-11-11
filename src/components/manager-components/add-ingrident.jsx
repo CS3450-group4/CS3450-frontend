@@ -44,7 +44,7 @@ export default function AddIngrident(props) {
         if (event.target.id == "RetailCost") setIngridentRetailCost(event.target.value);
         else if (event.target.id == "WholeSaleCost") setIngridentWholeSaleCost(event.target.value);
         else if (event.target.id == "InitalStock") setInitalStock(event.target.value);
-        else console.log("sad")
+        else console.log("BACKEND-ERROR # 121")
     }
 
 
@@ -138,7 +138,6 @@ export default function AddIngrident(props) {
               }).then((res) => res.json())
               .then(
                 (data) => {
-                    console.log(data)
                     setIngridentName("");
                     setIngridentRetailCost(0);
                     setIngridentWholeSaleCost(0);

@@ -49,15 +49,12 @@ export default function Login() {
       }),
     }).then((res) => res.json())
       .then((data) => {
-        console.log(data);
         window.localStorage.setItem('curUserID', data.user.id)
         navigate(viewStrings[data.user.userinfo.actingLevel]);
         return data
       })
       .catch((err) => console.log(err))
-    getUser()
     window.localStorage.setItem("token", userData?.token || "")
-    console.log(userData)
     return userData
   }
 

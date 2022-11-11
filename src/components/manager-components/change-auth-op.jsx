@@ -91,7 +91,6 @@ export default function ChangeAuth(props) {
                     setIsInvalidInput(true);
                     return;
                 } 
-                console.log(data);
                 setUser(data);
                 if (data.userinfo.authLevel.includes(2)) {
                     setIsBarista(true);

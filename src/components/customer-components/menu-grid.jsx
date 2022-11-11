@@ -27,7 +27,6 @@ export default function MenuGrid() {
         .then((res) => res.json())
         .then(
           (data) => {
-          console.log(data)
             setDrinkList(data)
           }
         )
