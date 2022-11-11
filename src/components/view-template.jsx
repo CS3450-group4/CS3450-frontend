@@ -10,7 +10,13 @@ import {
 
   export default function ViewTemplate() {
     useEffect(() => {
-        fetch('http://localhost:8000/api/currentUser')
+        fetch('http://localhost:8000/api/currentUser',{
+
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + window.localStorage.getItem('token')
+            },
+    })
           .then((res) => res.json())
           .then((data) => setApiData(data))
     }, [])

@@ -8,7 +8,13 @@ export default function MilkForm({ingredient, changeMilk}){
     }, [])
 
     function fetchData() {
-        fetch(`http://localhost:8000/api/ingredient/`)
+        fetch(`http://localhost:8000/api/ingredient/`,{
+
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + window.localStorage.getItem('token')
+            },
+    })
         .then((res) => res.json())
         .then(
           (data) => {

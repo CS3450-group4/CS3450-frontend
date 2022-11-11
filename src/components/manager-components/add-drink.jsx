@@ -34,6 +34,7 @@ export default function AddDrink(props) {
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json',
+              "Authorization": "Token " + window.localStorage.getItem('token')
             },
           })
           .then((res) => res.json())
@@ -106,6 +107,7 @@ export default function AddDrink(props) {
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json',
+              "Authorization": "Token " + window.localStorage.getItem('token')
             },
             'body': JSON.stringify(newDrink),
           }).then((res) => res.json())

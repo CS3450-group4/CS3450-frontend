@@ -17,7 +17,13 @@ export default function HoursAdder(props) {
     }, [])
 
     function fetchHours() {
-        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": "Token " + window.localStorage.getItem('token')
+        },
+    })
         .then((res) => res.json())
         .then(
           (data) => {
@@ -52,6 +58,7 @@ export default function HoursAdder(props) {
                 mode: 'cors',
                 headers: {
                   'Content-Type': 'application/json',
+                  "Authorization": "Token " + window.localStorage.getItem('token')
                 },
                 'body': JSON.stringify(currentUser),
               }).then(() => fetchHours())

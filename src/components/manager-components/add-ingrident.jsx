@@ -44,7 +44,7 @@ export default function AddIngrident(props) {
         if (event.target.id == "RetailCost") setIngridentRetailCost(event.target.value);
         else if (event.target.id == "WholeSaleCost") setIngridentWholeSaleCost(event.target.value);
         else if (event.target.id == "InitalStock") setInitalStock(event.target.value);
-        else console.log("sad")
+        else console.log("BACKEND-ERROR # 121")
     }
 
 
@@ -83,6 +83,7 @@ export default function AddIngrident(props) {
                 mode: 'cors',
                 headers: {
                   'Content-Type': 'application/json',
+                  "Authorization": "Token " + window.localStorage.getItem('token')
                 },
                 'body': JSON.stringify(data),
               })
@@ -92,7 +93,12 @@ export default function AddIngrident(props) {
     }
 
     function getManagerData() {
-        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`,{
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + window.localStorage.getItem('token')
+            },
+    })
         .then((res) => res.json())
         .then(
           (data) => {
@@ -126,12 +132,12 @@ export default function AddIngrident(props) {
                 mode: 'cors',
                 headers: {
                   'Content-Type': 'application/json',
+                  "Authorization": "Token " + window.localStorage.getItem('token')
                 },
                 'body': JSON.stringify(newIngrident),
               }).then((res) => res.json())
               .then(
                 (data) => {
-                    console.log(data)
                     setIngridentName("");
                     setIngridentRetailCost(0);
                     setIngridentWholeSaleCost(0);

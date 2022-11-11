@@ -32,6 +32,7 @@ export default function BuyIngredients(props) {
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json',
+              "Authorization": "Token " + window.localStorage.getItem('token')
             },
           })
           .then((res) => res.json())

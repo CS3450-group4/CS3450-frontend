@@ -25,6 +25,7 @@ export default function RemoveDrinkView(props) {
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json',
+              "Authorization": "Token " + window.localStorage.getItem('token')
             },
           })
           .then((res) => res.json())
@@ -41,6 +42,7 @@ export default function RemoveDrinkView(props) {
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json',
+              "Authorization": "Token " + window.localStorage.getItem('token')
             },
           })
           .then((res) => res.json())
