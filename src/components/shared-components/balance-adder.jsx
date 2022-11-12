@@ -21,7 +21,7 @@ export default function BalanceAdder(props) {
             headers: {
                 "Authorization": "Token " + window.localStorage.getItem('token')
             },
-    })
+        })
         .then((res) => res.json())
         .then(
           (data) => {

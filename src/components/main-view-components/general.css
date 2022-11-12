@@ -104,3 +104,11 @@
     border-radius: 10px;
 }
 
+.UnitTestContainer {
+    margin-top: 20%;
+    background-color: aliceblue;
+    height: min-content;
+    padding: 16px;
+    border-radius: 10px;
+}
+

@@ -48,10 +48,10 @@ export default function RemoveDrinkView(props) {
           .then((res) => res.json())
           .then((data) => {
             setIsSuccessfulRemoval("success");
-            }).catch((e) => {
-                alert("Drink Removal Failed!");
-                console.log(e);
-            })
+          }).catch((e) => {
+              alert("Drink Removal Failed!");
+              console.log(e);
+          })
     }
     return (
         <Box className={props.className}>
