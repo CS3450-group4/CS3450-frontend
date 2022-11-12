@@ -2,6 +2,7 @@ import { Typography, Box, Button } from "@mui/material"
 import { Stack } from "@mui/system"
 import MilkForm from "./milk-form"
 import LessRegExtraForm from "./less-reg-extra-form"
+import "./customer.css"
 
 export default function IngredientForm({ingredients, changeMilk, changeIngredientAmount, removeIngredient}){
 
@@ -13,10 +14,7 @@ export default function IngredientForm({ingredients, changeMilk, changeIngredien
         }
         if (ingredient.isMilk) {
             return(
-                <Stack direction="row" key={index}>
-                    <Typography>Milk</Typography>
-                    <MilkForm ingredient={ingredient} changeMilk={changeMilk}></MilkForm>
-                </Stack>
+                <MilkForm ingredient={ingredient} changeMilk={changeMilk}></MilkForm>
             )  
         }
     });
@@ -30,7 +28,6 @@ export default function IngredientForm({ingredients, changeMilk, changeIngredien
         if(!ingredient.isMilk) {
             return(
                 <Stack direction="row" key={index}>
-                    <Typography>{ingredient['name']}</Typography>
                     <LessRegExtraForm ingredient={ingredient} changeIngredientAmount={changeIngredientAmount}></LessRegExtraForm>
                     <Button onClick={() => {removeIngredient(ingredient)}}>X</Button>
                 </Stack>
@@ -38,7 +35,7 @@ export default function IngredientForm({ingredients, changeMilk, changeIngredien
         }
     })
     
-    function BothForms() {
+    function IngredientForms() {
         return (
             <Stack spacing={2}>
                 {milkMap}
@@ -48,10 +45,10 @@ export default function IngredientForm({ingredients, changeMilk, changeIngredien
     }
 
     return(
-        <Box>
+        <Box className="IngredientForm">
         {
             (ingredients.length != 0)  ? (
-                <BothForms></BothForms>
+                <IngredientForms></IngredientForms>
             ) : <Typography>EMPTY DRINK</Typography> 
         }
         </Box>

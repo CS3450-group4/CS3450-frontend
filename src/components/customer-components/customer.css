@@ -1,0 +1,16 @@
+.GridContainer {
+    align-items: stretch;
+    /* margin: 2%; */
+}
+
+.CustomerOrderBox {
+    width: 75%;
+    background-color: aliceblue;
+    padding: 16px;
+    margin: 2%;
+    border-radius: 2%;
+}
+
+.IngredientForm {
+    width: 100%;
+}

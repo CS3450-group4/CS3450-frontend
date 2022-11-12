@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import AddOnForm from "./add-on-form"
 import IngredientForm from "./ingredient-form"
 import SizeForm from "./size-form"
+import "./customer.css"
 
 export default function OrderBox(){
     const drinkObj = JSON.parse(window.localStorage.getItem('selectedDrink'))
@@ -236,29 +237,34 @@ export default function OrderBox(){
     }
 
     return(
-        <Box width="75%">
+        <Box className="CustomerOrderBox">
             <Typography> ORDER SCREEN</Typography>
             <Typography>{drinkObj.name}</Typography>
             <Typography>${(price/100).toFixed(2)}</Typography>
             <Stack 
-                direction="row"
                 justifyContent="center"
                 alignItems="center"
+                spacing={2}
             >
                 <SizeForm size={size} changeSize={changeSize}></SizeForm>
-            </Stack>
-            <Stack>
-                <IngredientForm ingredients={ingredients} 
+
+                <IngredientForm 
+                ingredients={ingredients} 
                 changeIngredientAmount={changeIngredientAmount} 
                 changeMilk={changeMilk}
-                removeIngredient={removeIngredient}></IngredientForm>
+                removeIngredient={removeIngredient}/>
+
+                <AddOnForm ingredients={ingredients} addIngredient={addIngredient}/>
+
+                <Stack direction="row" spacing={2}>
+                    <Button onClick={() => navigation("../menu", {replace: true})} variant="contained"> Cancel Order </Button>
+                    <Button onClick={() => {
+                        getCustomerData()
+                        }} variant="contained"> Order Drink</Button>
+                </Stack>
             </Stack>
-                <AddOnForm ingredients={ingredients} addIngredient={addIngredient}></AddOnForm>
             
-            <Button onClick={() => navigation("../menu", {replace: true})} variant="contained"> Cancel Order </Button>
-            <Button onClick={() => {
-                getCustomerData()
-                }} variant="contained"> Order Drink</Button>
+            
         </Box> 
     )
 }
