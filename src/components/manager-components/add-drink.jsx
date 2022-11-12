@@ -12,6 +12,8 @@ import {
     InputLabel,
     Select,
   } from "@mui/material";
+import BackBtn from "../shared-components/back-btn";
+import "./manager.css"
 export default function AddDrink(props) {
     const [drinkName, setDrinkName] = useState("");
     const [drinkPrice, setDrinkPrice] = useState(0);
@@ -116,6 +118,9 @@ export default function AddDrink(props) {
                 console.log(data)
                 setDrinkName("");
                 setDrinkPrice("");
+                setSelectedMilk(null);
+                setSelectedIngredients([]);
+                setAvailableIngredients([]);
                 fetchData();
             }
           )
@@ -128,9 +133,10 @@ export default function AddDrink(props) {
 
     return (
         <Box className={props.className}>
+            <BackBtn className="BackBtnContainer" endPoint="../options"/>
             <Stack direction="column" spacing={3}>
                 <Typography variant="h4">Add New Drink</Typography>
-                <TextField error={isNameError} label="Name" inputProps={{ maxLength: 100 }} value={drinkName} onChange={((newVal) => {handleNameChange(newVal)})} />
+                <TextField error={isNameError} label="Name" inputProps={{ maxLength: 16 }} value={drinkName} onChange={((newVal) => {handleNameChange(newVal)})} />
                 <TextField error={isPriceError} type="number" InputProps={{inputProps: {min: 0}}} id="Price" label="Price" value={drinkPrice} onChange={((newVal) => {handlePriceChange(newVal)})} />
                 <FormControl fullWidth>
                     <InputLabel id="select-auth-label">Default Milk</InputLabel>

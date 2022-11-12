@@ -14,6 +14,7 @@ import {
     Select,
     FormControlLabel
   } from "@mui/material";
+import BackBtn from "../shared-components/back-btn";
 export default function AddIngrident(props) {
     const [ingridentName, setIngridentName] = useState("");
     const [ingridentWholeSaleCost, setIngridentWholeSaleCost] = useState(0);
@@ -156,6 +157,7 @@ export default function AddIngrident(props) {
 
     return (
         <Box className={props.className}>
+            <BackBtn className="BackBtnContainer" endPoint="../options"/>
             <Stack direction="column" spacing={3}>
                 <Typography variant="h4">Add New Ingrident</Typography>
                 <TextField label="Name" inputProps={{ maxLength: 100 }} value={ingridentName} onChange={((newVal) => {handleNameChange(newVal)})} />
