@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, Select, MenuItem, css } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem} from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function MilkForm({ingredient, changeMilk}){
@@ -40,7 +40,6 @@ export default function MilkForm({ingredient, changeMilk}){
                 name={ingredient.name}
                 onChange={changeMilk}
             >
-                {/* {milkMenuItem} */}
                 {milkList.map((milk, index) => 
                     <MenuItem value={milk.name} key={index}>{milk.name}</MenuItem>
                 )}
