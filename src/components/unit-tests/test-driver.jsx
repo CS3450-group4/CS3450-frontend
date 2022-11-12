@@ -254,7 +254,6 @@ export default function RunAllTests(props) {
         <Button variant="contained" style={{width: '10em'}} onClick={() => startTesting()}>Run Tests</Button>
         <Typography>{resultString}</Typography>
       </Stack>
-      
     </Box>
   )
 }
