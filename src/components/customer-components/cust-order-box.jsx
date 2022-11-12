@@ -27,7 +27,6 @@ export default function OrderBox(){
 
     function fetchData() {
         fetch(`http://localhost:8000/api/ingredient/`,{
-
             method: 'GET',
             headers: {
                 "Authorization": "Token " + window.localStorage.getItem('token')
@@ -102,6 +101,41 @@ export default function OrderBox(){
 
 
     //--------------------- DATABASE MODIFING FUNCTIONS -----------------------//
+    function payManager(price) {
+        var managerID = null;
+        var managerUserData = null;
+        fetch(`http://localhost:8000/api/user/all`,{
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + window.localStorage.getItem('token')
+            },
+        }).then((res) => res.json())
+        .then((users) => {
+            users.forEach(user => {
+                if (user.userinfo.authLevel.includes(3)) {
+                    managerUserData = user;
+                    managerID = user.id
+                }
+            })
+            if (managerID != null && managerUserData != null) {
+                managerUserData.userinfo.balance += price
+                try {
+                    fetch(`http://localhost:8000/api/user/${managerID}/`, {
+                        method: 'PUT',
+                        mode: 'cors',
+                        headers: {
+                          'Content-Type': 'application/json',
+                          "Authorization": "Token " + window.localStorage.getItem('token')
+                        },
+                        'body': JSON.stringify(managerUserData),
+                      })
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        })
+         
+    }
 
     function getCustomerData() {
         fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`,{
@@ -119,6 +153,7 @@ export default function OrderBox(){
                 if(checkStock(ingredients)) {
                     data.userinfo.balance = data.userinfo.balance - (+price)
                     updateCustomerBalance(data);
+                    payManager(price)
                     sumbitDrink()
                     navigation("../menu", {replace: true})
                 }else {
