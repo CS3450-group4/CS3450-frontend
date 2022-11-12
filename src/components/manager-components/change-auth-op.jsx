@@ -8,6 +8,7 @@ import {
     FormControlLabel,
     Checkbox,
   } from "@mui/material";
+import BackBtn from "../shared-components/back-btn";
 export default function ChangeAuth(props) {
     const [inputtedEmail, setInputtedEmail] = useState("");
     const [isInvalidInput, setIsInvalidInput] = useState(false);
@@ -110,6 +111,7 @@ export default function ChangeAuth(props) {
 
     return (
         <Box className={props.className}>
+            <BackBtn className="BackBtnContainer" endPoint="../options"/>
             <Stack direction="row">
                 <TextField label="Email" error={isInvalidInput} value={inputtedEmail} onChange={(newVal) => updateEmail(newVal)}></TextField>
                 <Button onClick={() => searchForUser()}>Search</Button>
