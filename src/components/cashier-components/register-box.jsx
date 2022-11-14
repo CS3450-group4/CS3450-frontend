@@ -1,5 +1,6 @@
-import { Box, Button, Paper, Typography } from "@mui/material";
+import { Box, Button, Grid, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import "./cashier.css"
 
 export default function RegisterBox(){
     const [orders, setOrders] = useState([])
@@ -58,21 +59,35 @@ export default function RegisterBox(){
     }
 
     function OrderItem() {
+        if (orders.length === 0) {
+            return(
+                <Grid item xs={3}>
+                    <Paper elevation={3} variant="outlined" className="Order">
+                        <Typography sx={{ fontSize: 24 }}> No Current Orders</Typography>
+                        <Button onClick={() => {window.location.reload(false);}} variant={"contained"}> Refresh</Button>
+                    </Paper>
+                </Grid>
+            )
+        }
         return orders.map((order, index) => {
             return(
-                <Paper elevation={3} variant="outlined" key={index} >
-                    <Typography>Customer {order.user}</Typography>
-                    <Typography>{order.size} {Object.keys(order.ingredientList)[0]}</Typography>
-                    <Typography>Price ${(order.price/100).toFixed(2)}</Typography>
-                    <Button onClick={() => {sendToBarista(order)}} variant={"contained"}> Send to Barista</Button>
-                </Paper>
+                <Grid item xs={3} key={index}>
+                    <Paper elevation={3} variant="outlined" className="Order">
+                        <Typography sx={{ fontSize: 22 }}>Customer {order.user}</Typography>
+                        <Typography sx={{ fontSize: 18 }}>{order.size} {Object.keys(order.ingredientList)[0]}</Typography>
+                        <Typography sx={{ fontSize: 18 }}>Price ${(order.price/100).toFixed(2)}</Typography>
+                        <Button onClick={() => {sendToBarista(order)}} variant={"contained"}> Send to Barista</Button>
+                    </Paper>
+                </Grid>
             )
         })
     }
 
     return(
-        <Box>
-            {OrderItem()}
+        <Box className="Register">
+            <Grid container rowSpacing={4} columnSpacing={{ xs: 10, sm: 5, md: 3 }} alignItems="center" justifyContent="center">
+                {OrderItem()}
+            </Grid>
         </Box>
     )
 }
