@@ -1,6 +1,18 @@
-.GridContainer {
-    align-items: stretch;
-    /* margin: 2%; */
+.Menu {
+    border-radius: 2%;
+    background-color: aliceblue;
+    padding: 16px;
+    margin: 2%;
+    flex-grow: 1;
+}
+.DrinkCard  {
+    height: 100%;
+}
+
+.DrinkCardMedia {
+    border-radius: 100%;
+    justify-content: center;
+    align-items: center;
 }
 
 .CustomerOrderBox {

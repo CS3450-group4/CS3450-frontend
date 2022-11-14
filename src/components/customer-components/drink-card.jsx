@@ -7,7 +7,7 @@ import {
     CardActions,
     CardHeader,
   } from "@mui/material";
-import "../main-view-components/general.css"
+import "./customer.css"
 import { useNavigate } from "react-router-dom";
 
   export default function DrinkCard({menuitem}) {
@@ -42,7 +42,9 @@ import { useNavigate } from "react-router-dom";
     }
 
     return (
-        <Card className={"DrinkCard"} variant="outlined" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column', maxWidth: 250}}>
+        <Card className="DrinkCard" variant="outlined" 
+        // style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column', maxWidth: 250}}
+        >
             <CardHeader
                 title={menuitem.name}
                 subheader={`Price: $${(menuitem.price/100).toFixed(2)}`}
