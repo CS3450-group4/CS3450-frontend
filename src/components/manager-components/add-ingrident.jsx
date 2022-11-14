@@ -14,6 +14,7 @@ import {
     Select,
     FormControlLabel
   } from "@mui/material";
+import BackBtn from "../shared-components/back-btn";
 export default function AddIngrident(props) {
     const [ingridentName, setIngridentName] = useState("");
     const [ingridentWholeSaleCost, setIngridentWholeSaleCost] = useState(0);
@@ -44,7 +45,7 @@ export default function AddIngrident(props) {
         if (event.target.id == "RetailCost") setIngridentRetailCost(event.target.value);
         else if (event.target.id == "WholeSaleCost") setIngridentWholeSaleCost(event.target.value);
         else if (event.target.id == "InitalStock") setInitalStock(event.target.value);
-        else console.log("sad")
+        else console.log("BACKEND-ERROR # 121")
     }
 
 
@@ -83,6 +84,7 @@ export default function AddIngrident(props) {
                 mode: 'cors',
                 headers: {
                   'Content-Type': 'application/json',
+                  "Authorization": "Token " + window.localStorage.getItem('token')
                 },
                 'body': JSON.stringify(data),
               })
@@ -92,7 +94,12 @@ export default function AddIngrident(props) {
     }
 
     function getManagerData() {
-        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`)
+        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`,{
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + window.localStorage.getItem('token')
+            },
+    })
         .then((res) => res.json())
         .then(
           (data) => {
@@ -126,12 +133,12 @@ export default function AddIngrident(props) {
                 mode: 'cors',
                 headers: {
                   'Content-Type': 'application/json',
+                  "Authorization": "Token " + window.localStorage.getItem('token')
                 },
                 'body': JSON.stringify(newIngrident),
               }).then((res) => res.json())
               .then(
                 (data) => {
-                    console.log(data)
                     setIngridentName("");
                     setIngridentRetailCost(0);
                     setIngridentWholeSaleCost(0);
@@ -150,6 +157,7 @@ export default function AddIngrident(props) {
 
     return (
         <Box className={props.className}>
+            <BackBtn className="BackBtnContainer" endPoint="../options"/>
             <Stack direction="column" spacing={3}>
                 <Typography variant="h4">Add New Ingrident</Typography>
                 <TextField label="Name" inputProps={{ maxLength: 100 }} value={ingridentName} onChange={((newVal) => {handleNameChange(newVal)})} />

@@ -5,6 +5,7 @@ import BaristaView from './components/main-view-components/barista-view';
 import CashierView from './components/main-view-components/cashier-view';
 import ManagerView from './components/main-view-components/manager-view';
 import CustomerView from './components/main-view-components/customer-view';
+import UnitTests from './components/main-view-components/unit-tests';
 import Login from './components/login-signup';
 
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="cashier/*" element={<CashierView />} />
         <Route path="barista/*" element={<BaristaView />} />
         <Route path="manager/*" element={<ManagerView />} />
+        <Route path="unitTests/*" element={<UnitTests />} />
       </Routes>
     </BrowserRouter>
 

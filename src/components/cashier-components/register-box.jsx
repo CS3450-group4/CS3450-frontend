@@ -9,7 +9,12 @@ export default function RegisterBox(){
     }, [])
 
     function fetchData() {
-        fetch(`http://localhost:8000/api/orders/`)
+        fetch(`http://localhost:8000/api/orders/`, {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": "Token " + window.localStorage.getItem('token')
+        },
+    })
         .then((res) => res.json())
         .then(
           (data) => {
@@ -33,7 +38,8 @@ export default function RegisterBox(){
                 method: 'PUT',
                 mode: 'cors',
                 headers: {
-                    'Content-Type': 'application/json',
+                  'Content-Type': 'application/json',
+                  "Authorization": "Token " + window.localStorage.getItem('token')
                 },
                 'body': JSON.stringify(changedOrder),
                 })

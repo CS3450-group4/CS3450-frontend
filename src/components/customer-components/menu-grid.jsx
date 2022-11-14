@@ -1,12 +1,10 @@
 import {
     Grid,
-    Box,
-    Button
   } from "@mui/material";
 import { useEffect, useState } from "react";
 import DrinkCard from  "./drink-card"
-import "../main-view-components/general.css"
 import { useNavigate } from "react-router-dom";
+import "./customer.css"
 
 
 export default function MenuGrid() {
@@ -18,7 +16,12 @@ export default function MenuGrid() {
     }, [])
 
     function fetchData() {
-        fetch(`http://localhost:8000/api/menu/`)
+        fetch(`http://localhost:8000/api/menu/`,{
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + window.localStorage.getItem('token')
+            },
+    })
         .then((res) => res.json())
         .then(
           (data) => {
@@ -48,10 +51,8 @@ export default function MenuGrid() {
     );
 
     return( 
-        <Box>
-            <Grid container className="GridContainer" alignItems="stretch" >
-                {gridItems}
-            </Grid>
-        </Box> 
+        <Grid container className="GridContainer" alignItems="stretch" >
+            {gridItems}
+        </Grid>
     )
 }

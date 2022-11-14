@@ -34,7 +34,6 @@ export default function Login() {
     setUserName(event.target.value);
   }
 
-
   async function logIn() {
 
     const userData = await fetch('http://localhost:8000/api/login/', {
@@ -48,16 +47,14 @@ export default function Login() {
         username: userName,
         password: password
       }),
-      credentials: 'include'
     }).then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        window.localStorage.setItem('curUserID', data.id)
-        navigate(viewStrings[data.userinfo.actingLevel]);
+        window.localStorage.setItem('curUserID', data.user.id)
+        navigate(viewStrings[data.user.userinfo.actingLevel]);
         return data
       })
       .catch((err) => console.log(err))
-    console.log(userData)
+    window.localStorage.setItem("token", userData?.token || "")
     return userData
   }
 

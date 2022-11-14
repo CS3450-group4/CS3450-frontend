@@ -8,6 +8,7 @@ import {
     FormControlLabel,
     Checkbox,
   } from "@mui/material";
+import BackBtn from "../shared-components/back-btn";
 export default function ChangeAuth(props) {
     const [inputtedEmail, setInputtedEmail] = useState("");
     const [isInvalidInput, setIsInvalidInput] = useState(false);
@@ -40,6 +41,7 @@ export default function ChangeAuth(props) {
                 mode: 'cors',
                 headers: {
                   'Content-Type': 'application/json',
+                  "Authorization": "Token " + window.localStorage.getItem('token')
                 },
                 'body': JSON.stringify(user),
               })
@@ -61,6 +63,7 @@ export default function ChangeAuth(props) {
                 mode: 'cors',
                 headers: {
                   'Content-Type': 'application/json',
+                  "Authorization": "Token " + window.localStorage.getItem('token')
                 },
               })
             .then((res) => {
@@ -75,7 +78,13 @@ export default function ChangeAuth(props) {
     }
 
     function searchForUser() {
-        fetch(`http://localhost:8000/api/userName/${inputtedEmail}/`)
+        fetch(`http://localhost:8000/api/userName/${inputtedEmail}/`,{
+
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + window.localStorage.getItem('token')
+            },
+    })
         .then((res) => res.json())
         .then(
             (data) => {
@@ -83,7 +92,6 @@ export default function ChangeAuth(props) {
                     setIsInvalidInput(true);
                     return;
                 } 
-                console.log(data);
                 setUser(data);
                 if (data.userinfo.authLevel.includes(2)) {
                     setIsBarista(true);
@@ -103,6 +111,7 @@ export default function ChangeAuth(props) {
 
     return (
         <Box className={props.className}>
+            <BackBtn className="BackBtnContainer" endPoint="../options"/>
             <Stack direction="row">
                 <TextField label="Email" error={isInvalidInput} value={inputtedEmail} onChange={(newVal) => updateEmail(newVal)}></TextField>
                 <Button onClick={() => searchForUser()}>Search</Button>

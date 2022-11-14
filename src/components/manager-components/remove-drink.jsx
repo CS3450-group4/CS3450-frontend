@@ -8,6 +8,7 @@ import {
     FormControlLabel,
     Checkbox,
   } from "@mui/material";
+import BackBtn from "../shared-components/back-btn";
 export default function RemoveDrinkView(props) {
     const [isInvalidInput, setIsInvalidInput] = useState(false);
     const [isSuccessfulRemoval, setIsSuccessfulRemoval] = useState("secondary");
@@ -25,6 +26,7 @@ export default function RemoveDrinkView(props) {
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json',
+              "Authorization": "Token " + window.localStorage.getItem('token')
             },
           })
           .then((res) => res.json())
@@ -41,22 +43,24 @@ export default function RemoveDrinkView(props) {
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json',
+              "Authorization": "Token " + window.localStorage.getItem('token')
             },
           })
           .then((res) => res.json())
           .then((data) => {
             setIsSuccessfulRemoval("success");
-            }).catch((e) => {
-                alert("Drink Removal Failed!");
-                console.log(e);
-            })
+          }).catch((e) => {
+              alert("Drink Removal Failed!");
+              console.log(e);
+          })
     }
     return (
         <Box className={props.className}>
-            <Stack direction="column" spacing={3}>
-                <TextField label="Drink Name" error={isInvalidInput} value={drinkName} onChange={((newVal) => updateDrinkName(newVal))}></TextField>
-                <Button onClick={() => findDrink() }>Remove</Button>
-            </Stack>
+          <BackBtn className="BackBtnContainer" endPoint="../options"/>
+          <Stack direction="column" spacing={3}>
+            <TextField label="Drink Name" error={isInvalidInput} value={drinkName} onChange={((newVal) => updateDrinkName(newVal))}></TextField>
+            <Button onClick={() => findDrink() }>Remove</Button>
+          </Stack>
         </Box>
     )
 }

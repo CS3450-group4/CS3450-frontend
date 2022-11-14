@@ -34,6 +34,7 @@ const TestApi = ({
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
+        "Authorization": "Token " + window.localStorage.getItem('token')
       },
       'body': JSON.stringify(newItem),
     })
