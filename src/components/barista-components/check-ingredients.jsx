@@ -21,7 +21,12 @@ export default function AddDrink(props) {
 
   function fetchOrderData() {
     setOrdersLoading(true)
-    fetch('http://localhost:8000/api/orders/')
+    fetch('http://localhost:8000/api/orders/', {
+      method: 'GET',
+      headers: {
+        "Authorization": "Token " + window.localStorage.getItem('token')
+      },
+    })
       .then((res) => {
         return res.json()
       })
