@@ -64,20 +64,5 @@ export default function AddOnForm({ingredients, addIngredient}){
                 key={index}>{ing.name}</MenuItem>)}
             </Menu>
         </Box>
-        // <FormControl fullWidth>
-        //     <InputLabel id="label">Add On</InputLabel>
-        //     <Select
-        //         labelId="label"
-        //         id="select"
-        //         value={newIngs[0]}
-        //         label="select"
-        //         name="Add On"
-        //         onChange={addIngredient}
-        //     >
-        //         {newIngs.map((ing, index) => 
-        //             <MenuItem value={ing.name} key={index}>{ing.name}</MenuItem>
-        //         )}
-        //     </Select>
-        //  </FormControl>
     )
 }
