@@ -39,9 +39,6 @@ export default function IngredientForm({ingredients, changeMilk, changeIngredien
                     lessRegExtra.push(ingredient.name)
                 }
             });
-            console.log(milks)
-            console.log(yesOrNo)
-            console.log(lessRegExtra)
             setMilks(milks)
             setYesOrNo(yesOrNo)
             setLessRegExtra(lessRegExtra)
@@ -51,8 +48,6 @@ export default function IngredientForm({ingredients, changeMilk, changeIngredien
 
     const yesNoRemoval = (event)=> {
         const {value, name} = event.target
-        console.log(event.target)
-        console.log(ingredients)
         ingredients.map(ing => {
             if(ing.name === name && value === 0) {
                 removeIngredient(ing)
