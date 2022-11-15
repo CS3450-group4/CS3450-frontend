@@ -43,6 +43,7 @@ import { useNavigate } from "react-router-dom";
 
     return (
         <Card className="DrinkCard" variant="outlined" 
+        sx={{ display: 'flex', flexDirection: 'column' }}
         // style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column', maxWidth: 250}}
         >
             <CardHeader
@@ -60,7 +61,7 @@ import { useNavigate } from "react-router-dom";
                     {DrinkIngredients(menuitem.ingredientList)}
                 </Typography>
             </CardContent>
-            <CardActions>
+            <CardActions className="DrinkButton">
                 <Button size="medium" onClick={() => {
                     window.localStorage.setItem('selectedDrink', JSON.stringify(selectedDrink));
                     navigation("../drink", {replace: true})}

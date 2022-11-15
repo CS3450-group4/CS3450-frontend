@@ -8,6 +8,11 @@
 .DrinkCard  {
     height: 100%;
 }
+.DrinkButton {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
 
 .DrinkCardMedia {
     border-radius: 100%;
