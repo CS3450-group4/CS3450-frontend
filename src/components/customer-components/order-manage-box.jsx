@@ -43,7 +43,7 @@ export default function OrderManageBox() {
           var custHistory = []
           data.forEach(order => {
             if (order.user == window.localStorage.getItem('curUserID')) {
-              if (order.orderStatus === "forPickup") {
+              if (order.orderStatus === "fullfilled") {
                 custPickups.push(order)
               }
               if (order.orderStatus === "pickuped") {
