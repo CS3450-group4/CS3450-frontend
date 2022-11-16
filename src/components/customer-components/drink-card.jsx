@@ -6,6 +6,7 @@ import {
     CardContent,
     CardActions,
     CardHeader,
+    createTheme,
   } from "@mui/material";
 import "./customer.css"
 import { useNavigate } from "react-router-dom";
@@ -42,10 +43,7 @@ import { useNavigate } from "react-router-dom";
     }
 
     return (
-        <Card className="DrinkCard" variant="outlined" 
-        sx={{ display: 'flex', flexDirection: 'column' }}
-        // style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column', maxWidth: 250}}
-        >
+        <Card className="DrinkCard" variant="outlined">
             <CardHeader
                 title={menuitem.name}
                 subheader={`Price: $${(menuitem.price/100).toFixed(2)}`}
@@ -56,13 +54,13 @@ import { useNavigate } from "react-router-dom";
             image={require('./frap1.jpg')}
             alt="Frappichino"
             />
-            <CardContent>
+            <CardContent className="DrinkCardContent">
                 <Typography variant="caption" >
                     {DrinkIngredients(menuitem.ingredientList)}
                 </Typography>
             </CardContent>
             <CardActions className="DrinkButton">
-                <Button size="medium" onClick={() => {
+                <Button variant="contained" size="medium" onClick={() => {
                     window.localStorage.setItem('selectedDrink', JSON.stringify(selectedDrink));
                     navigation("../drink", {replace: true})}
                 }>Order</Button>

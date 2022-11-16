@@ -270,15 +270,14 @@ export default function OrderManageBox() {
   return (
     <Stack spacing={2}>
       <Typography> Drinks Ready For Pickup </Typography>
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} className="OrderManageStack">
         < PickUps />
       </Stack>
       <Divider />
       <Typography> Drinks You've Ordered In the Past </Typography>
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} className="OrderManageStack">
         < DrinkHistory />
       </Stack>
-
     </Stack>
 
   )
