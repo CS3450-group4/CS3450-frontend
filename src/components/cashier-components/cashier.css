@@ -1,0 +1,11 @@
+.Register {
+    border-radius: 2%;
+    background-color: aliceblue;
+    padding: 16px;
+    margin: 2%;
+    flex-grow: 1;
+}
+
+.Order {
+    padding: 5%;
+}
