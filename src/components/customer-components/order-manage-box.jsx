@@ -13,12 +13,12 @@ export default function OrderManageBox() {
   }, [update])
 
   function fetchIngs() {
-    fetch(`http://localhost:8000/api/ingredient/`,{
+    fetch(`http://localhost:8000/api/ingredient/`, {
 
-            method: 'GET',
-            headers: {
-                "Authorization": "Token " + window.localStorage.getItem('token')
-            },
+      method: 'GET',
+      headers: {
+        "Authorization": "Token " + window.localStorage.getItem('token')
+      },
     })
       .then((res) => res.json())
       .then(
@@ -29,12 +29,12 @@ export default function OrderManageBox() {
   }
 
   function fetchData() {
-    fetch(`http://localhost:8000/api/orders/`,{
+    fetch(`http://localhost:8000/api/orders/`, {
 
-            method: 'GET',
-            headers: {
-                "Authorization": "Token " + window.localStorage.getItem('token')
-            },
+      method: 'GET',
+      headers: {
+        "Authorization": "Token " + window.localStorage.getItem('token')
+      },
     })
       .then((res) => res.json())
       .then(
@@ -43,7 +43,7 @@ export default function OrderManageBox() {
           var custHistory = []
           data.forEach(order => {
             if (order.user == window.localStorage.getItem('curUserID')) {
-              if (order.orderStatus === "forPickup") {
+              if (order.orderStatus === "fullfilled") {
                 custPickups.push(order)
               }
               if (order.orderStatus === "pickuped") {
@@ -145,46 +145,46 @@ export default function OrderManageBox() {
   function payManager(price) {
     var managerID = null;
     var managerUserData = null;
-    fetch(`http://localhost:8000/api/user/all`,{
-        method: 'GET',
-        headers: {
-            "Authorization": "Token " + window.localStorage.getItem('token')
-        },
+    fetch(`http://localhost:8000/api/user/all`, {
+      method: 'GET',
+      headers: {
+        "Authorization": "Token " + window.localStorage.getItem('token')
+      },
     }).then((res) => res.json())
-    .then((users) => {
+      .then((users) => {
         users.forEach(user => {
-            if (user.userinfo.authLevel.includes(3)) {
-                managerUserData = user;
-                managerID = user.id
-            }
+          if (user.userinfo.authLevel.includes(3)) {
+            managerUserData = user;
+            managerID = user.id
+          }
         })
         if (managerID != null && managerUserData != null) {
-            managerUserData.userinfo.balance += price
-            try {
-                fetch(`http://localhost:8000/api/user/${managerID}/`, {
-                    method: 'PUT',
-                    mode: 'cors',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      "Authorization": "Token " + window.localStorage.getItem('token')
-                    },
-                    'body': JSON.stringify(managerUserData),
-                  })
-            } catch (error) {
-                console.log(error);
-            }
+          managerUserData.userinfo.balance += price
+          try {
+            fetch(`http://localhost:8000/api/user/${managerID}/`, {
+              method: 'PUT',
+              mode: 'cors',
+              headers: {
+                'Content-Type': 'application/json',
+                "Authorization": "Token " + window.localStorage.getItem('token')
+              },
+              'body': JSON.stringify(managerUserData),
+            })
+          } catch (error) {
+            console.log(error);
+          }
         }
-    })
-     
-}
+      })
+
+  }
 
   function getCustomerData(order) {
-    fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`,{
+    fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
 
-            method: 'GET',
-            headers: {
-                "Authorization": "Token " + window.localStorage.getItem('token')
-            },
+      method: 'GET',
+      headers: {
+        "Authorization": "Token " + window.localStorage.getItem('token')
+      },
     })
       .then((res) => res.json())
       .then(
