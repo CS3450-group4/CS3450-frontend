@@ -10,14 +10,14 @@ import "./composite-header.css"
 export default function CompositeTitleHeader() {
     return (
         <Box className="TitleContainer">
-            <AuthSelector className="AuthSelectorContainer"/>
+            <AuthSelector className="button-2"/>
             <Box className="Title">
                 <Typography variant="h1" component="h1">
                     Frappy Time
                 </Typography>
             </Box>
-            <BalanceAdder className="BalanceAdder" />
-            <SignOutBtn className="SignOutBtn"/>
+            <BalanceAdder className="button-3" />
+            <SignOutBtn className="button-1"/>
         </Box>
 
     )

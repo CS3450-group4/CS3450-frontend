@@ -14,3 +14,28 @@
 .IngredientForm {
     width: 100%;
 }
+.button {
+    background-color: lightblue; /* Green */
+    border: 0;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    position: absolute;
+    left: 200px;
+    top: 60px;
+    border-radius: 10px;
+    content: 'Order manage';
+    /* width: 140px;
+    left: 5%;
+    position: absolute;
+    right: 2%;
+    margin: 4px;
+    border-radius: 10px;
+    background-color: lightblue;
+    border: 0;
+    box-sizing: border-box;
+    color: #ffffff; */
+}
