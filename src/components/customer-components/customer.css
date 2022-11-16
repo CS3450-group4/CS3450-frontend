@@ -46,3 +46,16 @@
     margin: 2%;
     border-radius: 3%;
 }
+
+.OrderManagePaper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.OrderManageButton {
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-end;
+}

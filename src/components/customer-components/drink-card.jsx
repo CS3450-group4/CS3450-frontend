@@ -7,9 +7,21 @@ import {
     CardActions,
     CardHeader,
     createTheme,
+    ThemeProvider,
   } from "@mui/material";
 import "./customer.css"
 import { useNavigate } from "react-router-dom";
+
+const { palette } = createTheme();
+const theme = createTheme({
+  palette: {
+    mygrey: palette.augmentColor({
+      color: {
+        main: "#3A3A3A"
+      }
+    })
+  }
+});
 
   export default function DrinkCard({menuitem}) {
     let navigation = useNavigate()
@@ -60,10 +72,12 @@ import { useNavigate } from "react-router-dom";
                 </Typography>
             </CardContent>
             <CardActions className="DrinkButton">
-                <Button variant="contained" size="medium" onClick={() => {
+                <ThemeProvider theme={theme}>
+                <Button color="mygrey" variant="contained" size="medium" onClick={() => {
                     window.localStorage.setItem('selectedDrink', JSON.stringify(selectedDrink));
                     navigation("../drink", {replace: true})}
                 }>Order</Button>
+                </ThemeProvider>
             </CardActions>
             
         </Card>
