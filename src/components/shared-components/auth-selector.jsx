@@ -1,86 +1,92 @@
-import {useState, useEffect, isFocused } from "react";
+import { useState, useEffect } from "react";
 import {
-    Box,
-    MenuItem,
-    FormControl,
-    Select,
-    InputLabel
-  } from "@mui/material";
-import { useNavigate, useLocation } from "react-router-dom";
+  Box,
+  MenuItem,
+  FormControl,
+  Select,
+  InputLabel,
+  CircularProgress,
+  Alert
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function AuthSelector(props) {
-    const [authLevels, setAuthLevels] = useState([]);
-    const [selectedAuth, setSelectedAuth] = useState(null);
-    const [userData, setUserData] = useState(null);
-    const [optionArray, setOptionArray] = useState([]);
+  const [selectedAuth, setSelectedAuth] = useState(0);
+  const [userData, setUserData] = useState();
 
-    let navigate = useNavigate();
-    const location = useLocation();
-    const viewStrings = ["../customer", "../cashier", "../barista", "../manager/options"];
-    useEffect(() => {
-        fetchData();
-    }, [selectedAuth, location])
+  let navigate = useNavigate();
+  const viewStrings = ["../customer", "../cashier", "../barista", "../manager/options"];
 
-    function refreshPage() {
-        window.location.reload(false);
-    }
+  // fetch userData onMount only
+  useEffect(() => {
+    fetchData()
+  }, [])
 
-    function fetchData() {
-        fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`,{
+  function fetchData() {
+    fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
 
-            method: 'GET',
-            headers: {
-                "Authorization": "Token " + window.localStorage.getItem('token')
-            },
+      method: 'GET',
+      headers: {
+        "Authorization": "Token " + window.localStorage.getItem('token')
+      },
     })
-        .then((res) => res.json())
-        .then(
-          (data) => {
-              setAuthLevels(data.userinfo.authLevel);
-              setSelectedAuth(data.userinfo.actingLevel);
-              setUserData(data);
-              setOptionArray(authLevels.map(level => (
-                <MenuItem value={level} key={level}>{level}</MenuItem>
-              )))
-          }
-        )
-    }
-
-    function handleNewAuth (event) {
-        setSelectedAuth(event.target.value);
-        userData.userinfo.actingLevel = event.target.value;
-        try {
-            fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
-                method: 'PUT',
-                mode: 'cors',
-                headers: {
-                  'Content-Type': 'application/json',
-                  "Authorization": "Token " + window.localStorage.getItem('token')
-                },
-                'body': JSON.stringify(userData),
-              }).then(navigate(viewStrings[+event.target.value], {replace: true}))
-              .then(() => fetchData(), refreshPage())
-        } catch (error) {
-            console.log(error);
+      .then((res) => res.json())
+      .then(
+        (data) => {
+          setSelectedAuth(data.userinfo.actingLevel);
+          setUserData(data);
         }
-        fetchData();
-    }
+      )
+      .catch((err) => <Alert severity="error">{err}</Alert>)
+  }
 
-    return (
-        <Box className={props.className}>
-            <FormControl fullWidth>
-                <InputLabel id="select-auth-label">Auth</InputLabel>
-                <Select
-                    labelId="select-auth-label"
-                    id="select-auth"
-                    value={selectedAuth}
-                    label="Auth"
-                    onChange={handleNewAuth}
+  // Because of the way useEffect works, fetchData will never be ran
+  // until the component is fully rendered. The following conditional
+  // will cause the component to only render a loading circle until
+  // useEffect has ran.
+  if (!userData) {
+    return <CircularProgress />
+  }
 
-                >
-                    {optionArray}
-                </Select>
-            </FormControl>
-        </Box>
-    )
+  async function handleNewAuth(event) {
+    setSelectedAuth(event.target.value);
+    userData.userinfo.actingLevel = event.target.value;
+    const freshUserData = await fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
+      method: 'PUT',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": "Token " + window.localStorage.getItem('token')
+      },
+      'body': JSON.stringify(userData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setUserData(data)
+        return data
+      })
+      .catch((err) => console.log(err))
+    navigate(viewStrings[+event.target.value], { replace: true })
+    setSelectedAuth(freshUserData.userinfo.actingLevel)
+  }
+
+  return (
+    <Box className={props.className}>
+      <FormControl fullWidth>
+        <InputLabel id="select-auth-label">Auth</InputLabel>
+        <Select
+          labelId="select-auth-label"
+          id="select-auth"
+          value={selectedAuth}
+          label="Auth"
+          onChange={handleNewAuth}
+
+        >
+          {userData.userinfo.authLevel.map((level) =>
+            <MenuItem value={level} key={level}>{level}</MenuItem>
+          )}
+        </Select>
+      </FormControl>
+    </Box>
+  )
 }
