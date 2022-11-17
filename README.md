@@ -41,15 +41,16 @@ Once the backend is setup run the command
 
 `python manage.py runserver`
 
-We can use the api/additem/ endpoint to post data to the database. Try 
-pasting the Json snippet below into the input box at the bottom of the page, then click the post button.
+Once the frontend is setup run the command
 
-```
-{
-    "name": "frapoccino",
-    "price": 200
-  }
-```
-Now visit the endpoint /api/ to send a get request for all menuitems in the database.
+`npm start`
+
+Now, login/signup to the page which should autopopulate in your browser. 
+Then, manually navigate to '/unitTests' which should automatically complete to 
+'/unitTests/runAll'. 
+
+Next, click the single button on the screen. The tests will run and the results will 
+be displayed. For more specific information, open the console and run the tests. The specific
+test being ran and any errors will be present there.
 
 ## Other Development Notes (As Needed)
