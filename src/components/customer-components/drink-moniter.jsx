@@ -5,11 +5,11 @@ export default function DrinkMoniter({setScreen, screen}) {
     function NavButton() {
         if(screen === "order-manage") {
             return (
-                <Button onClick={() => {setScreen("menu")}} variant={"contained"}>Menu</Button>
+                <Button class = 'button' onClick={() => {setScreen("menu")}} variant={"contained"}>Menu</Button>
             )
         } else {
             return(
-                <Button onClick={() => {setScreen("order-manage")}} variant={"contained"}>Order Manage</Button>
+                <Button class = 'button' onClick={() => {setScreen("order-manage")}} variant={"contained"}>Order Manage</Button>
             )
         }
     }

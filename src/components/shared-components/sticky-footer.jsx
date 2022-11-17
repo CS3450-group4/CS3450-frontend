@@ -1,7 +1,21 @@
+import "./sticky-footer.css"
+
 export default function StickyFooter(props) {
     return (
-        <footer style={{backgroundColor: "red", position: "fixed", bottom: 10, height: '10vh', width: '95vw', borderRadius: 10, display: "flex", justifyContent: "center", alignItems: "center"}}>
+        <footer style={null}>
+            <section>
+        </section>
+        <div class="footer">
+        <div id="button"></div>
+        <div id="container">
+        <div id="cont">
+        <div class="footer_center">
             {props.children}
+        </div>
+        </div>
+        </div>
+        </div>
         </footer>
+        
     )
 }

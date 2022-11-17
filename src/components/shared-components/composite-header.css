@@ -3,17 +3,20 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: bisque;
+    background-color: gray;
+    background-image: 'https://blog-assets.lightspeedhq.com/img/2021/03/b26bcdcf-blog_coffee-shop-equipment-list_1200x628.jpg';
+
 }
 
 .TitleContainer {
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: bisque;
-    border-radius: 10px;
+    background-color: gray;
+    border-radius: 50px;
     width: 95vw;
     margin-top: 10px;
+    /* background-image: url('https://blog-assets.lightspeedhq.com/img/2021/03/b26bcdcf-blog_coffee-shop-equipment-list_1200x628.jpg'); */
 }
 
 .BalanceAdder {
@@ -40,3 +43,109 @@
     margin: 4px;
     border-radius: 10px;
 }
+
+.button-1 {
+  position: absolute;
+  right: 2%;
+  margin: 4px;
+  background-color: lightblue;
+  border: 0;
+  border-radius: 100px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 20px;
+  max-width: 480px;
+  min-height: 40px;
+  min-width: 0px;
+  overflow: hidden;
+  padding: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  touch-action: manipulation;
+  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+}
+
+.button-1:hover,
+.button-1:focus { 
+  background-color: lightblue;
+  color: #ffffff;
+}
+
+.button-1:active {
+  background: #09223b;
+  color: rgb(255, 255, 255, .7);
+}
+
+.button-1:disabled { 
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, .08);
+  color: rgba(0, 0, 0, .3);
+}
+
+.button-2 {
+    width: 140px;
+    left: 5%;
+    position: absolute;
+    right: 2%;
+    margin: 4px;
+    border-radius: 10px;
+    background-color: lightblue;
+    border: 0;
+    box-sizing: border-box;
+    color: #ffffff;
+  }
+  
+  .button-2:hover,
+  .button-2:focus { 
+    background-color: lightblue;
+    color: #ffffff;
+  }
+  
+  .button-2:active {
+    background: white;
+    color: rgb(255, 255, 255, .7);
+  }
+  
+  .button-2:disabled { 
+    cursor: not-allowed;
+    background: white(0, 0, 0, .08);
+    color: white(0, 0, 0, .3);
+  }
+  .button-3 {
+    position: absolute;
+    right: 9%;
+    background-color: aliceblue;
+    padding: 8px;
+    border-radius: 10px;
+    background-color: lightblue;
+    border: 0;
+    box-sizing: border-box;
+    color: #ffffff;
+  }
+  
+  .button-3:hover,
+  .button-3:focus { 
+    background-color: lightblue;
+    color: #ffffff;
+  }
+  
+  .button-3:active {
+    background: white;
+    color: rgb(255, 255, 255, .7);
+  }
+  
+  .button-3:disabled { 
+    cursor: not-allowed;
+    background: white(0, 0, 0, .08);
+    color: white(0, 0, 0, .3);
+  }
