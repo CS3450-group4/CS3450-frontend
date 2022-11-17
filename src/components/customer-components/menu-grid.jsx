@@ -1,4 +1,5 @@
 import {
+    Box,
     Grid,
   } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -30,7 +31,7 @@ export default function MenuGrid() {
         )
     }
 
-    function GridItem({drink}) {
+    const gridItems = drinkList.map((drink, index) => {
         var inStock = true;
         drink.ingredientList.forEach(ingredient => {
             if (ingredient.stock <= 0) {
@@ -39,20 +40,19 @@ export default function MenuGrid() {
         })
         if(inStock) {
             return(
-                <Grid item className="GridItem" style={{display: 'flex'}}>
+                <Grid item xs={3} key={index}>
                     <DrinkCard menuitem={drink}></DrinkCard>
                 </Grid>
             )
         }
-    }
-
-    const gridItems = drinkList.map((drink, index) =>
-        <GridItem drink={drink} key={index}></GridItem>
-    );
+    });
 
     return( 
-        <Grid container className="GridContainer" alignItems="stretch" >
-            {gridItems}
-        </Grid>
+        <Box className="Menu">
+            <Grid container className="GridContainer" rowSpacing={4} columnSpacing={{ xs: 10, sm: 5, md: 3 }} alignItems="stretch" justifyContent="center">
+                {gridItems}
+            </Grid>
+        </Box>
+        
     )
 }

@@ -1,4 +1,4 @@
-import { Button, Typography, Box} from "@mui/material"
+import { Button, Typography, Box, ThemeProvider, createTheme} from "@mui/material"
 import { Stack } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
@@ -21,6 +21,17 @@ export default function OrderBox(){
     const [ingredients, setIngredients] = useState(drinkObj.ingredientList)
     const [update, forceUpdate] = useState(true)
     let navigation = useNavigate()
+
+    const { palette } = createTheme();
+    const theme = createTheme({
+    palette: {
+        mygrey: palette.augmentColor({
+        color: {
+            main: "#3A3A3A"
+        }
+        })
+    }
+    });
 
     useEffect(() => {
         fetchData();
@@ -255,13 +266,15 @@ export default function OrderBox(){
                 removeIngredient={removeIngredient}/>
 
                 <AddOnForm ingredients={ingredients} addIngredient={addIngredient}/>
-
+                <ThemeProvider theme={theme}>
                 <Stack direction="row" spacing={2}>
-                    <Button onClick={() => navigation("../menu", {replace: true})} variant="contained"> Cancel Order </Button>
-                    <Button onClick={() => {
+                    <Button color="mygrey" onClick={() => navigation("../menu", {replace: true})} variant="contained"> Cancel Order </Button>
+                    <Button color="mygrey" onClick={() => {
                         getCustomerData()
                         }} variant="contained"> Order Drink</Button>
                 </Stack>
+                </ThemeProvider>
+                
             </Stack>
             
             

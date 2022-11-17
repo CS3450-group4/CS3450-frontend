@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, createTheme, Divider, Grid, Paper, Stack, ThemeProvider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function OrderManageBox() {
@@ -6,6 +6,24 @@ export default function OrderManageBox() {
   const [drinkHistory, setDrinkHistory] = useState([])
   const [allIngs, setAllIngs] = useState([])
   const [update, setUpdate] = useState(false)
+
+  const { palette } = createTheme();
+  const theme = createTheme({
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {width: "100%"}
+        }
+      }
+    },
+    palette: {
+        mygrey: palette.augmentColor({
+        color: {
+            main: "#3A3A3A"
+        }
+        })
+    }
+  });
 
   useEffect(() => {
     fetchData();
@@ -98,14 +116,23 @@ export default function OrderManageBox() {
       (pickups.length !== 0) ? (
         pickups.map((order, index) => {
           return (
-            <Paper key={index}>
-              <Typography>Price ${(order.price / 100).toFixed(2)}</Typography>
-              <PickUpItems order={order}></PickUpItems>
-              <Button onClick={() => { pickUpOrder(order) }} variant={"contained"}> Pick Up Order</Button>
-            </Paper>
+            <Grid item key={index} xs={3}>
+                <Paper className="OrderManagePaper">
+                  <Typography>Price ${(order.price / 100).toFixed(2)}</Typography>
+                  <PickUpItems order={order}></PickUpItems>
+                  <ThemeProvider theme={theme}>
+                    <Button color="mygrey" 
+                    classname="OrderManageButton"
+                    onClick={() => { pickUpOrder(order) }} variant={"contained"}> Pick Up Order</Button>
+                  </ThemeProvider>
+                </Paper>
+            </Grid>
           )
         })
-      ) : <Typography>No Pickups</Typography>
+      ) : <Grid item xs={3}>
+              <Typography>No Pickups</Typography>
+          </Grid>
+      
     )
   }
   function HistoryItem({ order }) {
@@ -125,21 +152,29 @@ export default function OrderManageBox() {
       (drinkHistory.length !== 0) ? (
         drinkHistory.map((order, index) => {
           return (
-            <Paper key={index}>
-              <Typography>Price ${(order.price / 100).toFixed(2)}</Typography>
-              <HistoryItem order={order}></HistoryItem>
-              <Button onClick={() => {
-                getCustomerData(order)
-              }
-              } variant={"contained"}> Re Order</Button>
-            </Paper>
+            <Grid item key={index} xs={3}>
+              <Paper className="OrderManagePaper">
+                <Typography>Price ${(order.price / 100).toFixed(2)}</Typography>
+                <HistoryItem order={order}></HistoryItem>
+                <ThemeProvider theme={theme}>
+                  <Button color="mygrey" 
+                  fullwidth="true"
+                  classname="OrderManageButton"
+                  onClick={() => {
+                    getCustomerData(order)
+                  }
+                  } variant={"contained"}> Re Order</Button>
+                </ThemeProvider>
+              </Paper>
+            </Grid>
           )
         })
-      ) : <Typography>No Drink History</Typography>
+      ) : <Grid item xs={3}>
+            <Typography>No Drink History</Typography>
+          </Grid> 
+      
     )
   }
-
-
 
   // ----------- STUFF NEEDED TO REORDER DRINKS ------------------- //
   function payManager(price) {
@@ -269,16 +304,19 @@ export default function OrderManageBox() {
 
   return (
     <Stack spacing={2}>
-      <Typography> Drinks Ready For Pickup </Typography>
-      <Stack direction="row" spacing={2}>
-        < PickUps />
+      <Typography sx={{fontSize: 24}}> Drinks Ready For Pickup </Typography>
+      <Stack direction="row" spacing={2} className="OrderManageStack">
+        <Grid container rowSpacing={4} columnSpacing={{ xs: 10, sm: 5, md: 3 }} alignItems="center" justifyContent="center">
+          < PickUps />
+        </Grid>
       </Stack>
       <Divider />
-      <Typography> Drinks You've Ordered In the Past </Typography>
-      <Stack direction="row" spacing={2}>
-        < DrinkHistory />
+      <Typography sx={{fontSize: 24}}> Drinks You've Ordered In the Past </Typography>
+      <Stack direction="row" spacing={2} className="OrderManageStack">
+        <Grid container rowSpacing={4} columnSpacing={{ xs: 10, sm: 5, md: 3 }} alignItems="center" justifyContent="center">
+          < DrinkHistory />        
+        </Grid>
       </Stack>
-
     </Stack>
 
   )
