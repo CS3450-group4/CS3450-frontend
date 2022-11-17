@@ -7,19 +7,7 @@ import {
     let navigate = useNavigate()
 
     function logg() {
-        // Implement. Should be code below but broke.
-        // fetch('http://localhost:8000/api/logout/', {
-        //     method: 'POST',
-        //     mode: 'cors',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //     credentials: 'include'
-        //   }).then((res) => res.json())
-        //     .then((data) => {
-        //       navigate("/", {replace: true});
-        //     })
-        //     .catch((err) => console.log(err))
+        navigate("/", {replace: true});
     }
     
 
