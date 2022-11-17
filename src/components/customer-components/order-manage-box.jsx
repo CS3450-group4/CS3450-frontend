@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, createTheme, Divider, Grid, Paper, Stack, ThemeProvider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function OrderManageBox() {
@@ -7,18 +7,36 @@ export default function OrderManageBox() {
   const [allIngs, setAllIngs] = useState([])
   const [update, setUpdate] = useState(false)
 
+  const { palette } = createTheme();
+  const theme = createTheme({
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {width: "100%"}
+        }
+      }
+    },
+    palette: {
+        mygrey: palette.augmentColor({
+        color: {
+            main: "#3A3A3A"
+        }
+        })
+    }
+  });
+
   useEffect(() => {
     fetchData();
     fetchIngs();
   }, [update])
 
   function fetchIngs() {
-    fetch(`http://localhost:8000/api/ingredient/`,{
+    fetch(`http://localhost:8000/api/ingredient/`, {
 
-            method: 'GET',
-            headers: {
-                "Authorization": "Token " + window.localStorage.getItem('token')
-            },
+      method: 'GET',
+      headers: {
+        "Authorization": "Token " + window.localStorage.getItem('token')
+      },
     })
       .then((res) => res.json())
       .then(
@@ -29,12 +47,12 @@ export default function OrderManageBox() {
   }
 
   function fetchData() {
-    fetch(`http://localhost:8000/api/orders/`,{
+    fetch(`http://localhost:8000/api/orders/`, {
 
-            method: 'GET',
-            headers: {
-                "Authorization": "Token " + window.localStorage.getItem('token')
-            },
+      method: 'GET',
+      headers: {
+        "Authorization": "Token " + window.localStorage.getItem('token')
+      },
     })
       .then((res) => res.json())
       .then(
@@ -43,7 +61,7 @@ export default function OrderManageBox() {
           var custHistory = []
           data.forEach(order => {
             if (order.user == window.localStorage.getItem('curUserID')) {
-              if (order.orderStatus === "forPickup") {
+              if (order.orderStatus === "fullfilled") {
                 custPickups.push(order)
               }
               if (order.orderStatus === "pickuped") {
@@ -98,14 +116,23 @@ export default function OrderManageBox() {
       (pickups.length !== 0) ? (
         pickups.map((order, index) => {
           return (
-            <Paper key={index}>
-              <Typography>Price ${(order.price / 100).toFixed(2)}</Typography>
-              <PickUpItems order={order}></PickUpItems>
-              <Button onClick={() => { pickUpOrder(order) }} variant={"contained"}> Pick Up Order</Button>
-            </Paper>
+            <Grid item key={index} xs={3}>
+                <Paper className="OrderManagePaper">
+                  <Typography>Price ${(order.price / 100).toFixed(2)}</Typography>
+                  <PickUpItems order={order}></PickUpItems>
+                  <ThemeProvider theme={theme}>
+                    <Button color="mygrey" 
+                    classname="OrderManageButton"
+                    onClick={() => { pickUpOrder(order) }} variant={"contained"}> Pick Up Order</Button>
+                  </ThemeProvider>
+                </Paper>
+            </Grid>
           )
         })
-      ) : <Typography>No Pickups</Typography>
+      ) : <Grid item xs={3}>
+              <Typography>No Pickups</Typography>
+          </Grid>
+      
     )
   }
   function HistoryItem({ order }) {
@@ -125,66 +152,74 @@ export default function OrderManageBox() {
       (drinkHistory.length !== 0) ? (
         drinkHistory.map((order, index) => {
           return (
-            <Paper key={index}>
-              <Typography>Price ${(order.price / 100).toFixed(2)}</Typography>
-              <HistoryItem order={order}></HistoryItem>
-              <Button onClick={() => {
-                getCustomerData(order)
-              }
-              } variant={"contained"}> Re Order</Button>
-            </Paper>
+            <Grid item key={index} xs={3}>
+              <Paper className="OrderManagePaper">
+                <Typography>Price ${(order.price / 100).toFixed(2)}</Typography>
+                <HistoryItem order={order}></HistoryItem>
+                <ThemeProvider theme={theme}>
+                  <Button color="mygrey" 
+                  fullwidth="true"
+                  classname="OrderManageButton"
+                  onClick={() => {
+                    getCustomerData(order)
+                  }
+                  } variant={"contained"}> Re Order</Button>
+                </ThemeProvider>
+              </Paper>
+            </Grid>
           )
         })
-      ) : <Typography>No Drink History</Typography>
+      ) : <Grid item xs={3}>
+            <Typography>No Drink History</Typography>
+          </Grid> 
+      
     )
   }
-
-
 
   // ----------- STUFF NEEDED TO REORDER DRINKS ------------------- //
   function payManager(price) {
     var managerID = null;
     var managerUserData = null;
-    fetch(`http://localhost:8000/api/user/all`,{
-        method: 'GET',
-        headers: {
-            "Authorization": "Token " + window.localStorage.getItem('token')
-        },
+    fetch(`http://localhost:8000/api/user/all`, {
+      method: 'GET',
+      headers: {
+        "Authorization": "Token " + window.localStorage.getItem('token')
+      },
     }).then((res) => res.json())
-    .then((users) => {
+      .then((users) => {
         users.forEach(user => {
-            if (user.userinfo.authLevel.includes(3)) {
-                managerUserData = user;
-                managerID = user.id
-            }
+          if (user.userinfo.authLevel.includes(3)) {
+            managerUserData = user;
+            managerID = user.id
+          }
         })
         if (managerID != null && managerUserData != null) {
-            managerUserData.userinfo.balance += price
-            try {
-                fetch(`http://localhost:8000/api/user/${managerID}/`, {
-                    method: 'PUT',
-                    mode: 'cors',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      "Authorization": "Token " + window.localStorage.getItem('token')
-                    },
-                    'body': JSON.stringify(managerUserData),
-                  })
-            } catch (error) {
-                console.log(error);
-            }
+          managerUserData.userinfo.balance += price
+          try {
+            fetch(`http://localhost:8000/api/user/${managerID}/`, {
+              method: 'PUT',
+              mode: 'cors',
+              headers: {
+                'Content-Type': 'application/json',
+                "Authorization": "Token " + window.localStorage.getItem('token')
+              },
+              'body': JSON.stringify(managerUserData),
+            })
+          } catch (error) {
+            console.log(error);
+          }
         }
-    })
-     
-}
+      })
+
+  }
 
   function getCustomerData(order) {
-    fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`,{
+    fetch(`http://localhost:8000/api/user/${window.localStorage.getItem('curUserID')}/`, {
 
-            method: 'GET',
-            headers: {
-                "Authorization": "Token " + window.localStorage.getItem('token')
-            },
+      method: 'GET',
+      headers: {
+        "Authorization": "Token " + window.localStorage.getItem('token')
+      },
     })
       .then((res) => res.json())
       .then(
@@ -269,16 +304,19 @@ export default function OrderManageBox() {
 
   return (
     <Stack spacing={2}>
-      <Typography> Drinks Ready For Pickup </Typography>
-      <Stack direction="row" spacing={2}>
-        < PickUps />
+      <Typography sx={{fontSize: 24}}> Drinks Ready For Pickup </Typography>
+      <Stack direction="row" spacing={2} className="OrderManageStack">
+        <Grid container rowSpacing={4} columnSpacing={{ xs: 10, sm: 5, md: 3 }} alignItems="center" justifyContent="center">
+          < PickUps />
+        </Grid>
       </Stack>
       <Divider />
-      <Typography> Drinks You've Ordered In the Past </Typography>
-      <Stack direction="row" spacing={2}>
-        < DrinkHistory />
+      <Typography sx={{fontSize: 24}}> Drinks You've Ordered In the Past </Typography>
+      <Stack direction="row" spacing={2} className="OrderManageStack">
+        <Grid container rowSpacing={4} columnSpacing={{ xs: 10, sm: 5, md: 3 }} alignItems="center" justifyContent="center">
+          < DrinkHistory />        
+        </Grid>
       </Stack>
-
     </Stack>
 
   )

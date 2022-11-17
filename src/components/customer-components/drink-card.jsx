@@ -6,9 +6,22 @@ import {
     CardContent,
     CardActions,
     CardHeader,
+    createTheme,
+    ThemeProvider,
   } from "@mui/material";
-import "../main-view-components/general.css"
+import "./customer.css"
 import { useNavigate } from "react-router-dom";
+
+const { palette } = createTheme();
+const theme = createTheme({
+  palette: {
+    mygrey: palette.augmentColor({
+      color: {
+        main: "#3A3A3A"
+      }
+    })
+  }
+});
 
   export default function DrinkCard({menuitem}) {
     let navigation = useNavigate()
@@ -42,7 +55,7 @@ import { useNavigate } from "react-router-dom";
     }
 
     return (
-        <Card className={"DrinkCard"} variant="outlined" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column', maxWidth: 250}}>
+        <Card className="DrinkCard" variant="outlined">
             <CardHeader
                 title={menuitem.name}
                 subheader={`Price: $${(menuitem.price/100).toFixed(2)}`}
@@ -53,16 +66,18 @@ import { useNavigate } from "react-router-dom";
             image={require('./frap1.jpg')}
             alt="Frappichino"
             />
-            <CardContent>
+            <CardContent className="DrinkCardContent">
                 <Typography variant="caption" >
                     {DrinkIngredients(menuitem.ingredientList)}
                 </Typography>
             </CardContent>
-            <CardActions>
-                <Button size="medium" onClick={() => {
+            <CardActions className="DrinkButton">
+                <ThemeProvider theme={theme}>
+                <Button color="mygrey" variant="contained" size="medium" onClick={() => {
                     window.localStorage.setItem('selectedDrink', JSON.stringify(selectedDrink));
                     navigation("../drink", {replace: true})}
                 }>Order</Button>
+                </ThemeProvider>
             </CardActions>
             
         </Card>

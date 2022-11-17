@@ -1,14 +1,39 @@
-.GridContainer {
-    align-items: stretch;
-    /* margin: 2%; */
+/* #3A3A3A */
+/* lightblue */
+.Menu {
+    border-radius: 3%;
+    background-color: lightblue;
+    padding: 16px;
+    margin: 2%;
+    flex-grow: 1;
+}
+.DrinkCard  {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.DrinkButton {
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.DrinkCardMedia {
+    display: flex;
+    border-radius: 100%;
+    justify-content: flex-end;
+    flex-direction: column;
+}
+.DrinkCardContent {
+    /* background-color: #3A3A3A; */
 }
 
 .CustomerOrderBox {
     width: 75%;
-    background-color: aliceblue;
+    background-color: lightblue;
     padding: 16px;
     margin: 2%;
-    border-radius: 2%;
+    border-radius: 3%;
 }
 
 .IngredientForm {
@@ -38,4 +63,24 @@
     border: 0;
     box-sizing: border-box;
     color: #ffffff; */
+
+.OrderManageStack {
+    background-color: lightblue;
+    padding: 16px;
+    margin: 2%;
+    border-radius: 3%;
+}
+
+.OrderManagePaper {
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.OrderManageButton {
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-end;
 }
