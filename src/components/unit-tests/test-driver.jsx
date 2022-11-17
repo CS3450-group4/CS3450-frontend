@@ -11,8 +11,7 @@ export default function RunAllTests(props) {
 
   async function startTesting() {
     setResultString("");
-    console.log("Running Tests")
-    console.log("Open Broswer Console. Scan for Errors (If Any)")
+    console.log("--- Running Tests ---")
     console.log("Creating Ingredients...")
     await createIngredient()
 
@@ -252,7 +251,7 @@ export default function RunAllTests(props) {
     <Box className={props.className}>
       <Stack style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
         <Button variant="contained" style={{width: '10em'}} onClick={() => startTesting()}>Run Tests</Button>
-        <Typography>{resultString}</Typography>
+        <Typography style={{color: 'black'}}>{resultString}</Typography>
       </Stack>
     </Box>
   )
