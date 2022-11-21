@@ -1,4 +1,5 @@
 .Title {
+    flex: 5;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -34,6 +35,7 @@
     background-color: aliceblue;
     padding: 8px;
     border-radius: 10px;
+    margin: 4px;
 }
 
 .SignOutBtn {
@@ -45,8 +47,9 @@
 }
 
 .button-1 {
-  position: absolute;
-  right: 2%;
+  flex: 1;
+  flex-direction: row;
+  justify-content: flex-end;
   margin: 4px;
   background-color: lightblue;
   border: 0;
@@ -94,10 +97,12 @@
 
 .button-2 {
     width: 140px;
-    left: 5%;
-    position: absolute;
-    right: 2%;
+    flex: 1;
+    flex-direction: row;
+    justify-content: flex-start;
     margin: 4px;
+    margin-right: 50%;
+    padding: 8px;
     border-radius: 10px;
     background-color: lightblue;
     border: 0;
@@ -122,8 +127,9 @@
     color: white(0, 0, 0, .3);
   }
   .button-3 {
-    position: absolute;
-    right: 9%;
+    flex: 4;
+    flex-direction: row;
+    justify-content: flex-start;
     background-color: aliceblue;
     padding: 8px;
     border-radius: 10px;
@@ -149,3 +155,40 @@
     background: white(0, 0, 0, .08);
     color: white(0, 0, 0, .3);
   }
+
+.HeaderStack {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+.HeaderLeft {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+}
+
+.HeaderCenter{
+  flex: 2;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.HeaderRight {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+}
