@@ -7,7 +7,11 @@ import {
   Checkbox,
   FormControlLabel,
   CircularProgress,
+  createTheme,
+  ThemeProvider,
+  positions,
 } from '@mui/material'
+import zIndex from '@mui/material/styles/zIndex'
 export default function AddDrink(props) {
   const [orders, setorders] = useState([])
   const [isOrdersLoading, setOrdersLoading] = useState(false)
@@ -15,6 +19,16 @@ export default function AddDrink(props) {
   const [currentDrink, setCurrentDrink] = useState(null)
   const [isGrabbed, setIsGrabbed] = useState([])
   const [disableMakeDrink, setDisableMakeDrink] = useState(true)
+  const { palette } = createTheme();
+  const theme = createTheme({
+    palette: {
+        mygrey: palette.augmentColor({
+        color: {
+            main: "#3A3A3A"
+        }
+        })
+    }
+    }); 
   useEffect(() => {
     fetchOrderData()
   }, [])
@@ -110,14 +124,18 @@ export default function AddDrink(props) {
 
 
   return (
-    <Box>
+    <Box
+      sx={{marginTop: "5%",}}
+
+    >
       <Stack>
         <FormControl className={props.ingredientClassName}>
           {ingredients}
         </FormControl>
-        <Button disabled={disableMakeDrink} onClick={() => buildDrink()}>
-          Make Drink
-        </Button>
+        <ThemeProvider theme={theme}><Button color="mygrey" disabled={disableMakeDrink} onClick={() => buildDrink()}>
+            Make Drink
+          </Button>
+        </ThemeProvider>
       </Stack>
     </Box>
   )
