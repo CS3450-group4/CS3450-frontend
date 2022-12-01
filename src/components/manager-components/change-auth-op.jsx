@@ -7,6 +7,7 @@ import {
     FormGroup,
     FormControlLabel,
     Checkbox,
+    Typography,
   } from "@mui/material";
 import BackBtn from "../shared-components/back-btn";
 export default function ChangeAuth(props) {
@@ -118,8 +119,8 @@ export default function ChangeAuth(props) {
             </Stack>
             <FormGroup>
                 <FormControlLabel disabled control={<Checkbox defaultChecked />} label="Customer" />
-                <FormControlLabel control={<Checkbox  checked={isCashier} onChange={(newVal) => handleCashierChange(newVal)}/>} label="Cashier" />
-                <FormControlLabel control={<Checkbox checked={isBarista} onChange={(newVal) => handleBaristaChange(newVal)}/>} label="Barista" />
+                <FormControlLabel control={<Checkbox  checked={isCashier} onChange={(newVal) => handleCashierChange(newVal)}/>} label={<Typography color={'black'}>Cashier</Typography>} />
+                <FormControlLabel control={<Checkbox checked={isBarista} onChange={(newVal) => handleBaristaChange(newVal)}/>} label={<Typography color={'black'}>Barista</Typography>} />
             </FormGroup>
             <Stack direction="column" spacing={3}>
                 <Button disabled={user == null} onClick={updateAuthLevels}>Update</Button>
