@@ -159,13 +159,13 @@ export default function AddIngrident(props) {
         <Box className={props.className}>
             <BackBtn className="BackBtnContainer" endPoint="../options"/>
             <Stack direction="column" spacing={3}>
-                <Typography variant="h4">Add New Ingrident</Typography>
+                <Typography variant="h4" color={'black'}>Add New Ingredient</Typography>
                 <TextField label="Name" inputProps={{ maxLength: 100 }} value={ingridentName} onChange={((newVal) => {handleNameChange(newVal)})} />
                 <TextField type="number" InputProps={{inputProps: {min: 0}}} id="RetailCost" label="RetailCost" value={ingridentRetailCost} onChange={((newVal) => {handleNumberChange(newVal)})} />
                 <TextField type="number" InputProps={{inputProps: {min: 0}}} id="WholeSaleCost" label="WholeSaleCost" value={ingridentWholeSaleCost} onChange={((newVal) => {handleNumberChange(newVal)})} />
                 <TextField type="number" InputProps={{inputProps: {min: 0}}} id="InitalStock" label="InitalStock" value={initalStock} onChange={((newVal) => {handleNumberChange(newVal)})} />
                 <FormGroup style={{"alignContent": "center"}}>
-                    <FormControlLabel control={<Checkbox checked={isIngridentMilk} onChange={(newVal) => handleMilkChange(newVal)} />} label="Is Milk" />
+                    <FormControlLabel control={<Checkbox checked={isIngridentMilk} onChange={(newVal) => handleMilkChange(newVal)} />} label={<Typography color={'black'}>Is Milk</Typography>}/>
                 </FormGroup>
                 {showOptions()}
                 <Button onClick={() => getManagerData()}>Add</Button>

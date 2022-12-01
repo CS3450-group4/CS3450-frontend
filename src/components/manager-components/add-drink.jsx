@@ -74,7 +74,7 @@ export default function AddDrink(props) {
     function createIngredientList(data) {
         setAvailableIngredients(
             data.map((ingredient, index) => (
-                <FormControlLabel key={index} control={<Checkbox checked={selectedIngredients[index]} onChange={(newVal) => handleIngredientChecked(newVal, ingredient.name)} />} label={ingredient.name} />
+                <FormControlLabel key={index} control={<Checkbox checked={selectedIngredients[index]} onChange={(newVal) => handleIngredientChecked(newVal, ingredient.name)} />} label={<Typography color={'black'}>{ingredient.name}</Typography>} />
             ))
         );
     }
@@ -135,7 +135,7 @@ export default function AddDrink(props) {
         <Box className={props.className}>
             <BackBtn className="BackBtnContainer" endPoint="../options"/>
             <Stack direction="column" spacing={3}>
-                <Typography variant="h4">Add New Drink</Typography>
+                <Typography variant="h4" color={'black'}>Add New Drink</Typography>
                 <TextField error={isNameError} label="Name" inputProps={{ maxLength: 16 }} value={drinkName} onChange={((newVal) => {handleNameChange(newVal)})} />
                 <TextField error={isPriceError} type="number" InputProps={{inputProps: {min: 0}}} id="Price" label="Price" value={drinkPrice} onChange={((newVal) => {handlePriceChange(newVal)})} />
                 <FormControl fullWidth>

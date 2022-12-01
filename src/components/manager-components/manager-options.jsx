@@ -11,21 +11,11 @@ export default function ManagerOptions(props) {
     return(
         <Box className={props.className}>
             <Stack spacing={4}>
-                <Paper elevation={3}>
-                    <Button onClick={() => {navigation("../change-auth", {replace: true})}}>Change User Auth Levels</Button>
-                </Paper>
-                <Paper elevation={3}>
-                    <Button onClick={() => {navigation("../buy-ingredients", {replace: true})}}>Purchase Ingredients</Button>
-                </Paper>
-                <Paper elevation={3}>
-                    <Button onClick={() => {navigation("../add-ingrident", {replace: true})}}>Add New Ingrident</Button>
-                </Paper>
-                <Paper elevation={3}>
-                    <Button onClick={() => {navigation("../create-drink", {replace: true})}}>Add New Drink</Button>
-                </Paper>
-                <Paper elevation={3}>
-                    <Button onClick={() => {navigation("../remove-drink", {replace: true})}}>Remove Drink</Button>
-                </Paper>
+                <button className="button-5" onClick={() => {navigation("../change-auth", {replace: true})}}>Change User Auth Levels</button>
+                <button className="button-5" onClick={() => {navigation("../buy-ingredients", {replace: true})}}>Purchase Ingredients</button>
+                <button className="button-5" onClick={() => {navigation("../add-ingrident", {replace: true})}}>Add New Ingrident</button>
+                <button className="button-5" onClick={() => {navigation("../create-drink", {replace: true})}}>Add New Drink</button>
+                <button className="button-5"  onClick={() => {navigation("../remove-drink", {replace: true})}}>Remove Drink</button>
             </Stack>
         </Box>
     )
