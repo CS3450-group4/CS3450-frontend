@@ -45,6 +45,15 @@ Once the frontend is setup run the command
 
 `npm start`
 
+If you want to use the website a managers account should be created for you automatically
+
+`username: 'manager'`
+`password: 'password'`
+
+With account you will have full access to the website, the customer, cashier, barista and
+manager view. We don't have any drinks automatically made so make sure you add at least 1 milk
+type ingredient and another ingredient before you try to make a drink. Have fun!
+
 Now, login/signup to the page which should autopopulate in your browser. 
 Then, manually navigate to '/unitTests' which should automatically complete to 
 '/unitTests/runAll'. 
