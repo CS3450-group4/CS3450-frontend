@@ -9,9 +9,9 @@ import {
   CircularProgress,
   createTheme,
   ThemeProvider,
-  positions,
+  Typography,
 } from '@mui/material'
-import zIndex from '@mui/material/styles/zIndex'
+import "./barsita.css"
 export default function AddDrink(props) {
   const [orders, setorders] = useState([])
   const [isOrdersLoading, setOrdersLoading] = useState(false)
@@ -105,8 +105,6 @@ export default function AddDrink(props) {
       },
     })
 
-    currentDrink.orderStatus = 'forPickup'
-
     setorders((prevState) => {
       prevState.shift()
       return prevState
@@ -122,17 +120,23 @@ export default function AddDrink(props) {
     setDisableMakeDrink(true)
   }
 
-
+  if(orders.length == 0) {
+    return(
+      <Box className="Barista" >
+        <ThemeProvider theme={theme}>
+          <Button variant={"contained"} onClick={() => window.location.reload(false)} color="mygrey"> Refresh </Button>
+        </ThemeProvider>
+      </Box>
+    )
+  }
   return (
-    <Box
-      sx={{marginTop: "5%",}}
-
-    >
-      <Stack>
-        <FormControl className={props.ingredientClassName}>
-          {ingredients}
-        </FormControl>
-        <ThemeProvider theme={theme}><Button color="mygrey" disabled={disableMakeDrink} onClick={() => buildDrink()}>
+    <Box className="Barista">
+      <Typography>Queue Size: {orders.length}</Typography>
+      <Stack className="Order" >
+          <FormControl className={props.ingredientClassName}>
+            {ingredients}
+          </FormControl>
+        <ThemeProvider theme={theme}><Button variant={"contained"} color="mygrey" disabled={disableMakeDrink} onClick={() => buildDrink()}>
             Make Drink
           </Button>
         </ThemeProvider>

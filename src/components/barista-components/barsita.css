@@ -1,0 +1,31 @@
+.Barista {
+    border-radius: 2%;
+    background-color: lightblue;
+    margin: 2%;
+    padding: 16px;
+    align-items: center;
+    justify-content: center;
+}
+
+.Order {
+    margin: 10%;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.Form {
+    display: flex;
+    flex: 1;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.Button {
+    display: flex;
+    flex: 1;
+    margin: 2%;
+}
