@@ -10,6 +10,42 @@ import Login from './components/login-signup';
 
 
 function App() {
+  const[created, setCreated] = useState(false)
+
+  useEffect(() => {
+    if(!created && (window.sessionStorage.getItem("manCreated") !== "true")) createMan()
+    // createMan()
+  }, [])
+
+  async function createMan() {
+    await fetch('http://localhost:8000/api/create_user/', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      'body': JSON.stringify({
+        "username": "manager",
+        "first_name": "manager",
+        "last_name": "bossman",
+        "password": "password",
+        "userinfo": {
+            "authLevel": [
+                0, 1, 2, 3
+            ],
+            "balance": 5955,
+            "actingLevel": 3,
+            "hoursWorked": 0
+        }
+    }),
+    }).then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        window.sessionStorage.setItem("manCreated", "true")
+        setCreated(true)
+      }).catch((err) => console.log(err))
+  }
+
   return (
     <BrowserRouter>
       <Routes>
